@@ -5,16 +5,21 @@ const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
+const mongoose = require("mongoose");
+
+const api = require("./api/index");
+
+mongoose.connect("mongodb://localhost:27017/test", { useNewUrlParser: true });
+mongoose.connection.on("error", err => {
+  console.log(`Error connecting to db: ${err}`);
+});
 
 const init = async () => {
   try {
     await app.prepare();
     const server = express();
-    server.get("/api", (req, res) => {
-      return res.send({
-        test: "hello"
-      });
-    });
+
+    api(server);
 
     server.get("*", (req, res) => {
       return handle(req, res);
