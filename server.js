@@ -7,7 +7,8 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 const mongoose = require("mongoose");
 
-const api = require("./api/index");
+const api = require("./api/endpoints/index");
+const proxy = require("./api/endpoints/proxy");
 
 mongoose.connect("mongodb://localhost:27017/test", { useNewUrlParser: true });
 mongoose.connection.on("error", err => {
@@ -19,7 +20,8 @@ const init = async () => {
     await app.prepare();
     const server = express();
 
-    api(server);
+    server.use("/", api);
+    server.use("/", proxy);
 
     server.get("*", (req, res) => {
       return handle(req, res);
