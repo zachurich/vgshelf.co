@@ -2,13 +2,29 @@ const express = require("express");
 const next = require("next");
 
 const port = parseInt(process.env.PORT, 10) || 3000;
-const dev = process.env.NODE_ENV !== "production";
+const { NODE_ENV, AUTH_0_ISSUER, AUTH_0_JWKSURI } = process.env;
+const dev = NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 const mongoose = require("mongoose");
 
 const api = require("./api/endpoints/index");
 const proxy = require("./api/endpoints/proxy");
+
+var jwt = require("express-jwt");
+var jwks = require("jwks-rsa");
+
+var jwtCheck = jwt({
+  secret: jwks.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: AUTH_0_JWKSURI
+  }),
+  audience: "CollectionApp-dev",
+  issuer: AUTH_0_ISSUER,
+  algorithms: ["RS256"]
+});
 
 mongoose.connect("mongodb://localhost:27017/test", { useNewUrlParser: true });
 mongoose.connection.on("error", err => {
@@ -19,6 +35,9 @@ const init = async () => {
   try {
     await app.prepare();
     const server = express();
+
+    server.use(express.json());
+    server.use(jwtCheck);
 
     server.use("/", api);
     server.use("/", proxy);

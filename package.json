@@ -3,18 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon server.js server.js",
+    "dev": "export $(cat .env | xargs) && nodemon server.js server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "export $(cat .env | xargs) && NODE_ENV=production node server.js"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "express": "^4.17.1",
+    "express-jwt": "^5.3.1",
+    "express-jwt-authz": "^2.3.1",
+    "jwks-rsa": "^1.6.0",
     "mongoose": "^5.6.9",
     "next": "9.0.3",
     "react": "16.8.6",
     "react-dom": "16.8.6"
   },
   "devDependencies": {
+    "lodash": "^4.17.15",
     "nodemon": "^1.19.1"
   }
 }
