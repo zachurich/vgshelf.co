@@ -1,12 +1,12 @@
 import React from "react";
-import Nav from "../components/nav";
-import Meta from "../components/meta";
+import { Nav, Meta } from "../components/index";
+
+import "../styles/index.css";
 
 const Home = () => (
   <div>
     <Meta title={"Home"} />
     <Nav />
-    <h1>Hi</h1>
   </div>
 );
 

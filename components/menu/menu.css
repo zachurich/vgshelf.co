@@ -1,0 +1,9 @@
+.menu-list {
+  top: 80px;
+  right: 20px;
+}
+
+.menu-button:focus {
+  outline: none;
+  appearance: none;
+}
