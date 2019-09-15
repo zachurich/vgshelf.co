@@ -1,0 +1,59 @@
+@import "../../styles/animations";
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  padding: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  color: black;
+  animation: fadeIn 0.2s ease-in-out forwards;
+  &-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    background-size: cover;
+    animation: growInCool 0.4s cubic-bezier(0.17, 0, 0, 1) forwards;
+  }
+  &.closed {
+    display: none;
+    visibility: hidden;
+  }
+  .modal-footer {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    .modal-close {
+      display: block;
+      transition: all 0.2s ease-in-out;
+      &:hover {
+        cursor: pointer;
+        color: red;
+      }
+    }
+    input,
+    .modal-submit {
+      margin: 0 0 0 20px;
+    }
+  }
+}
+
+.dark-theme .modal {
+  animation: fadeInDarkTheme 0.2s ease-in-out forwards;
+  color: white;
+  .container {
+    background-color: black;
+    .modal-close {
+      color: gray;
+      font-weight: bold;
+    }
+  }
+}

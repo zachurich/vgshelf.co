@@ -1,0 +1,43 @@
+.grid {
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.grid-large {
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 2fr));
+}
+
+.grid-small {
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 2fr));
+}
+
+.grid::before {
+  content: "";
+  width: 0;
+  padding-bottom: 100%;
+  grid-row: 1 / 1;
+  grid-column: 1 / 1;
+}
+
+.grid > *:first-child {
+  grid-row: 1 / 1;
+  grid-column: 1 / 1;
+}
+
+/* Just to make the grid visible */
+
+.grid > * {
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px white solid;
+}
+
+.grid-item {
+  cursor: pointer;
+  background: grey;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

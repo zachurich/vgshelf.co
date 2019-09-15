@@ -12,14 +12,12 @@ const CreateCollection = async (req, res) => {
   });
   let response;
   try {
+    user.collections = user.collections.concat(collection);
+    await user.save();
     const data = await collection.save();
     response = createResponse("Collection created!", data);
   } catch (e) {
-    response = createResponse(
-      "There was an error creating the collection!",
-      e,
-      500
-    );
+    response = createResponse("There was an error creating the collection!", e, 500);
   }
   return handleResponse(res, response);
 };

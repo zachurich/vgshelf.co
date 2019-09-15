@@ -9,7 +9,7 @@ const {
 const { handleResponse, createResponse } = require("../utils");
 
 const GetCollection = async (req, res) => {
-  const { id, user = null } = req.body;
+  const { id, user = null } = req.query;
   let response = {};
   try {
     if (!user) {
@@ -33,14 +33,8 @@ const retrieveSingleDetailedCollection = async collectionFilter => {
   try {
     const currentCollection = await retrieveCollection(collectionFilter);
     const gameDetails = await retrieveGamesInCollection(currentCollection);
-    const detailedCollection = createDetailedCollection(
-      currentCollection,
-      gameDetails
-    );
-    response = createResponse(
-      `Retrieved single Collection!`,
-      detailedCollection
-    );
+    const detailedCollection = createDetailedCollection(currentCollection, gameDetails);
+    response = createResponse(`Retrieved single Collection!`, detailedCollection);
     return response;
   } catch (e) {
     error = { msg: "Error retrieving single collection!", data: e };
@@ -51,9 +45,7 @@ const retrieveSingleDetailedCollection = async collectionFilter => {
 const retrieveAllDetailedCollections = async collectionFilter => {
   try {
     const allCollections = await retrieveAllCollections(collectionFilter);
-    const allDetailedCollections = await composeDetailedCollections(
-      allCollections
-    );
+    const allDetailedCollections = await composeDetailedCollections(allCollections);
     response = createResponse(
       `Retrieved all Collections for user!`,
       allDetailedCollections
@@ -85,10 +77,7 @@ const composeDetailedCollections = async allCollections => {
   for (i in allCollections) {
     const currentCollection = allCollections[i];
     const gameDetails = await retrieveGamesInCollection(currentCollection);
-    const detailedCollection = createDetailedCollection(
-      currentCollection,
-      gameDetails
-    );
+    const detailedCollection = createDetailedCollection(currentCollection, gameDetails);
     allDetailedCollections.push(detailedCollection);
   }
   return allDetailedCollections;

@@ -1,5 +1,6 @@
 {
   "files.associations": {
     "*.css": "postcss"
-  }
+  },
+  "postcss.validate": false // Disable css built-in lint
 }

@@ -23,8 +23,8 @@ const init = async () => {
 
     server.use(express.json());
 
-    server.use("/", api);
-    server.use("/", proxy);
+    server.use(api);
+    server.use(proxy);
 
     server.get("*", (req, res) => {
       return handle(req, res);
