@@ -13,6 +13,15 @@ exports.retrieveCollection = async collectionFilter => {
   }
 };
 
+exports.deleteCollection = async collectionFilter => {
+  try {
+    const { deletedCount } = await Collection.deleteOne(collectionFilter);
+    return deletedCount;
+  } catch (error) {
+    throw error;
+  }
+};
+
 exports.retrieveAllCollections = async collectionFilter => {
   try {
     const allCollections = await Collection.find(collectionFilter);

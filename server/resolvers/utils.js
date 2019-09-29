@@ -8,17 +8,23 @@ exports.createResponse = (msg, data, code = 200) => {
   };
 };
 
-exports.handleResponse = (res, response) => {
+exports.handleResponse = (res, response, redirect = false) => {
+  console.log(response);
   const { code } = response;
   if (code >= 500 && code < 600) {
     res.status(code);
   }
-  return res.send(response);
+
+  if (redirect) {
+    res.redirect(redirect);
+  } else {
+    return res.send(response);
+  }
 };
 
-exports.userExists = (username, req, res, next) => {
-  User.findOne({ username }, (err, obj) => {
-    req.username = username;
+exports.userExists = (userId, req, res, next) => {
+  User.findOne({ userId }, (err, obj) => {
+    req.userId = userId;
     if (err) {
       req.userExists = false;
       next();

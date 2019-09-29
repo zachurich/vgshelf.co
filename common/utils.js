@@ -10,4 +10,11 @@ export const lastItem = (arr, index, cols = 3) => {
 export const genTestObj = (length, obj = { name: "test" }) => Array(length).fill(obj);
 
 export const createUrl = (req, endpoint, ssl = false) =>
-  `http://${req ? req.headers.host : window.location.host}${endpoint}`;
+  `http${ssl ? "s" : ""}://${req ? req.headers.host : window.location.host}${endpoint}`;
+
+export const formatUserName = user => {
+  if (user && user.displayName) {
+    return user.displayName.split("@")[0];
+  }
+  return "Hello!";
+};

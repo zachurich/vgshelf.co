@@ -1,0 +1,36 @@
+import { createUrl } from "../common/utils";
+import { ENDPOINTS } from "../common/constants";
+import axios from "axios";
+
+export const fetchCollections = async (req, userId) => {
+  try {
+    const { data: response } = await axios.get(createUrl(req, ENDPOINTS.COLLECTION), {
+      params: {
+        user: userId || "5d55fc7312a75609e98b7295" //! todo: remove the or!
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const createCollection = async (req, data) => {
+  try {
+    const result = await axios.post(createUrl(req, ENDPOINTS.COLLECTION), data);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteCollection = async (req, data) => {
+  try {
+    const result = await axios.delete(createUrl(req, ENDPOINTS.COLLECTION), {
+      data
+    });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};

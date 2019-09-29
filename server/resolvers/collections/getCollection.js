@@ -1,6 +1,7 @@
 const _ = require("lodash");
 const Collection = require("../../models/Collection");
 const Game = require("../../models/Game");
+const User = require("../../models/User");
 const {
   retrieveCollection,
   retrieveAllCollections,
@@ -16,7 +17,8 @@ const GetCollection = async (req, res) => {
       const collectionFilter = { _id: id };
       response = await retrieveSingleDetailedCollection(collectionFilter);
     } else {
-      const collectionFilter = { user };
+      const mongoUser = await User.findOne({ userId: user });
+      const collectionFilter = { user: mongoUser._id };
       response = await retrieveAllDetailedCollections(collectionFilter);
     }
   } catch (error) {

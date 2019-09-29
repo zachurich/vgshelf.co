@@ -7,6 +7,7 @@ const LoginUser = (req, res, next) => {
 };
 
 const LoginResponseHandler = (req, res, next) => {
+  res.redirect("/");
   const { username, userExists } = req;
   if (userExists) {
     response = createResponse("User logged in!", username, 200);

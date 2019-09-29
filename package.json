@@ -26,9 +26,15 @@
     "@csstools/postcss-sass": "^4.0.0",
     "autoprefixer": "^9.6.1",
     "cssnano": "^4.1.10",
+    "dotenv": "^8.1.0",
+    "dotenv-webpack": "^1.7.0",
+    "express-session": "^1.16.2",
     "lodash": "^4.17.15",
     "nodemon": "^1.19.1",
+    "passport": "^0.4.0",
+    "passport-auth0": "^1.2.1",
     "postcss-easy-import": "^3.0.0",
-    "tailwindcss": "^1.1.2"
+    "tailwindcss": "^1.1.2",
+    "uid-safe": "^2.1.5"
   }
 }

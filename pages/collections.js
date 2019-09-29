@@ -1,41 +1,62 @@
+import _ from "lodash";
+
 import React from "react";
 import { Nav, Meta } from "../components/index";
 import Grid from "../components/grid/grid";
-import axios from "axios";
-import { ENDPOINTS } from "../common/constants";
-import { createUrl } from "../common/utils";
 
 import "../styles/index.css";
 import Modal from "../components/modal/modal";
 import Title from "../components/title/title";
-import { fetchCollections } from "../common/api";
+import {
+  fetchCollections,
+  createCollection,
+  deleteCollection
+} from "../api/collectionsApi";
+import Router from "next/router";
 
-const Collections = ({ initialCollections = [] }) => {
+const Collections = ({ initialCollections = [], user }) => {
   const [collections, setCollections] = React.useState(initialCollections);
   const [showModal, setShowModal] = React.useState(false);
   const [title, setTitle] = React.useState("");
-  const handleToggleModal = (toggle, e) => {
+  const handleToggleModal = toggle => {
     setShowModal(() => toggle);
   };
 
   const handleCreateCollection = async () => {
-    const result = await axios.post(createUrl(null, ENDPOINTS.COLLECTION), {
-      id: "12345678",
+    handleToggleModal(false);
+    await createCollection(null, {
+      id: user.id,
       name: title,
       games: []
     });
-    const newCollections = await fetchCollections(null);
+    const newCollections = await fetchCollections(null, user.id);
     setCollections(() => newCollections);
   };
+
+  const handleDeleteCollection = async id => {
+    await deleteCollection(null, { id });
+    const newCollections = await fetchCollections(null, user.id);
+    setCollections(() => newCollections);
+  };
+
+  React.useEffect(() => {
+    const fetchInitialCollections = async () => {
+      const collections = await fetchCollections(null, user.id);
+      setCollections(() => collections);
+    };
+    if (collections.length < 1 && user) {
+      fetchInitialCollections();
+    }
+  }, [user]);
 
   return (
     <div>
       <Meta title={"Collections"} />
-      <Nav />
       <Title header={"Collections"} />
       <Grid
         data={collections}
         size="large"
+        handleDelete={handleDeleteCollection}
         handlePrompt={() => handleToggleModal(true)}
       />
       <Modal
@@ -45,7 +66,7 @@ const Collections = ({ initialCollections = [] }) => {
         dismissModal={() => handleToggleModal(false)}
         handleSubmit={handleCreateCollection}
       >
-        <form>
+        <form onSubmit={handleCreateCollection}>
           <input
             name="collection-title"
             type="text"
@@ -58,14 +79,25 @@ const Collections = ({ initialCollections = [] }) => {
   );
 };
 
-Collections.getInitialProps = async ({ req }) => {
-  try {
-    const collections = await fetchCollections(req);
-    return { initialCollections: collections };
-  } catch (e) {
-    throw e;
+/**
+ * THIS RUNS ONCE ON THE SERVER, ON REFRESH
+ * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
+ */
+Collections.getInitialProps = async ({ req, res }) => {
+  const userId = _.get(req, "user.id", null);
+  if (req && userId) {
+    try {
+      const collections = await fetchCollections(req, userId);
+      return { collections };
+    } catch (e) {
+      if (res) {
+        res.writeHead(302, {
+          Location: "/"
+        });
+        res.end();
+      }
+    }
   }
-  return { data: {} };
 };
 
 export default Collections;

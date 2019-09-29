@@ -7,7 +7,6 @@ const user = new mongoose.Schema({
   userId: { type: String, ...uniqueRequired },
   username: { type: String, ...uniqueRequired },
   emailAddress: { type: String, ...uniqueRequired },
-  firstName: { type: String, required: true },
   created: { type: Date, default: Date.now },
   collections: [
     {
