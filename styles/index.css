@@ -1,3 +1,5 @@
+@import "./variables";
+
 @tailwind base;
 @tailwind utilities;
 @tailwind components;
@@ -8,4 +10,16 @@ h1 {
 
 body {
   @apply .bg-gray-100;
+}
+
+.button a {
+  @apply .py-2 .px-4 .shadow .rounded .border-solid .border-gray-500 .bg-gray-100;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.button.submit a {
+  background-color: $blue;
+  color: white;
 }

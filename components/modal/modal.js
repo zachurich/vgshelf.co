@@ -16,14 +16,14 @@ const Modal = ({
     <div>
       {open && (
         <section className="modal">
-          <div className="modal-container rounded-lg p-10 w-4/5">
+          <div className="modal-container rounded-lg p-10 w-1/4">
             {children}
-            <div className="modal-footer">
-              <div className="modal-close">
+            <div className="modal-footer py-2">
+              <div className="button">
                 <a onClick={() => dismissModal(false)}>{closeText}</a>
               </div>
-              <div className="modal-submit">
-                <button onClick={handleSubmit}>{submitText}</button>
+              <div className="modal-submit button submit">
+                <a onClick={handleSubmit}>{submitText}</a>
               </div>
             </div>
           </div>
