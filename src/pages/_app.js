@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React from "react";
-import App, { Container as NextContainer } from "next/app";
+import App, { Container } from "next/app";
 import { Nav } from "../components";
 
 class MyApp extends App {
@@ -31,10 +31,10 @@ class MyApp extends App {
     };
 
     return (
-      <NextContainer>
+      <Container>
         <Nav user={this.state.user} />
         <Component {...props} />
-      </NextContainer>
+      </Container>
     );
   }
 }

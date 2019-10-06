@@ -7,11 +7,15 @@ import Grid from "../components/grid/grid";
 import "../styles/index.css";
 import Modal from "../components/modal/modal";
 import Title from "../components/title/title";
-import { fetchGames, createGame, deleteGame } from "../api/gamesApi";
+import {
+  fetchCollections,
+  createCollection,
+  deleteCollection
+} from "../api/collectionsApi";
 import Router from "next/router";
 
-const Games = ({ intialGames = [], user }) => {
-  const [games, setGames] = React.useState(intialGames);
+const Collections = ({ initialCollections = [], user }) => {
+  const [collections, setCollections] = React.useState(initialCollections);
   const [showModal, setShowModal] = React.useState(false);
   const [title, setTitle] = React.useState("");
   const handleToggleModal = toggle => {
@@ -19,44 +23,43 @@ const Games = ({ intialGames = [], user }) => {
     setTitle(() => "");
   };
 
-  const handleCreateGame = async () => {
+  const handleCreateCollection = async () => {
     if (title.length > 0) {
       handleToggleModal(false);
-      await createGame(null, {
+      await createCollection(null, {
         id: user.id,
         name: title,
         games: []
       });
-      const newGames = await fetchGames(null, user.id);
-      setGames(() => newGames);
+      await updateCollectionsState();
       setTitle(() => "");
     }
   };
 
-  const handleDeleteGame = async id => {
-    await deleteGame(null, { id });
-    const newGames = await fetchGames(null, user.id);
-    setGames(() => newGames);
+  const handleDeleteCollection = async id => {
+    await deleteCollection(null, { id });
+    await updateCollectionsState();
+  };
+
+  const updateCollectionsState = async () => {
+    const collections = await fetchCollections(null, user.id);
+    setCollections(() => collections);
   };
 
   React.useEffect(() => {
-    const fetchInitialGames = async () => {
-      const collections = await fetchGames(null, user.id);
-      setGames(() => collections);
-    };
-    if (games.length < 1 && user) {
-      fetchInitialGames();
+    if (collections.length < 1 && user) {
+      updateCollectionsState();
     }
   }, [user]);
 
   return (
     <div>
-      <Meta title={"Games"} />
-      <Title header={"Games"} />
+      <Meta title={"Collections"} />
+      <Title header={"Collections"} />
       <Grid
-        data={games}
-        size="small"
-        handleDelete={handleDeleteGame}
+        data={collections}
+        size="large"
+        handleDelete={handleDeleteCollection}
         handlePrompt={() => handleToggleModal(true)}
       />
       <Modal
@@ -64,9 +67,9 @@ const Games = ({ intialGames = [], user }) => {
         closeText="Close"
         submitText="Submit"
         dismissModal={() => handleToggleModal(false)}
-        handleSubmit={handleCreateGame}
+        handleSubmit={handleCreateCollection}
       >
-        <form className="mb-6 w-full" onSubmit={handleCreateGame}>
+        <form className="mb-6 w-full" onSubmit={handleCreateCollection}>
           <label className="block mb-2" htmlFor="collection-title">
             Title
           </label>
@@ -87,16 +90,16 @@ const Games = ({ intialGames = [], user }) => {
  * THIS RUNS ONCE ON THE SERVER, ON REFRESH
  * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
  */
-Games.getInitialProps = async ({ req, res }) => {
+Collections.getInitialProps = async ({ req, res }) => {
   const userId = _.get(req, "user.id", null);
   if (req && userId) {
     try {
-      const games = await fetchGames(req, userId);
-      return { games };
+      const collections = await fetchCollections(req, userId);
+      return { collections };
     } catch (e) {
       console.log(e);
     }
   }
 };
 
-export default Games;
+export default Collections;

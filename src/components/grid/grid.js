@@ -12,7 +12,7 @@ const Grid = ({ data = [], size, handlePrompt, handleDelete }) => {
               className="grid-item rounded shadow bg-white"
               onClick={() => handleDelete(item.id)}
             >
-              <span>{item.name}</span>
+              <span>{item.title}</span>
             </div>
           );
         })}

@@ -39,7 +39,7 @@ exports.createDetailedCollection = (collection, gameDetails) => {
   return {
     id: collection["_id"],
     user: collection.user,
-    name: collection.name,
+    title: collection.name,
     games: gameDetails
   };
 };

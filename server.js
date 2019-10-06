@@ -5,11 +5,15 @@ const session = require("express-session");
 const passport = require("passport");
 const Auth0Strategy = require("passport-auth0");
 const uid = require("uid-safe");
+const bodyParser = require("body-parser");
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const { NODE_ENV } = process.env;
 const dev = NODE_ENV !== "production";
-const app = next({ dev });
+const app = next({
+  dev,
+  dir: "./src"
+});
 const handle = app.getRequestHandler();
 const mongoose = require("mongoose");
 
@@ -22,6 +26,11 @@ mongoose.connect("mongodb://localhost:27017/test", { useNewUrlParser: true });
 mongoose.connection.on("error", err => {
   console.log(`Error connecting to db: ${err}`);
 });
+
+function redirectIfUnauthed(req, res, next) {
+  if (!req.isAuthenticated()) return res.redirect("/login");
+  next();
+}
 
 const init = async () => {
   try {
@@ -56,16 +65,14 @@ const init = async () => {
     server.use(passport.initialize());
     server.use(passport.session());
     server.use(auth);
-
-    server.use(express.json());
+    server.use(bodyParser.text());
+    // server.use(bodyParser.json());
+    server.use(proxy);
 
     server.use(api);
-    // server.use(proxy);
 
-    server.get("/collections", (req, res, next) => {
-      if (!req.isAuthenticated()) return res.redirect("/login");
-      next();
-    });
+    server.get("/collections", redirectIfUnauthed);
+    server.get("/games", redirectIfUnauthed);
 
     server.get("*", (req, res) => {
       return handle(req, res);

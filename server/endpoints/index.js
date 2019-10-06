@@ -1,6 +1,8 @@
 const express = require("express");
 
-const { SaveGame, SaveGameResponseHandler } = require("../resolvers/games/saveGame");
+const { SaveGame } = require("../resolvers/games/saveGame");
+const GetGame = require("../resolvers/games/getGame");
+const RemoveGame = require("../resolvers/games/removeGame");
 const GetCollection = require("../resolvers/collections/getCollection");
 const CreateCollection = require("../resolvers/collections/createCollection");
 const UpdateCollection = require("../resolvers/collections/updateCollection");
@@ -14,7 +16,9 @@ const api = express.Router();
 api.get(`${apiBase}/health`, Health);
 
 /** Games */
-api.post(`${apiBase}/game`, SaveGame, SaveGameResponseHandler);
+api.get(`${apiBase}/game`, GetGame);
+api.post(`${apiBase}/game`, SaveGame);
+api.delete(`${apiBase}/game`, RemoveGame);
 
 /** Collections */
 api.get(`${apiBase}/collection`, GetCollection);
