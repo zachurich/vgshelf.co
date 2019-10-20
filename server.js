@@ -16,6 +16,7 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo")(session);
 
 const api = require("./server/endpoints/index");
 const proxy = require("./server/endpoints/proxy");
@@ -23,7 +24,10 @@ const auth = require("./server/endpoints/auth");
 const { ensureAuthenticated } = require("./server/endpoints/utils");
 
 mongoose.connect("mongodb://localhost:27017/test", { useNewUrlParser: true });
-mongoose.connection.on("error", err => {
+
+const { connection } = mongoose;
+
+connection.on("error", err => {
   console.log(`Error connecting to db: ${err}`);
 });
 
@@ -43,7 +47,8 @@ const init = async () => {
         maxAge: 86400 * 1000
       },
       resave: false,
-      saveUninitialized: true
+      saveUninitialized: true,
+      store: new MongoStore({ mongooseConnection: connection })
     };
     server.use(session(sessionConfig));
 
@@ -66,10 +71,17 @@ const init = async () => {
     server.use(passport.session());
     server.use(auth);
     server.use(bodyParser.text());
-    // server.use(bodyParser.json());
+    server.use(bodyParser.json());
     server.use(proxy);
 
     server.use(api);
+
+    server.get("/games/:title", redirectIfUnauthed, (req, res, next) => {
+      return app.render(req, res, "/games", {
+        id: req.params.id,
+        title: req.params.title
+      });
+    });
 
     server.get("/collections", redirectIfUnauthed);
     server.get("/games", redirectIfUnauthed);

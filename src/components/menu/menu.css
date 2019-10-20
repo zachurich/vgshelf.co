@@ -1,6 +1,7 @@
 .menu-list {
   top: 80px;
   right: 20px;
+  background: white;
 }
 
 .menu-button:focus {

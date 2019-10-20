@@ -3,6 +3,8 @@ import React from "react";
 import App, { Container } from "next/app";
 import { Nav } from "../components";
 
+import "../styles/index.css";
+
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};

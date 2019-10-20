@@ -1,18 +1,16 @@
 import _ from "lodash";
-
 import React from "react";
-import { Nav, Meta } from "../components/index";
+import {
+  createCollection,
+  deleteCollection,
+  fetchCollections
+} from "../api/collectionsApi";
+import { ROUTES } from "../common/constants";
+import { formatUserName } from "../common/utils";
 import Grid from "../components/grid/grid";
-
-import "../styles/index.css";
+import { Meta } from "../components/index";
 import Modal from "../components/modal/modal";
 import Title from "../components/title/title";
-import {
-  fetchCollections,
-  createCollection,
-  deleteCollection
-} from "../api/collectionsApi";
-import Router from "next/router";
 
 const Collections = ({ initialCollections = [], user }) => {
   const [collections, setCollections] = React.useState(initialCollections);
@@ -55,10 +53,11 @@ const Collections = ({ initialCollections = [], user }) => {
   return (
     <div>
       <Meta title={"Collections"} />
-      <Title header={"Collections"} />
+      <Title header={`${formatUserName(user)}'s Collections`} />
       <Grid
         data={collections}
         size="large"
+        destRoute={ROUTES.GAMES}
         handleDelete={handleDeleteCollection}
         handlePrompt={() => handleToggleModal(true)}
       />

@@ -2,11 +2,12 @@ import { createUrl } from "../common/utils";
 import { ENDPOINTS } from "../common/constants";
 import axios from "axios";
 
-export const fetchGames = async (req, userId) => {
+export const fetchGames = async (req, userId, collectionId = "") => {
   try {
     const { data: response } = await axios.get(createUrl(req, ENDPOINTS.GAME), {
       params: {
-        user: userId
+        user: userId,
+        ...(collectionId && { collection: collectionId })
       }
     });
     return response.data;

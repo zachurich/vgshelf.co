@@ -1,12 +1,10 @@
 import React from "react";
 import { Meta } from "../components/index";
 
-import "../styles/index.css";
-
 const Home = ({ user }) => {
   return (
     <div>
-      <Meta title={"Home"} />
+      <Meta title={"LOL"} />
     </div>
   );
 };

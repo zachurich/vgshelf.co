@@ -1,18 +1,27 @@
 const User = require("../../models/User");
 const Game = require("../../models/Game");
+const Collection = require("../../models/Collection");
 const { createDetailedGame } = require("./utils");
 const { handleResponse, createResponse } = require("../utils");
 
 const GetGame = async (req, res) => {
-  const { id, user = null } = req.query;
+  const { id, user = null, collection = null } = req.query;
   let response = {};
   try {
     if (!user) {
       const gameFilter = { _id: id };
       response = await retrieveSingleGame(gameFilter);
     } else {
-      const mongoUser = await User.findOne({ userId: user });
-      response = await retrieveAllGames(mongoUser);
+      let queryObject;
+      let type;
+      if (collection) {
+        type = "collection";
+        queryObject = await Collection.findOne({ _id: collection });
+      } else {
+        type = "user";
+        queryObject = await User.findOne({ userId: user });
+      }
+      response = await retrieveAllGames(queryObject, type);
     }
   } catch (error) {
     response = createResponse("There was an error retrieving the game(s)!", error, 500);
@@ -29,15 +38,15 @@ async function retrieveSingleGame(filter) {
   }
 }
 
-async function retrieveAllGames(user) {
-  const { games } = user;
+async function retrieveAllGames(queryObject, type) {
+  const { games } = queryObject;
   const gameDetails = [];
   try {
     for (i in games) {
-      game = await Game.findOne({ _id: games[i] });
+      let game = await Game.findOne({ _id: games[i] });
       gameDetails.push(createDetailedGame(game));
     }
-    return createResponse("Retrieved all games for user!", gameDetails);
+    return createResponse(`Retrieved all games from ${type}!`, gameDetails);
   } catch (e) {
     throw e;
   }

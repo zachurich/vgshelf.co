@@ -16,7 +16,7 @@ const Modal = ({
     <div>
       {open && (
         <section className="modal">
-          <div className="modal-container rounded-lg p-10 w-1/4">
+          <div className="modal-container rounded-lg p-10">
             {children}
             <div className="modal-footer py-2">
               <div className="button">

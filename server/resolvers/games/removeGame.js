@@ -10,8 +10,8 @@ const RemoveGame = async (req, res, next) => {
     user.games = user.games.filter(game => {
       return game.toString() !== id.toString();
     });
-    await user.save();
-    const data = await game.save();
+    const data = await user.save();
+    // const data = await game.save();
     response = createResponse("Game removed from user!", data);
   } catch (e) {
     response = createResponse("There was an error remove the game!", e, 500);

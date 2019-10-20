@@ -4,27 +4,28 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+    // {
+    //   "type": "chrome",
+    //   "request": "launch",
+    //   "name": "Next: Chrome",
+    //   "url": "http://localhost:3000",
+    //   "webRoot": "${workspaceFolder}"
+    // },
     {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Next: Chrome",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
-    },
-    {
+      "name": "Run: Debug Next",
       "type": "node",
       "request": "launch",
-      "name": "Next: Node",
-      "runtimeExecutable": "node",
-      "runtimeArgs": ["--inspect"],
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "debug"],
       "port": 9229,
       "console": "integratedTerminal"
     }
-  ],
-  "compounds": [
-    {
-      "name": "Next: Full",
-      "configurations": ["Next: Node", "Next: Chrome"]
-    }
   ]
+  // "compounds": [
+  //   {
+  //     "name": "Next: Full",
+  //     "configurations": ["Next: Node", "Next: Chrome"]
+  //   }
+  // ]
 }
