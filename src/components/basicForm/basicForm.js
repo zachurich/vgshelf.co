@@ -1,9 +1,8 @@
 import React from "react";
 
-export const Search = ({ inputName, handleSubmit }) => {
-  const [value, setValue] = React.useState("");
+export const BasicForm = ({ inputName, value, handleChange, handleSubmit }) => {
   return (
-    <form className="mb-6 w-full" onSubmit={() => handleSubmit(value)}>
+    <form className="mb-6 w-full" onChange={handleChange} onSubmit={handleSubmit}>
       <label className="block mb-2" htmlFor={`${inputName.toLowerCase()}-title`}>
         {inputName}
       </label>
@@ -12,7 +11,7 @@ export const Search = ({ inputName, handleSubmit }) => {
         name={`${inputName.toLowerCase()}-title`}
         type="text"
         value={value}
-        onChange={e => setValue(e.target.value)}
+        onChange={handleChange}
       />
     </form>
   );

@@ -11,17 +11,16 @@ import Grid from "../components/grid/grid";
 import { Meta } from "../components/index";
 import Modal from "../components/modal/modal";
 import Title from "../components/title/title";
+import { BasicForm } from "../components/basicForm/basicForm";
 
 const Collections = ({ initialCollections = [], user }) => {
   const [collections, setCollections] = React.useState(initialCollections);
   const [showModal, setShowModal] = React.useState(false);
-  const [title, setTitle] = React.useState("");
   const handleToggleModal = toggle => {
     setShowModal(() => toggle);
-    setTitle(() => "");
   };
 
-  const handleCreateCollection = async () => {
+  const handleCreateCollection = async title => {
     if (title.length > 0) {
       handleToggleModal(false);
       await createCollection(null, {
@@ -30,7 +29,6 @@ const Collections = ({ initialCollections = [], user }) => {
         games: []
       });
       await updateCollectionsState();
-      setTitle(() => "");
     }
   };
 
@@ -52,12 +50,13 @@ const Collections = ({ initialCollections = [], user }) => {
 
   return (
     <div>
-      <Meta title={"Collections"} />
-      <Title header={`${formatUserName(user)}'s Collections`} />
+      <Meta title={"Shelves"} />
+      <Title header={"Shelves"} />
       <Grid
         data={collections}
-        size="large"
+        size="row"
         destRoute={ROUTES.GAMES}
+        prettyRoute={ROUTES.COLLECTIONS}
         handleDelete={handleDeleteCollection}
         handlePrompt={() => handleToggleModal(true)}
       />
@@ -68,18 +67,7 @@ const Collections = ({ initialCollections = [], user }) => {
         dismissModal={() => handleToggleModal(false)}
         handleSubmit={handleCreateCollection}
       >
-        <form className="mb-6 w-full" onSubmit={handleCreateCollection}>
-          <label className="block mb-2" htmlFor="collection-title">
-            Title
-          </label>
-          <input
-            className="shadow rounded w-full appearance-none border py-2 px-3 leading-tight text-base"
-            name="collection-title"
-            type="text"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-          />
-        </form>
+        <BasicForm inputName="Title" />
       </Modal>
     </div>
   );

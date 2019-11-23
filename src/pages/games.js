@@ -7,39 +7,43 @@ import Modal from "../components/modal/modal";
 import Title from "../components/title/title";
 import { fetchGames, createGame, deleteGame } from "../api/gamesApi";
 import { useRouter } from "next/router";
-import { Search } from "../components/search/search";
-import { ROUTES } from "../common/constants";
 import { formatUserName } from "../common/utils";
+import { SearchForm } from "../components/searchForm/searchForm";
+import { fetchCover } from "../api/search";
+import GameTogglePanel from "../components/gameTogglePanel/gameTogglePanel";
+import { updateCollection } from "../api/collectionsApi";
 
 const Games = ({ initialGames = [], user }) => {
   const [games, setGames] = React.useState(initialGames);
   const [showModal, setShowModal] = React.useState(false);
-  const [title, setTitle] = React.useState("");
+  const [showTogglePanel, setShowTogglePanel] = React.useState(false);
 
   const router = useRouter();
   const { id: collectionId, title: collectionTitle } = router.query;
 
-  const handleToggleModal = toggle => {
-    setShowModal(() => toggle);
-    setTitle(() => "");
-  };
-
-  const handleCreateGame = async value => {
-    if (value.length > 0) {
-      handleToggleModal(false);
-      await createGame(null, {
-        id: user.id,
-        title: value,
-        ...(collectionId && { collection: collectionId })
-      });
-      await updateGamesState();
-      // setTitle(() => "");
+  const handleToggleTogglePanel = toggle => {
+    if (collectionId) {
+      setShowTogglePanel(() => toggle);
     }
   };
 
   const handleDeleteGame = async id => {
     await deleteGame(null, { id, user: user.id });
     await updateGamesState();
+  };
+
+  const handleToggleGame = async game => {
+    let currentGames = games.map(game => game.id);
+    if (currentGames.includes(game)) {
+      currentGames = currentGames.filter(currentGame => currentGame !== game);
+    } else {
+      currentGames = currentGames.concat(game);
+    }
+    const response = await updateCollection(null, {
+      id: collectionId,
+      games: currentGames
+    });
+    updateGamesState();
   };
 
   const updateGamesState = async () => {
@@ -54,24 +58,26 @@ const Games = ({ initialGames = [], user }) => {
   }, [user]);
 
   return (
-    <div>
+    <div className="flex">
       <Meta title={"Games"} />
-      <Title header={collectionTitle || `${formatUserName(user)}'s Games`} />
-      <Grid
-        data={games}
-        size="small"
-        handleDelete={handleDeleteGame}
-        handlePrompt={() => handleToggleModal(true)}
-      />
-      <Modal
-        open={showModal}
-        closeText="Close"
-        submitText="Submit"
-        dismissModal={() => handleToggleModal(false)}
-        handleSubmit={handleCreateGame}
-      >
-        <Search inputName="Search" handleSubmit={handleCreateGame} />
-      </Modal>
+      {collectionId && showTogglePanel && (
+        <GameTogglePanel
+          user={user}
+          currentCollectionGames={games}
+          handleClosePanel={() => handleToggleTogglePanel(false)}
+          handleToggleGame={handleToggleGame}
+        />
+      )}
+      <main className={`shelf-games ${showTogglePanel ? "w-3/4" : "w-full"}`}>
+        {/* This component should contain all games IN THE CURRENT COLLECTION */}
+        <Title header={collectionTitle || `${formatUserName(user)}'s Games`} />
+        <Grid
+          data={games}
+          size="med"
+          handleDelete={handleDeleteGame}
+          handlePrompt={() => handleToggleTogglePanel(true)}
+        />
+      </main>
     </div>
   );
 };
@@ -80,9 +86,9 @@ const Games = ({ initialGames = [], user }) => {
  * THIS RUNS ONCE ON THE SERVER, ON REFRESH
  * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
  */
-Games.getInitialProps = async ({ req, res }) => {
-  if (req) {
-    const collectionId = req.query.id;
+Games.getInitialProps = async ({ req, res, query }) => {
+  if (req && req.user) {
+    const collectionId = query.id;
     const userId = req.user.id;
     try {
       const games = await fetchGames(req, userId, collectionId);
@@ -91,6 +97,7 @@ Games.getInitialProps = async ({ req, res }) => {
       console.log(e);
     }
   }
+  return {};
 };
 
 export default Games;

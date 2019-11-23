@@ -1,24 +1,13 @@
 const express = require("express");
-const fetch = require("node-fetch");
 const api = express.Router();
+
+const Search = require("../resolvers/igdbApi/search");
+const Cover = require("../resolvers/igdbApi/cover");
+const { apiBase } = require("./constants");
 
 // igdb stuff
 
-api.post("/api/external/search/", async (req, res, next) => {
-  let response;
-  try {
-    response = await fetch("https://api-v3.igdb.com/games", {
-      method: "POST",
-      headers: {
-        "user-key": process.env.IGDB_KEY
-      },
-      body: req.body
-    });
-  } catch (e) {
-    response = e;
-  }
-  const data = await response.json();
-  res.send(data);
-});
+api.post(`${apiBase}/external/search/`, Search);
+api.post(`${apiBase}/external/cover/`, Cover);
 
 module.exports = api;

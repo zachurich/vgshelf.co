@@ -10,20 +10,59 @@ const Modal = ({
   submitText = "Submit",
   dismissModal = e => e.preventDefault(),
   handleSubmit,
+  message,
   children
 }) => {
+  const [selection, setSelection] = React.useState(null);
+  const [displayValue, setDisplayValue] = React.useState("");
+  const handleChange = (e, { newValue } = {}) => {
+    // autosuggest provides arg2 {newValue} on the onChange event
+    let value = newValue || e.target.value;
+    console.log(value);
+    setDisplayValue(() => value);
+  };
+  const handleSelectValue = (e, { suggestion }) => {
+    setSelection(() => suggestion);
+  };
+
+  const handleClearValues = () => {
+    setSelection(() => "");
+    setDisplayValue(() => "");
+  };
+
+  const handleDismiss = () => {
+    handleClearValues();
+    dismissModal();
+  };
+
+  const handleSubmitAndClear = e => {
+    e.preventDefault();
+    if (selection) {
+      handleSubmit(selection);
+    } else {
+      handleSubmit(displayValue);
+    }
+    handleClearValues();
+  };
+  const hydratedChildren = React.cloneElement(children, {
+    displayValue,
+    handleChange,
+    handleSelectValue,
+    handleSubmit: handleSubmitAndClear
+  });
   return (
     <div>
       {open && (
         <section className="modal">
+          <p>{message}</p>
           <div className="modal-container rounded-lg p-10">
-            {children}
+            {hydratedChildren}
             <div className="modal-footer py-2">
               <div className="button">
-                <a onClick={() => dismissModal(false)}>{closeText}</a>
+                <a onClick={handleDismiss}>{closeText}</a>
               </div>
               <div className="modal-submit button submit">
-                <a onClick={handleSubmit}>{submitText}</a>
+                <a onClick={handleSubmitAndClear}>{submitText}</a>
               </div>
             </div>
           </div>

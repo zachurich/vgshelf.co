@@ -70,13 +70,12 @@ const init = async () => {
     server.use(passport.initialize());
     server.use(passport.session());
     server.use(auth);
-    server.use(bodyParser.text());
     server.use(bodyParser.json());
     server.use(proxy);
 
     server.use(api);
 
-    server.get("/games/:title", redirectIfUnauthed, (req, res, next) => {
+    server.get("/collections/:title/:id", redirectIfUnauthed, (req, res, next) => {
       return app.render(req, res, "/games", {
         id: req.params.id,
         title: req.params.title

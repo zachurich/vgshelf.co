@@ -34,3 +34,12 @@ export const deleteCollection = async (req, data) => {
     throw error;
   }
 };
+
+export const updateCollection = async (req, data) => {
+  try {
+    const result = await axios.put(createUrl(req, ENDPOINTS.COLLECTION), data);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};

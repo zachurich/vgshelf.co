@@ -1,6 +1,16 @@
-import { createUrl } from "../common/utils";
+import get from "lodash/get";
+import { createUrl, escapeNull } from "../common/utils";
 import { ENDPOINTS } from "../common/constants";
 import axios from "axios";
+
+export const fetchSimple = async url => {
+  try {
+    const { data: response } = await axios.get(createUrl(null, url));
+    return escapeNull(get(response, "data"), []);
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const fetchGames = async (req, userId, collectionId = "") => {
   try {
@@ -10,7 +20,7 @@ export const fetchGames = async (req, userId, collectionId = "") => {
         ...(collectionId && { collection: collectionId })
       }
     });
-    return response.data;
+    return escapeNull(get(response, "data"), []);
   } catch (error) {
     throw error;
   }

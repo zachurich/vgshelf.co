@@ -1,3 +1,6 @@
+import isNull from "lodash/isNull";
+import { isRegExp } from "util";
+
 export const lastItem = (arr, index, cols = 3) => {
   if ((index + 1) % cols === 0) {
     return true;
@@ -17,4 +20,27 @@ export const formatUserName = user => {
     return user.displayName.split("@")[0];
   }
   return "Hello!";
+};
+
+export const debounce = (timer, callback, ...args) => {
+  if (timer) clearTimeout(timer);
+  return setTimeout(() => {
+    callback(...args);
+  }, 500);
+};
+
+export const appendParam = (url, { key, value }) => {
+  if (!url.includes("?")) {
+    url += "?";
+  } else {
+    url += "&";
+  }
+  return (url += `${key}=${value}`);
+};
+
+export const escapeNull = (value, fallback) => {
+  if (!isNull(value)) {
+    return value;
+  }
+  return fallback;
 };

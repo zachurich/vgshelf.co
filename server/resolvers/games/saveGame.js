@@ -5,12 +5,20 @@ const { createResponse, handleResponse } = require("../utils");
 const { objectHasGame, addGameToObj } = require("./utils");
 
 const SaveGame = async (req, res, next) => {
-  const { id, title, collection } = req.body;
+  const {
+    id,
+    title,
+    igdbId,
+    slug,
+    imageUrl = "",
+    thumbnailUrl = "",
+    collection
+  } = req.body;
   let response;
   try {
     const user = await User.findOne({ userId: id });
     const existingGameInDB = await Game.findOne({ title });
-    const game = new Game({ title });
+    const game = new Game({ title, igdbId, slug, imageUrl, thumbnailUrl });
     try {
       const gameToAdd = await optionallyAddGameToDb(existingGameInDB, game);
       if (collection) {
@@ -48,7 +56,7 @@ const addGameToCollection = async (collection, game) => {
 
 const addGameToUser = async (user, game) => {
   if (objectHasGame(user, game)) {
-    return createResponse("User already assigned game!", {}, 500);
+    return createResponse("User already assigned game!", {});
   } else {
     user.games = addGameToObj(user, game);
     const data = await user.save();

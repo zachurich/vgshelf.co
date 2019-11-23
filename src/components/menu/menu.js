@@ -14,9 +14,9 @@ const Menu = ({ showMenu, toggleMenu, user }) => {
         />
       </button>
       {showMenu && (
-        <div className="menu-list absolute p-6 shadow-md">
+        <div className="menu-list absolute p-6 shadow rounded z-10">
           <ul className="flex flex-no-wrap flex-col items-center">
-            <li className="mb-2 block">
+            <li className="block">
               {loggedIn ? (
                 <Link href="/logout">
                   <a>Logout</a>
