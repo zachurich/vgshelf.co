@@ -1,0 +1,16 @@
+@mixin flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin w-h($h, $w: $h) {
+  height: $h;
+  width: $w;
+}
+
+@mixin position($t: auto, $r: auto, $b: auto, $l: auto) {
+  top: $t;
+  bottom: $b;
+  left: $l;
+  right: $r;
+}

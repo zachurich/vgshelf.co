@@ -45,7 +45,7 @@ function CollectionsPanel({ user, initialCollections }) {
   };
 
   return (
-    <section className="w-1/4 relative border-l h-screen">
+    <section className="collections-panel">
       <Title header="Shelves" />
       <Grid
         data={collections || initialCollections}

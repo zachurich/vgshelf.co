@@ -52,7 +52,7 @@ function GamesPanel({ initialGames = [], user, collectionId = null }) {
   };
 
   return (
-    <div>
+    <div className="games-panel">
       <Title header={"All My Games"} />
       <Grid
         data={games || initialGames}

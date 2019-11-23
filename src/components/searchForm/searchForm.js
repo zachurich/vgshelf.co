@@ -3,7 +3,7 @@ import { fetchResults } from "../../api/search";
 import { debounce } from "../../common/utils";
 import Autosuggest from "react-autosuggest";
 
-import "./searchForm.css";
+import "./searchForm.scss";
 
 const getSuggestions = results => {
   return results.map(result => ({ ...result }));
@@ -48,7 +48,7 @@ export const SearchForm = ({
 
   return (
     <form
-      className="mb-6 w-full relative"
+      className="search-form"
       onChange={e => {
         let valueOnInput = e.target.value;
         let timeout = debounce(timer, getResults, valueOnInput);
@@ -56,7 +56,7 @@ export const SearchForm = ({
       }}
       onSubmit={e => e.preventDefault()}
     >
-      <label className="block mb-2" htmlFor={`${inputName.toLowerCase()}-title`}>
+      <label className="search-label" htmlFor={`${inputName.toLowerCase()}-title`}>
         {inputName}
       </label>
       <Autosuggest
@@ -69,8 +69,7 @@ export const SearchForm = ({
         // alwaysRenderSuggestions={true}
         renderSuggestionsContainer={renderSuggestionsContainer}
         inputProps={{
-          className:
-            "shadow rounded w-full appearance-none border py-2 px-3 leading-tight text-base",
+          className: "search-suggest",
           name: `${inputName.toLowerCase()}-title`,
           type: "text",
           value: displayValue,

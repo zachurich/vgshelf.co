@@ -1,0 +1,24 @@
+@import "../../styles/util.scss";
+
+.nav {
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 50px;
+  border-bottom: 1px solid var(--subtle-border);
+}
+
+.nav-logo {
+  display: flex;
+  @include flex-center;
+  font-size: 22px;
+  font-weight: 800;
+  a {
+    color: var(--text-dark);
+  }
+}
+
+.nav-links {
+  @include flex-center;
+  display: flex;
+}

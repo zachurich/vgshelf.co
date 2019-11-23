@@ -49,7 +49,7 @@ const Collections = ({ initialCollections = [], user }) => {
   }, [user]);
 
   return (
-    <div>
+    <div className="collections">
       <Meta title={"Shelves"} />
       <Title header={"Shelves"} />
       <Grid

@@ -2,7 +2,7 @@ import React from "react";
 import { CSSTransition } from "react-transition-group";
 import Router from "next/router";
 
-import "./modal.css";
+import "./modal.scss";
 
 const Modal = ({
   open = false,
@@ -55,9 +55,9 @@ const Modal = ({
       {open && (
         <section className="modal">
           <p>{message}</p>
-          <div className="modal-container rounded-lg p-10">
+          <div className="modal-container">
             {hydratedChildren}
-            <div className="modal-footer py-2">
+            <div className="modal-footer">
               <div className="button">
                 <a onClick={handleDismiss}>{closeText}</a>
               </div>

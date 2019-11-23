@@ -25,12 +25,12 @@ function GameTogglePanel({
   }, [0]);
   return (
     <section
-      className="toggle-games w-1/4 relative bg-gray-500"
+      className="toggle-games"
       style={{
         minHeight: "calc(100vh - 94px)"
       }}
     >
-      <button className="m-auto block mt-5 button submit" onClick={handleClosePanel}>
+      <button className="button submit" onClick={handleClosePanel}>
         <a>Close</a>
       </button>
       {/* This component should contain all games - Search/Toggle in collection*/}

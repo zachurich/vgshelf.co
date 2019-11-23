@@ -1,0 +1,31 @@
+@import "../../styles/util.scss";
+
+.menu {
+  display: flex;
+}
+
+.menu-list {
+  position: absolute;
+  top: 56px;
+  right: 20px;
+  @include position(56px, 20px);
+  background: white;
+  padding: 20px;
+}
+
+.menu-button {
+  @include w-h(36px);
+  padding: 0;
+  border: none;
+  &:hover,
+  &:focus {
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+  }
+}
+
+.menu-button img {
+  @include w-h(100%);
+  border-radius: 5px;
+}

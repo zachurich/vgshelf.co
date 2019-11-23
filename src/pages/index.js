@@ -13,14 +13,16 @@ import GamesPanel from "../components/gamesPanel/gamesPanel";
 
 const Home = ({ initialGames = [], initialCollections = [], user }) => {
   return (
-    <div className="flex">
+    <div className="home container">
       <Meta title={"Home"} />
       {user ? (
         <>
-          <main className="w-3/4">
+          <main className="main">
             <GamesPanel user={user} initialGames={initialGames} />
           </main>
-          <CollectionsPanel user={user} initialCollections={initialCollections} />
+          <section className="panel-right">
+            <CollectionsPanel user={user} initialCollections={initialCollections} />
+          </section>
         </>
       ) : (
         <div className="flex justify-center container">

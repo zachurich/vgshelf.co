@@ -58,7 +58,7 @@ const Games = ({ initialGames = [], user }) => {
   }, [user]);
 
   return (
-    <div className="flex">
+    <div className="games">
       <Meta title={"Games"} />
       {collectionId && showTogglePanel && (
         <GameTogglePanel
