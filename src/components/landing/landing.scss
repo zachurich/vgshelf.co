@@ -1,0 +1,195 @@
+@import "../../styles/util.scss";
+
+.landing {
+  width: 100%;
+  .landing-hero-section {
+    @include flex-center;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 56px);
+  }
+  .landing-title h1 {
+    text-align: center;
+    position: relative;
+    font-size: 48px;
+    color: var(--main-blue);
+    font-weight: var(--weight-black);
+    text-transform: uppercase;
+    margin-bottom: var(--default-spacing);
+    &:after {
+      @include position(auto, 0, -10px, 0);
+      content: " ";
+      position: absolute;
+      width: 100%;
+      height: 9px;
+      background: #deded8;
+      border-radius: 23px;
+    }
+  }
+
+  .landing-subtitle h3 {
+    font-weight: var(--weight-bold);
+    font-size: 24px;
+    margin-top: 0;
+  }
+}
+
+/** 
+* Short Features
+**/
+
+.landing-features-short-section {
+  padding: 40px 0 80px 0;
+  background-color: var(--main-green);
+  display: flex;
+  @include flex-center;
+  flex-direction: column;
+  .container {
+    max-width: $desktop;
+  }
+}
+
+.features-short-heading {
+  background: #2a7d4d;
+  border-color: #70c045;
+}
+
+.features-short-features {
+  width: 100%;
+  display: flex;
+  @include flex-center;
+  flex-wrap: wrap;
+  .short-feature {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: var(--default-spacing);
+    flex-basis: calc(100% / 3 - 50px);
+    margin: 0 25px;
+    max-width: 3var (--default-spacing);
+    height: 384px;
+    background: #f5f5f2;
+    border: 10px solid #ffffff;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.16);
+    border-radius: 10px;
+    @include responsive-max($tablet) {
+      flex-basis: calc(100% / 3 - 25px);
+      margin: 0 12.5px;
+    }
+
+    @include responsive-max($mobile) {
+      flex-basis: 100%;
+      margin: 12.5px 0;
+    }
+  }
+
+  .feature-art {
+    display: flex;
+    width: 100%;
+    height: 200px;
+    margin-bottom: var(--default-spacing);
+  }
+
+  .feature-description {
+    align-self: flex-end;
+    text-align: center;
+  }
+}
+
+/** 
+* Indepth Features
+**/
+
+.landing-features-indepth {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  display: flex;
+  @include flex-center;
+  flex-direction: column;
+}
+
+.features-indepth-heading {
+  background-color: var(--main-yellow);
+  border: 7px dashed var(--text-dark);
+  border-radius: 5px;
+  box-sizing: padding-box;
+  h3 {
+    margin: 10px var(--default-spacing);
+  }
+}
+
+.features-indepth-features {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  .indepth-feature {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 50px 0;
+    .feature-image {
+      flex-basis: calc(100% / 2 - 110px);
+      margin-right: 110px;
+      text-align: center;
+      background-color: white;
+      min-height: 233px;
+      border: 9px dashed #292929;
+      border-radius: 5px;
+      img {
+        display: inline-block;
+      }
+    }
+    .feature-content {
+      flex-basis: calc(100% / 2);
+      text-align: right;
+    }
+
+    &:nth-of-type(2) {
+      flex-direction: row-reverse;
+      .feature-image {
+        margin-left: 110px;
+        margin-right: 0;
+      }
+      .feature-content {
+        text-align: left;
+      }
+    }
+  }
+}
+
+/** 
+* Popular Games
+**/
+
+.landing-popular-games {
+  display: flex;
+  @include flex-center;
+  padding: 40px 0 80px 0;
+  background-color: var(--main-pink);
+}
+
+.popular-games-heading {
+  background-color: var(--main-pink-dark);
+  border-color: var(--main-pink);
+}
+
+/**
+* Call to Action
+*/
+
+.landing-call-to-action {
+  padding: 100px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  @include flex-center;
+}
+
+.call-to-action-title {
+  font-size: 32px;
+  font-weight: var(--weight-black);
+  h2 {
+    margin-top: 0;
+  }
+}

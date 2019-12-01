@@ -9,8 +9,9 @@ import { ENDPOINTS } from "../../common/constants";
 import { fetchGames, createGame, fetchSimple } from "../../api/gamesApi";
 import { fetchCover } from "../../api/search";
 import { appendParam } from "../../common/utils";
+import { useRouter } from "next/router";
 
-function GamesPanel({ initialGames = [], user, collectionId = null }) {
+function GamesPanel({ initialGames = [], user, collectionId = null, userName = null }) {
   const [showModal, setShowModal] = React.useState(false);
 
   let fetchUrl = ENDPOINTS.GAME;
@@ -21,7 +22,11 @@ function GamesPanel({ initialGames = [], user, collectionId = null }) {
   if (collectionId) {
     fetchUrl = appendParam(fetchUrl, { key: "collection", value: collectionId });
   }
+  if (userName) {
+    fetchUrl = appendParam(fetchUrl, { key: "userName", value: userName });
+  }
 
+  console.log("HELLO", fetchUrl);
   const { data: games, error } = useSWR(fetchUrl, fetchSimple);
 
   const handleToggleModal = toggle => {
@@ -53,10 +58,10 @@ function GamesPanel({ initialGames = [], user, collectionId = null }) {
 
   return (
     <div className="games-panel">
-      <Title header={"All My Games"} />
+      <Title header={user ? "All My Games" : `${userName} Games`} borderColor="pink" />
       <Grid
         data={games || initialGames}
-        size="med"
+        size="large"
         handleDelete={handleDeleteGame}
         handlePrompt={() => handleToggleModal(true)}
       />

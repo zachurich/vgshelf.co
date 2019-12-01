@@ -1,0 +1,7 @@
+@import "../../styles/util.scss";
+
+.collections-panel {
+  height: 100%;
+  @include subtle-border(1px, left);
+  padding: 0 40px;
+}

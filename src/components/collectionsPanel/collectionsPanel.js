@@ -12,8 +12,10 @@ import Title from "../title/title";
 import useSWR, { trigger } from "@zeit/swr";
 import { fetchSimple } from "../../api/gamesApi";
 import { appendParam } from "../../common/utils";
+import List from "../list/list";
+import "./collectionsPanel.scss";
 
-function CollectionsPanel({ user, initialCollections }) {
+function CollectionsPanel({ user, initialCollections, userName }) {
   const [showModal, setShowModal] = React.useState(false);
   let fetchUrl = ENDPOINTS.COLLECTION;
 
@@ -46,10 +48,9 @@ function CollectionsPanel({ user, initialCollections }) {
 
   return (
     <section className="collections-panel">
-      <Title header="Shelves" />
-      <Grid
+      <Title header={user ? "Shelves" : `${userName} Shelves`} />
+      <List
         data={collections || initialCollections}
-        size="row"
         destRoute={ROUTES.GAMES}
         prettyRoute={ROUTES.COLLECTIONS}
         handleDelete={handleDeleteCollection}

@@ -5,6 +5,7 @@ import { Nav } from "../components";
 
 import "normalize.css";
 import "../styles/index.scss";
+import Footer from "../components/footer/footer";
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -37,6 +38,7 @@ class MyApp extends App {
       <Container>
         <Nav user={this.state.user} />
         <Component {...props} />
+        <Footer />
       </Container>
     );
   }

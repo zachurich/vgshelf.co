@@ -5,7 +5,7 @@
   display: flex;
   justify-content: space-between;
   padding: 0 50px;
-  border-bottom: 1px solid var(--subtle-border);
+  @include subtle-border;
 }
 
 .nav-logo {

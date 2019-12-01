@@ -7,10 +7,10 @@
 .menu-list {
   position: absolute;
   top: 56px;
-  right: 20px;
-  @include position(56px, 20px);
+  right: var(--default-spacing);
+  @include position(56px, var(--default-spacing));
   background: white;
-  padding: 20px;
+  padding: var(--default-spacing);
 }
 
 .menu-button {

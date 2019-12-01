@@ -10,27 +10,13 @@ import { SearchForm } from "../components/searchForm/searchForm";
 import Modal from "../components/modal/modal";
 import { fetchCover } from "../api/search";
 import GamesPanel from "../components/gamesPanel/gamesPanel";
+import Landing from "../components/landing/landing";
 
 const Home = ({ initialGames = [], initialCollections = [], user }) => {
   return (
-    <div className="home container">
+    <div className="home">
       <Meta title={"Home"} />
-      {user ? (
-        <>
-          <main className="main">
-            <GamesPanel user={user} initialGames={initialGames} />
-          </main>
-          <section className="panel-right">
-            <CollectionsPanel user={user} initialCollections={initialCollections} />
-          </section>
-        </>
-      ) : (
-        <div className="flex justify-center container">
-          <div className="h-64 flex items-center">
-            <h1 className="mx-auto text-center">Welcome to Video Game Shelf</h1>
-          </div>
-        </div>
-      )}
+      <Landing user={user} />
     </div>
   );
 };

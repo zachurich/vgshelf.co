@@ -2,10 +2,10 @@ import React from "react";
 
 import "./title.scss";
 
-const Title = ({ header }) => {
+const Title = ({ header, borderColor }) => {
   return (
     <div className="title">
-      <h1 className="title-text">{header.toLowerCase()}</h1>
+      <h3 className={`title-text ${borderColor}`}>{header.toLowerCase()}</h3>
     </div>
   );
 };

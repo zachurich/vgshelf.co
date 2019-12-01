@@ -1,16 +1,29 @@
+@import "./util.scss";
+
 :root {
   --main-background: #f5f5f2;
   --text-dark: #282822;
   --subtle-border: #e2e2e2;
   --main-font: "Nunito", sans-serif;
   --main-blue: #017bfd;
-  --solid-drop-shadow: 0px 4px 0px rgba(0, 0, 0, 0.25);
+  --main-green: #70c045;
+  --main-yellow: #ffdf00;
+  --main-pink: #ef125a;
+  --main-pink-dark: #c61d54;
+  --main-blue-hover: #016bdc;
+  --white-hover: #e1e1e1;
+  --solid-drop-shadow: rgba(0, 0, 0, 0.25);
+  --gray-drop-shadow-hover: #c7c7c7;
+  --blue-drop-shadow-hover: #005cbe;
+  --weight-black: 800;
+  --weight-bold: 600;
+  --default-spacing: 20px;
 }
 
 a {
   color: var(--text-dark);
   text-decoration: none;
-  transition: 0.1s ease-in-out;
+  @include transition(0.1s);
   &:hover {
     color: var(--main-blue);
   }
@@ -25,6 +38,11 @@ li {
 h1 {
 }
 
+p {
+  font-size: 18px;
+  font-weight: var(--weight-bold);
+}
+
 body {
   box-sizing: border-box;
   background: var(--main-background);
@@ -36,12 +54,14 @@ img {
   box-sizing: border-box;
 }
 
-.home {
+.dashboard {
   display: flex;
 }
 
 .container {
+  margin: 0 auto;
   padding: 0 50px;
+  max-width: $tablet;
 }
 
 .main {
@@ -51,4 +71,79 @@ img {
 
 .panel-right {
   flex-basis: 30%;
+}
+
+.action-group {
+  display: flex;
+  flex-wrap: wrap;
+  *:first-child {
+    margin-right: 18px;
+  }
+  *:last-child {
+    margin-left: 18px;
+  }
+}
+
+.offset-heading {
+  text-align: center;
+  border-width: 7px;
+  border-style: solid;
+  box-sizing: border-box;
+  border-radius: 5px;
+  position: relative;
+  bottom: 70px;
+  color: white;
+  h3 {
+    margin: 10px var(--default-spacing);
+  }
+}
+
+.button {
+  @include flex-center;
+  display: flex;
+  text-align: center;
+  font-weight: var(--weight-bold);
+  width: 154px;
+  height: 46px;
+  border-radius: 5px;
+  @include transition;
+  &:hover {
+    transform: translateY(-2px);
+    cursor: pointer;
+  }
+  &-secondary {
+    @include box-shadow(var(--solid-drop-shadow), 4px);
+    background-color: white;
+    &:hover {
+      background-color: var(--white-hover);
+      @include box-shadow(var(--gray-drop-shadow-hover), 6px);
+      color: initial;
+    }
+  }
+  &-primary {
+    color: white;
+    @include box-shadow(var(--main-blue-hover), 4px);
+    background-color: var(--main-blue);
+    &:hover {
+      background-color: var(--main-blue-hover);
+      @include box-shadow(var(--blue-drop-shadow-hover), 6px);
+      color: white;
+    }
+  }
+}
+
+.item-add {
+  border-radius: 10px;
+  border: 4px dashed var(--solid-drop-shadow);
+  color: var(--solid-drop-shadow);
+  display: flex;
+  @include flex-center;
+  font-size: 40px;
+  font-weight: var(--weight-black);
+  @include transition(0.05s);
+  &:hover {
+    cursor: pointer;
+    border: 4px dashed var(--main-blue);
+    color: var(--main-blue);
+  }
 }

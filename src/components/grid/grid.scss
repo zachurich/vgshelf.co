@@ -1,8 +1,9 @@
+@import "../../styles/util.scss";
 .grid {
   display: grid;
-  grid-auto-rows: 1fr;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-auto-rows: 0fr;
+  grid-column-gap: var(--default-spacing);
+  grid-row-gap: var(--default-spacing);
 }
 
 .grid-large {
@@ -17,58 +18,41 @@
   grid-template-columns: repeat(auto-fill, minmax(6rem, 2fr));
 }
 
-.grid-row {
-  grid-template-columns: 1fr;
-}
-
-.grid:not(.grid-row)::before {
-  content: "";
-  width: 0;
-  padding-bottom: 100%;
-  grid-row: 1 / 1;
-  grid-column: 1 / 1;
-}
-
-.grid > *:first-child {
-  grid-row: 1 / 1;
-  grid-column: 1 / 1;
-}
-
 .grid-item {
+  display: flex;
   cursor: pointer;
-  text-align: center;
+  justify-self: center;
+  width: 100%;
   .grid-item-content {
     display: flex;
-    flex-direction: column;
     width: 100%;
-  }
-  .grid-item-image {
-    height: 170px;
+    font-weight: var(--weight-bold);
+    @include box-shadow(var(--solid-drop-shadow), 4px);
+    border-radius: 5px;
+    background-color: white;
     border-radius: 10px;
-    border: 10px solid white;
-    max-width: 100%;
-    overflow: hidden;
-    margin-bottom: 15px;
-    background: white;
-    box-shadow: var(--solid-drop-shadow);
-  }
-  > a,
-  > span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.game-cover-wrap {
-  height: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  img {
-    border-radius: 10px;
-    max-height: 100%;
-    // max-width: 100%;
+    .grid-item-image-wrap {
+      flex-basis: 25%;
+      @include flex-center;
+      .grid-item-image {
+        width: 100px;
+        height: 130px;
+        overflow: hidden;
+        border-radius: 5px;
+        position: relative;
+        // border: 5px solid #ffffff;
+        @include position(-10px, auto, auto, 10px);
+        @include box-shadow(var(--solid-drop-shadow), 3px);
+        img {
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .grid-item-text {
+      flex-basis: calc(75% - 35px);
+      padding: 15px 15px 15px var(--default-spacing);
+    }
   }
 }

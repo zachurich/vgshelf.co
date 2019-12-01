@@ -39,3 +39,12 @@ exports.userExists = (userId, req, res, next) => {
     next();
   });
 };
+
+exports.handleErrors = async fn => {
+  try {
+    const response = await fn;
+    return response;
+  } catch (e) {
+    throw e;
+  }
+};

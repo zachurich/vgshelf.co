@@ -26,6 +26,19 @@ export const fetchGames = async (req, userId, collectionId = "") => {
   }
 };
 
+export const fetchGamesByUserName = async (req, userName) => {
+  try {
+    const { data: response } = await axios.get(createUrl(req, ENDPOINTS.GAME), {
+      params: {
+        userName
+      }
+    });
+    return escapeNull(get(response, "data"), []);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const createGame = async (req, data) => {
   try {
     const result = await axios.post(createUrl(req, ENDPOINTS.GAME), data);

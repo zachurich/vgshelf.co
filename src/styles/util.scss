@@ -1,3 +1,19 @@
+/** 
+* Breakpoints
+**/
+
+$desktop: 1280px;
+$tablet: 1024px;
+$mobile: 400px;
+
+/**
+* Mixins
+**/
+
+@mixin subtle-border($size: 1px, $position: bottom) {
+  border-#{$position}: $size solid var(--subtle-border);
+}
+
 @mixin flex-center {
   justify-content: center;
   align-items: center;
@@ -13,4 +29,18 @@
   bottom: $b;
   left: $l;
   right: $r;
+}
+
+@mixin box-shadow($color, $drop: 4px, $blur: 0px) {
+  box-shadow: 0px $drop $blur $color;
+}
+
+@mixin transition($timing: 0.15s) {
+  transition: $timing ease-in-out;
+}
+
+@mixin responsive-max($width) {
+  @media screen and (max-width: $width) {
+    @content;
+  }
 }

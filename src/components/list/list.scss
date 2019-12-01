@@ -1,0 +1,27 @@
+@import "../../styles/util.scss";
+.list {
+  .list-item {
+    padding: 15px;
+    background-color: white;
+    border-radius: 10px;
+    @include box-shadow(var(--solid-drop-shadow));
+    font-weight: var(--weight-black);
+    text-align: center;
+    margin-bottom: var(--default-spacing);
+  }
+}
+
+.list-item-add {
+  border-radius: 10px;
+  border: 4px dashed var(--solid-drop-shadow);
+  color: var(--solid-drop-shadow);
+  display: flex;
+  @include flex-center;
+  font-size: 40px;
+  font-weight: var(--weight-black);
+  @include transition(0.05s);
+  &:hover {
+    border: 4px dashed var(--main-blue);
+    color: var(--main-blue);
+  }
+}
