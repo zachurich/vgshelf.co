@@ -1,22 +1,22 @@
 import React from "react";
 import Link from "next/link";
 
-export function LoginButton({ user }) {
+export function LoginButton({ user, classes = "button-secondary" }) {
   return (
     <Link
       href={{ pathname: user ? "/dashboard?userName=[user]" : "/login" }}
       as={user ? `/dashboard?userName=${user.nickname}` : "/login"}
     >
-      <a className="button button-secondary">{user ? "Continue" : "Login"}</a>
+      <a className={`button ${classes}`}>{user ? "Continue" : "Log In"}</a>
     </Link>
   );
 }
 
-export function SignUpButton({ user, text }) {
+export function SignUpButton({ user, text, classes = "button-primary" }) {
   if (!user) {
     return (
       <Link href={{ pathname: "/signup" }}>
-        <a className="button button-primary">{text}</a>
+        <a className={`button ${classes}`}>{text}</a>
       </Link>
     );
   }

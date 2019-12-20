@@ -4,35 +4,34 @@ import Title from "../title/title";
 import Grid from "../grid/grid";
 import Modal from "../modal/modal";
 import { SearchForm } from "../searchForm/searchForm";
-import useSWR, { trigger } from "@zeit/swr";
-import { ENDPOINTS } from "../../common/constants";
+import { trigger } from "@zeit/swr";
+import { ENDPOINTS } from "../../../common/routes";
 import { fetchGames, createGame, fetchSimple } from "../../api/gamesApi";
 import { fetchCover } from "../../api/search";
 import { appendParam } from "../../common/utils";
-import { useRouter } from "next/router";
+import { useDataFetch } from "../../common/hooks";
 
-function GamesPanel({ initialGames = [], user, collectionId = null, userName = null }) {
+function GamesPanel({
+  initialGames = [],
+  user,
+  collectionId: collection = null,
+  userName = null,
+  handlePrompt = null,
+  title = null
+}) {
   const [showModal, setShowModal] = React.useState(false);
 
   let fetchUrl = ENDPOINTS.GAME;
-
-  if (user) {
-    fetchUrl = appendParam(fetchUrl, { key: "user", value: user.id });
-  }
-  if (collectionId) {
-    fetchUrl = appendParam(fetchUrl, { key: "collection", value: collectionId });
-  }
-  if (userName) {
-    fetchUrl = appendParam(fetchUrl, { key: "userName", value: userName });
-  }
-
-  console.log("HELLO", fetchUrl);
-  const { data: games, error } = useSWR(fetchUrl, fetchSimple);
+  const { data: games, error, finalUrl } = useDataFetch(
+    { user: user.id, collection, userName },
+    fetchUrl
+  );
 
   const handleToggleModal = toggle => {
     setShowModal(() => toggle);
   };
   const [modalMsg, setModalMsg] = React.useState(null);
+  const toggleAction = handlePrompt || handleToggleModal; // prefer handleToggle prop
 
   const handleCreateGame = async value => {
     if (value) {
@@ -46,31 +45,35 @@ function GamesPanel({ initialGames = [], user, collectionId = null, userName = n
       });
       const message = _.get(response, "data.msg");
       setModalMsg(() => message);
-      handleToggleModal(false);
-      trigger(fetchUrl);
+      toggleAction(false);
+      trigger(finalUrl);
     }
   };
 
   const handleDeleteGame = async id => {
     await deleteGame(null, { id, user: user.id });
-    trigger(fetchUrl);
+    trigger(finalUrl);
   };
 
   return (
     <div className="games-panel">
-      <Title header={user ? "All My Games" : `${userName} Games`} borderColor="pink" />
+      <Title
+        header={title ? title : user ? "All My Games" : `${userName} Games`}
+        borderColor="pink"
+      />
       <Grid
         data={games || initialGames}
         size="large"
         handleDelete={handleDeleteGame}
-        handlePrompt={() => handleToggleModal(true)}
+        handlePrompt={() => toggleAction(true)}
+        canAdd={!!user}
       />
       <Modal
         open={showModal}
         closeText="Close"
         submitText="Submit"
         message={modalMsg}
-        dismissModal={() => handleToggleModal(false)}
+        dismissModal={() => toggleAction(false)}
         handleSubmit={handleCreateGame}
       >
         <SearchForm inputName="Search" />

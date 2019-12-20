@@ -5,7 +5,7 @@ import {
   deleteCollection,
   fetchCollections
 } from "../api/collectionsApi";
-import { ROUTES } from "../common/constants";
+import { ROUTES } from "../../common/routes";
 import { formatUserName } from "../common/utils";
 import Grid from "../components/grid/grid";
 import { Meta } from "../components/index";

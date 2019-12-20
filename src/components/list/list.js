@@ -8,7 +8,8 @@ const List = ({
   destRoute,
   prettyRoute,
   handleToggle = () => {},
-  handleDelete
+  handleDelete,
+  canAdd = false
 }) => {
   return (
     <ul className="list list-row">
@@ -30,7 +31,7 @@ const List = ({
             </li>
           );
         })}
-      {handlePrompt && (
+      {canAdd && handlePrompt && (
         <div className="item-add" onClick={() => handlePrompt(true)}>
           <span className="list-add-item">+</span>
         </div>

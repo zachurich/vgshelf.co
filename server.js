@@ -82,9 +82,6 @@ const init = async () => {
       });
     });
 
-    server.get("/collections", redirectIfUnauthed);
-    server.get("/games", redirectIfUnauthed);
-
     server.get("*", (req, res) => {
       return handle(req, res);
     });

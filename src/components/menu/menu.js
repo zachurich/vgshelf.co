@@ -7,8 +7,8 @@ const Menu = ({ showMenu, toggleMenu, user }) => {
   const loggedIn = !!user;
   return (
     <div className="menu">
-      <button className="menu-button" onClick={() => toggleMenu()}>
-        <img className="" {...(loggedIn && { src: user.picture })} />
+      <button className="menu-button">
+        <img className="menu-toggle" {...(loggedIn && { src: user.picture })} />
       </button>
       {showMenu && (
         <ul className="menu-list">

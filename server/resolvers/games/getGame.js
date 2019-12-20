@@ -8,21 +8,22 @@ const GetGame = async (req, res) => {
   const { id, user = null, collection = null, userName = null } = req.query;
   let response = {};
   try {
-    // Get a single game by _id
     if (!user) {
       if (userName) {
-        let query = await handleErrors(retrieveAllGamesByUserName(userName));
+        // Get all games via unauthed username
+        let query = await handleErrors(buildQueryGamesByUsername(userName));
         response = await handleErrors(retrieveAllGames(query.queryObject, query.type));
       } else if (id) {
+        // Get a single game by _id
         const gameFilter = { _id: id };
         response = await handleErrors(retrieveSingleGame(gameFilter));
       }
     } else {
       let query;
       if (collection) {
-        query = await handleErrors(retrieveGamesInCollection(collection));
+        query = await handleErrors(buildQueryGamesInCollection(collection));
       } else {
-        query = await handleErrors(retrieveAllGamesInUser(user));
+        query = await handleErrors(buildQueryGamesInUser(user));
       }
       response = await handleErrors(retrieveAllGames(query.queryObject, query.type));
     }
@@ -32,19 +33,19 @@ const GetGame = async (req, res) => {
   return handleResponse(res, response);
 };
 
-async function retrieveGamesInCollection(collection) {
+async function buildQueryGamesInCollection(collection) {
   type = "collection";
   queryObject = await Collection.findOne({ _id: collection });
   return { queryObject, type };
 }
 
-async function retrieveAllGamesInUser(user) {
+async function buildQueryGamesInUser(user) {
   type = "user";
   queryObject = await User.findOne({ userId: user });
   return { queryObject, type };
 }
 
-async function retrieveAllGamesByUserName(username) {
+async function buildQueryGamesByUsername(username) {
   type = "userName";
   queryObject = await User.findOne({ username });
   return { queryObject, type };
@@ -58,9 +59,9 @@ async function retrieveSingleGame(filter) {
 async function retrieveAllGames(queryObject, type) {
   const { games } = queryObject;
   const gameDetails = [];
-  for (i in games) {
-    let game = await Game.findOne({ _id: games[i] });
-    gameDetails.push(createDetailedGame(game));
+  for (const game of games) {
+    let foundGame = await Game.findOne({ _id: game._id });
+    gameDetails.push(createDetailedGame(foundGame));
   }
   return createResponse(`Retrieved all games from ${type}!`, gameDetails);
 }

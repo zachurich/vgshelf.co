@@ -1,6 +1,8 @@
 import React from "react";
 import Grid from "../grid/grid";
 import { fetchGames } from "../../api/gamesApi";
+import { ENDPOINTS } from "../../../common/routes";
+import { useDataFetch } from "../../common/hooks";
 
 function GameTogglePanel({
   handleToggleGame,
@@ -9,20 +11,10 @@ function GameTogglePanel({
   user
 }) {
   // currentCollectionGames is used to compare all games to what games the user has in the collection
-  const [games, setGames] = React.useState([]);
 
-  const retrieveAllGames = async () => {
-    const games = await fetchGames(null, user.id);
-    return games;
-  };
+  let fetchUrl = ENDPOINTS.GAME;
+  const { data: games, error } = useDataFetch({ user: user.id }, fetchUrl);
 
-  React.useEffect(() => {
-    retrieveAllGames()
-      .then(data => {
-        setGames(() => data);
-      })
-      .catch(err => err);
-  }, [0]);
   return (
     <section
       className="toggle-games"
@@ -35,7 +27,7 @@ function GameTogglePanel({
       </button>
       {/* This component should contain all games - Search/Toggle in collection*/}
       <Grid
-        data={games}
+        data={games || []}
         compareItems={currentCollectionGames}
         size="small"
         handleToggle={handleToggleGame}

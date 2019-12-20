@@ -7,19 +7,26 @@ const {
   retrieveAllCollections,
   createDetailedCollection
 } = require("./utils");
-const { handleResponse, createResponse } = require("../utils");
+const { handleResponse, createResponse, handleErrors } = require("../utils");
 
 const GetCollection = async (req, res) => {
-  const { id, user = null } = req.query;
+  const { id, user = null, userName = null } = req.query;
   let response = {};
   try {
     if (!user) {
-      const collectionFilter = { _id: id };
-      response = await retrieveSingleDetailedCollection(collectionFilter);
+      if (userName) {
+        // Get all collections via unauthed username
+        const collectionFilter = await handleErrors(
+          buildQueryCollectionsByUsername(userName)
+        );
+        response = await handleErrors(retrieveAllDetailedCollections(collectionFilter));
+      } else if (id) {
+        const collectionFilter = { _id: id };
+        response = await handleErrors(retrieveSingleDetailedCollection(collectionFilter));
+      }
     } else {
-      const mongoUser = await User.findOne({ userId: user });
-      const collectionFilter = { user: mongoUser._id };
-      response = await retrieveAllDetailedCollections(collectionFilter);
+      const collectionFilter = await handleErrors(buildQueryCollectionsInUser(user));
+      response = await handleErrors(retrieveAllDetailedCollections(collectionFilter));
     }
   } catch (error) {
     response = createResponse(
@@ -29,6 +36,16 @@ const GetCollection = async (req, res) => {
     );
   }
   return handleResponse(res, response);
+};
+
+const buildQueryCollectionsByUsername = async userName => {
+  const mongoUser = await User.findOne({ username: userName });
+  return { user: mongoUser._id };
+};
+
+const buildQueryCollectionsInUser = async userId => {
+  const mongoUser = await User.findOne({ userId });
+  return { user: mongoUser._id };
 };
 
 const retrieveSingleDetailedCollection = async collectionFilter => {

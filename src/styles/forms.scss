@@ -1,0 +1,29 @@
+@import "./util.scss";
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  font-weight: var(--weight-bold);
+}
+
+label {
+  font-family: var(--main-font);
+  margin-bottom: 10px;
+}
+
+input[type="text"] {
+  font-weight: var(--weight-bold);
+  box-sizing: border-box;
+  padding: 10px 10px;
+  border: none;
+  width: 100%;
+  @include border-radius(5px);
+  @include box-shadow;
+  &:hover {
+    background-color: var(--subtle-border);
+  }
+  &:focus {
+    background-color: white;
+  }
+}

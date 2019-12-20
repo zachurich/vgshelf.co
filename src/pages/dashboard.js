@@ -4,11 +4,10 @@ import { Meta } from "../components/index";
 import CollectionsPanel from "../components/collectionsPanel/collectionsPanel";
 import { fetchGames, fetchGamesByUserName } from "../api/gamesApi";
 import GamesPanel from "../components/gamesPanel/gamesPanel";
-import { useRouter } from "next/router";
+import { useParams } from "../common/hooks";
 
 const Dashboard = ({ initialGames = [], initialCollections = [], user }) => {
-  const router = useRouter();
-  const { userName } = router.query;
+  const { userName } = useParams();
   return (
     <div className="dashboard">
       <Meta title={"Dashboard"} />

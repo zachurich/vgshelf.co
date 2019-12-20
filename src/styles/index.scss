@@ -65,6 +65,7 @@ img {
 }
 
 .main {
+  min-height: 100vh;
   flex-basis: 70%;
   padding: 0 50px;
 }
@@ -130,6 +131,29 @@ img {
       color: white;
     }
   }
+
+  &-nav {
+    position: relative;
+    bottom: 1px;
+    width: auto;
+    height: auto;
+    padding: 8px 20px;
+    color: white;
+    @include box-shadow(var(--main-blue-hover), 4px);
+    background-color: var(--main-blue);
+    &:hover {
+      background-color: var(--main-blue-hover);
+      @include box-shadow(var(--blue-drop-shadow-hover), 6px);
+      color: white;
+    }
+  }
+
+  &.disabled {
+    background-color: var(--subtle-border);
+    @include box-shadow(var(--gray-drop-shadow-hover), 4px);
+    color: var(--gray-drop-shadow-hover);
+    pointer-events: none;
+  }
 }
 
 .item-add {
@@ -147,3 +171,5 @@ img {
     color: var(--main-blue);
   }
 }
+
+@import "./forms.scss";

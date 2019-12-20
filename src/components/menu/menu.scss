@@ -11,6 +11,9 @@
   @include position(56px, var(--default-spacing));
   background: white;
   padding: var(--default-spacing);
+  @include box-shadow(var(--solid-drop-shadow));
+  border-radius: 5px;
+  font-weight: var(--weight-bold);
 }
 
 .menu-button {

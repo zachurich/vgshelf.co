@@ -31,7 +31,7 @@ $mobile: 400px;
   right: $r;
 }
 
-@mixin box-shadow($color, $drop: 4px, $blur: 0px) {
+@mixin box-shadow($color: var(--solid-drop-shadow), $drop: 4px, $blur: 0px) {
   box-shadow: 0px $drop $blur $color;
 }
 
@@ -43,4 +43,8 @@ $mobile: 400px;
   @media screen and (max-width: $width) {
     @content;
   }
+}
+
+@mixin border-radius($radius: 10px) {
+  border-radius: $radius;
 }

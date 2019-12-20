@@ -1,6 +1,7 @@
 const User = require("../../models/User");
 const passport = require("passport");
 const { handleResponse, createResponse, userExists } = require("../utils");
+const { ROUTES } = require("../../../common/routes");
 
 const InitUser = (req, res, next) => {
   passport.authenticate("auth0", (err, user) => {
@@ -11,7 +12,7 @@ const InitUser = (req, res, next) => {
       emailAddress: displayName
     });
     if (err) return next(err);
-    if (!user) return res.redirect("/login");
+    if (!user) return res.redirect(ROUTES.LOGIN);
     req.logIn(user, err => {
       if (err) return next(err);
       req.mongoUser = mongoUser;
@@ -44,7 +45,7 @@ const UserResponseHandler = async (req, res, next) => {
       200
     );
   }
-  return handleResponse(res, response, "/");
+  return handleResponse(res, response, `${ROUTES.APP}?userName=${mongoUser.username}`);
 };
 
 module.exports = { InitUser, UserResponseHandler };

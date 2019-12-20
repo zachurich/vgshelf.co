@@ -1,9 +1,18 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt-nodejs");
-
 const uniqueRequired = { unique: true, required: true };
 
-const user = new mongoose.Schema({
+// Users need to be able to add custom properties to a game, but we don't want
+// to modify the game for everyone, so users have their own game instance that wraps
+// the shared game
+const game = {
+  properties: [],
+  id: {
+    type: mongoose.Types.ObjectId,
+    ref: "Game"
+  }
+};
+
+const User = new mongoose.Schema({
   userId: { type: String, ...uniqueRequired },
   username: { type: String, ...uniqueRequired },
   emailAddress: { type: String, ...uniqueRequired },
@@ -14,12 +23,7 @@ const user = new mongoose.Schema({
       ref: "Collection"
     }
   ],
-  games: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: "Game"
-    }
-  ]
+  games: [game]
 });
 
-module.exports = mongoose.model("User", user);
+module.exports = mongoose.model("User", User);

@@ -2,28 +2,25 @@ import React from "react";
 import Grid from "../grid/grid";
 import Modal from "../modal/modal";
 import { BasicForm } from "../basicForm/basicForm";
-import { ROUTES, ENDPOINTS } from "../../common/constants";
+import { ROUTES, ENDPOINTS } from "../../../common/routes";
 import {
   fetchCollections,
   createCollection,
   deleteCollection
 } from "../../api/collectionsApi";
 import Title from "../title/title";
-import useSWR, { trigger } from "@zeit/swr";
-import { fetchSimple } from "../../api/gamesApi";
-import { appendParam } from "../../common/utils";
+import { trigger } from "@zeit/swr";
 import List from "../list/list";
 import "./collectionsPanel.scss";
+import { useDataFetch } from "../../common/hooks";
 
 function CollectionsPanel({ user, initialCollections, userName }) {
   const [showModal, setShowModal] = React.useState(false);
   let fetchUrl = ENDPOINTS.COLLECTION;
-
-  if (user) {
-    fetchUrl = appendParam(fetchUrl, { key: "user", value: user.id });
-  }
-
-  const { data: collections, error } = useSWR(fetchUrl, fetchSimple);
+  const { data: collections, error, finalUrl } = useDataFetch(
+    { user: user.id, userName },
+    fetchUrl
+  );
 
   const handleToggleModal = toggle => {
     setShowModal(() => toggle);
@@ -37,13 +34,13 @@ function CollectionsPanel({ user, initialCollections, userName }) {
         name: title,
         games: []
       });
-      trigger(fetchUrl);
+      trigger(finalUrl);
     }
   };
 
   const handleDeleteCollection = async id => {
     await deleteCollection(null, { id });
-    trigger(fetchUrl);
+    trigger(finalUrl);
   };
 
   return (
@@ -55,6 +52,7 @@ function CollectionsPanel({ user, initialCollections, userName }) {
         prettyRoute={ROUTES.COLLECTIONS}
         handleDelete={handleDeleteCollection}
         handlePrompt={() => handleToggleModal(true)}
+        canAdd={!!user}
       />
       <Modal
         open={showModal}

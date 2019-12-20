@@ -1,11 +1,14 @@
-export const ENDPOINTS = {
+exports.ENDPOINTS = {
   COLLECTION: "/api/collection",
   GAME: "/api/game",
   SEARCH: "/api/external/search/",
   COVER: "/api/external/cover/"
 };
 
-export const ROUTES = {
+exports.ROUTES = {
+  HOME: "/",
+  APP: "/dashboard",
   COLLECTIONS: "/collections",
-  GAMES: "/games"
+  GAMES: "/games",
+  LOGIN: "/login"
 };

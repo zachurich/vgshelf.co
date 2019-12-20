@@ -6,20 +6,26 @@ import Grid from "../components/grid/grid";
 import Modal from "../components/modal/modal";
 import Title from "../components/title/title";
 import { fetchGames, createGame, deleteGame } from "../api/gamesApi";
-import { useRouter } from "next/router";
 import { formatUserName } from "../common/utils";
 import { SearchForm } from "../components/searchForm/searchForm";
 import { fetchCover } from "../api/search";
 import GameTogglePanel from "../components/gameTogglePanel/gameTogglePanel";
 import { updateCollection } from "../api/collectionsApi";
+import GamesPanel from "../components/gamesPanel/gamesPanel";
+import { useParams, useDataFetch } from "../common/hooks";
+import { trigger } from "@zeit/swr";
+import { ENDPOINTS } from "../../common/routes";
 
 const Games = ({ initialGames = [], user }) => {
-  const [games, setGames] = React.useState(initialGames);
   const [showModal, setShowModal] = React.useState(false);
   const [showTogglePanel, setShowTogglePanel] = React.useState(false);
+  const { id: collectionId, title: collectionTitle, userName } = useParams();
 
-  const router = useRouter();
-  const { id: collectionId, title: collectionTitle } = router.query;
+  let fetchUrl = ENDPOINTS.GAME;
+  const { data: games, error, finalUrl } = useDataFetch(
+    { user: user.id, collection: collectionId, userName },
+    fetchUrl
+  );
 
   const handleToggleTogglePanel = toggle => {
     if (collectionId) {
@@ -29,7 +35,7 @@ const Games = ({ initialGames = [], user }) => {
 
   const handleDeleteGame = async id => {
     await deleteGame(null, { id, user: user.id });
-    await updateGamesState();
+    trigger(finalUrl);
   };
 
   const handleToggleGame = async game => {
@@ -43,19 +49,8 @@ const Games = ({ initialGames = [], user }) => {
       id: collectionId,
       games: currentGames
     });
-    updateGamesState();
+    trigger(finalUrl);
   };
-
-  const updateGamesState = async () => {
-    const games = await fetchGames(null, user.id, collectionId);
-    setGames(() => games);
-  };
-
-  React.useEffect(() => {
-    if (games.length < 1 && user) {
-      updateGamesState();
-    }
-  }, [user]);
 
   return (
     <div className="games">
@@ -70,11 +65,12 @@ const Games = ({ initialGames = [], user }) => {
       )}
       <main className={`shelf-games ${showTogglePanel ? "w-3/4" : "w-full"}`}>
         {/* This component should contain all games IN THE CURRENT COLLECTION */}
-        <Title header={collectionTitle || `${formatUserName(user)}'s Games`} />
-        <Grid
-          data={games}
-          size="med"
-          handleDelete={handleDeleteGame}
+        <GamesPanel
+          title={collectionTitle || `${formatUserName(user)}'s Games`}
+          user={user}
+          userName={userName}
+          collectionId={collectionId}
+          initialGames={games || initialGames}
           handlePrompt={() => handleToggleTogglePanel(true)}
         />
       </main>

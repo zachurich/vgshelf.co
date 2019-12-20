@@ -13,6 +13,8 @@ const Modal = ({
   message,
   children
 }) => {
+  const containerRef = React.useRef(null);
+  const closeRef = React.useRef(null);
   const [selection, setSelection] = React.useState(null);
   const [displayValue, setDisplayValue] = React.useState("");
   const handleChange = (e, { newValue } = {}) => {
@@ -30,9 +32,12 @@ const Modal = ({
     setDisplayValue(() => "");
   };
 
-  const handleDismiss = () => {
-    handleClearValues();
-    dismissModal();
+  const handleDismiss = e => {
+    const target = e.target;
+    if (target === containerRef.current || target === closeRef.current) {
+      handleClearValues();
+      dismissModal();
+    }
   };
 
   const handleSubmitAndClear = e => {
@@ -53,16 +58,28 @@ const Modal = ({
   return (
     <div>
       {open && (
-        <section className="modal">
+        <section ref={containerRef} className="modal" onClick={handleDismiss}>
           <p>{message}</p>
           <div className="modal-container">
-            {hydratedChildren}
+            <div className="modal-content">{hydratedChildren}</div>
             <div className="modal-footer">
-              <div className="button">
-                <a onClick={handleDismiss}>{closeText}</a>
+              <div>
+                <a
+                  ref={closeRef}
+                  className="button button-secondary"
+                  onClick={handleDismiss}
+                >
+                  {closeText}
+                </a>
               </div>
-              <div className="modal-submit button submit">
-                <a onClick={handleSubmitAndClear}>{submitText}</a>
+              <div className="modal-submit submit">
+                <a
+                  className={`button button-primary ${!(selection || displayValue) &&
+                    "disabled"}`}
+                  onClick={handleSubmitAndClear}
+                >
+                  {submitText}
+                </a>
               </div>
             </div>
           </div>

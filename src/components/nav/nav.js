@@ -4,11 +4,10 @@ import { Menu } from "../index";
 
 import "./nav.scss";
 import { formatUserName } from "../../common/utils";
+import { ROUTES } from "../../../common/routes";
+import { LoginButton } from "../buttons/buttons";
 
-const Nav = props => {
-  const { user } = props;
-  const [showMenu, setShowMenu] = React.useState(false);
-  const toggleMenu = () => setShowMenu(() => !showMenu);
+const Nav = ({ user, menuVisible }) => {
   return (
     <nav className="nav">
       <div className="nav-logo">
@@ -25,7 +24,13 @@ const Nav = props => {
           </li>
         )} */}
         <li className="nav-link-item flex">
-          <Menu showMenu={showMenu} toggleMenu={toggleMenu} user={user} />
+          {user ? (
+            <Menu showMenu={menuVisible} user={user} />
+          ) : (
+            <Link href={ROUTES.LOGIN}>
+              <LoginButton user={user} classes={"button-nav"} />
+            </Link>
+          )}
         </li>
       </ul>
     </nav>

@@ -1,6 +1,6 @@
 import get from "lodash/get";
 import { createUrl, escapeNull } from "../common/utils";
-import { ENDPOINTS } from "../common/constants";
+import { ENDPOINTS } from "../../common/routes";
 import axios from "axios";
 
 export const fetchSimple = async url => {

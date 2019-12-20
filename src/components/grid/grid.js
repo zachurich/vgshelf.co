@@ -9,7 +9,8 @@ const Grid = ({
   destRoute,
   prettyRoute,
   handleToggle = () => {},
-  handleDelete
+  handleDelete,
+  canAdd = false
 }) => {
   let imageSize;
   if (size === "large") {
@@ -41,7 +42,7 @@ const Grid = ({
             </li>
           );
         })}
-      {handlePrompt && (
+      {canAdd && handlePrompt && (
         <div className="grid-item item-add" onClick={() => handlePrompt(true)}>
           <span className="">+</span>
         </div>
