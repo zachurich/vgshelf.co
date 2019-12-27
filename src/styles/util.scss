@@ -48,3 +48,22 @@ $mobile: 400px;
 @mixin border-radius($radius: 10px) {
   border-radius: $radius;
 }
+
+@mixin apply-hover(
+  $bg: white,
+  $hovBg: darken($bg, 8%),
+  $hovDrop: var(--gray-drop-shadow-hover),
+  $hovColor: initial
+) {
+  background-color: $bg;
+  &:hover {
+    background-color: $hovBg;
+    transform: translateY(-2px);
+    @include box-shadow($hovDrop, 6px);
+    cursor: pointer;
+    color: $hovColor;
+    * {
+      color: $hovColor;
+    }
+  }
+}

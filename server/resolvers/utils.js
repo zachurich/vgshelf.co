@@ -29,13 +29,11 @@ exports.userExists = (userId, req, res, next) => {
       req.userExists = false;
       next();
     }
-
     if (obj) {
       req.userExists = true;
     } else {
       req.userExists = false;
     }
-
     next();
   });
 };

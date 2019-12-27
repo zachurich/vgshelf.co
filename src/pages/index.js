@@ -1,15 +1,7 @@
 import get from "lodash/get";
 import React from "react";
 import { Meta } from "../components/index";
-import CollectionsPanel from "../components/collectionsPanel/collectionsPanel";
-import Grid from "../components/grid/grid";
-import { formatUserName } from "../common/utils";
-import Title from "../components/title/title";
-import { fetchGames, createGame } from "../api/gamesApi";
-import { SearchForm } from "../components/searchForm/searchForm";
-import Modal from "../components/modal/modal";
-import { fetchCover } from "../api/search";
-import GamesPanel from "../components/gamesPanel/gamesPanel";
+import { fetchGames } from "../api/gamesApi";
 import Landing from "../components/landing/landing";
 
 const Home = ({ initialGames = [], initialCollections = [], user }) => {

@@ -1,4 +1,5 @@
 import isNull from "lodash/isNull";
+import get from "lodash/get";
 import { isRegExp } from "util";
 
 export const lastItem = (arr, index, cols = 3) => {
@@ -43,4 +44,18 @@ export const escapeNull = (value, fallback) => {
     return value;
   }
   return fallback;
+};
+
+export const getColor = color => {
+  if (document && document.body) {
+    return getComputedStyle(document.body).getPropertyValue(color);
+  }
+  return null;
+};
+
+export const handleServerResponse = (response = {}) => {
+  if (+get(response, "code") === 400) {
+    return response.msg;
+  }
+  return null;
 };

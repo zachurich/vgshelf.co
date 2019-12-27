@@ -16,6 +16,8 @@ import { useParams, useDataFetch } from "../common/hooks";
 import { trigger } from "@zeit/swr";
 import { ENDPOINTS } from "../../common/routes";
 
+import "../styles/games.scss";
+
 const Games = ({ initialGames = [], user }) => {
   const [showModal, setShowModal] = React.useState(false);
   const [showTogglePanel, setShowTogglePanel] = React.useState(false);
@@ -27,9 +29,9 @@ const Games = ({ initialGames = [], user }) => {
     fetchUrl
   );
 
-  const handleToggleTogglePanel = toggle => {
+  const handleToggleTogglePanel = () => {
     if (collectionId) {
-      setShowTogglePanel(() => toggle);
+      setShowTogglePanel(() => !showTogglePanel);
     }
   };
 
@@ -53,7 +55,7 @@ const Games = ({ initialGames = [], user }) => {
   };
 
   return (
-    <div className="games">
+    <main className="games">
       <Meta title={"Games"} />
       {collectionId && showTogglePanel && (
         <GameTogglePanel
@@ -63,18 +65,18 @@ const Games = ({ initialGames = [], user }) => {
           handleToggleGame={handleToggleGame}
         />
       )}
-      <main className={`shelf-games ${showTogglePanel ? "w-3/4" : "w-full"}`}>
+      <div className="games-panel-wrapper">
         {/* This component should contain all games IN THE CURRENT COLLECTION */}
         <GamesPanel
-          title={collectionTitle || `${formatUserName(user)}'s Games`}
+          title={`${collectionTitle} Shelf` || `${formatUserName(user)}'s Games`}
           user={user}
           userName={userName}
           collectionId={collectionId}
           initialGames={games || initialGames}
           handlePrompt={() => handleToggleTogglePanel(true)}
         />
-      </main>
-    </div>
+      </div>
+    </main>
   );
 };
 

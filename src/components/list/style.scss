@@ -8,6 +8,8 @@
     font-weight: var(--weight-black);
     text-align: center;
     margin-bottom: var(--default-spacing);
+    @include transition;
+    @include apply-hover;
   }
 }
 

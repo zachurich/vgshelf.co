@@ -1,4 +1,5 @@
 import _ from "lodash";
+import get from "lodash/get";
 import React from "react";
 import Title from "../title/title";
 import Grid from "../grid/grid";
@@ -8,8 +9,9 @@ import { trigger } from "@zeit/swr";
 import { ENDPOINTS } from "../../../common/routes";
 import { fetchGames, createGame, fetchSimple } from "../../api/gamesApi";
 import { fetchCover } from "../../api/search";
-import { appendParam } from "../../common/utils";
+import { appendParam, handleServerResponse } from "../../common/utils";
 import { useDataFetch } from "../../common/hooks";
+import GameItem from "../gameItem/gameItem";
 
 function GamesPanel({
   initialGames = [],
@@ -20,17 +22,18 @@ function GamesPanel({
   title = null
 }) {
   const [showModal, setShowModal] = React.useState(false);
+  const [modalMsg, setModalMsg] = React.useState(null);
 
   let fetchUrl = ENDPOINTS.GAME;
   const { data: games, error, finalUrl } = useDataFetch(
-    { user: user.id, collection, userName },
+    { user: get(user, "id"), collection, userName },
     fetchUrl
   );
 
   const handleToggleModal = toggle => {
+    setModalMsg(() => null);
     setShowModal(() => toggle);
   };
-  const [modalMsg, setModalMsg] = React.useState(null);
   const toggleAction = handlePrompt || handleToggleModal; // prefer handleToggle prop
 
   const handleCreateGame = async value => {
@@ -41,12 +44,15 @@ function GamesPanel({
         title: value.name,
         igdbId: value.id,
         slug: value.slug,
-        imageUrl: _.get(coverData[0], "url")
+        imageUrl: get(coverData[0], "url")
       });
-      const message = _.get(response, "data.msg");
-      setModalMsg(() => message);
-      toggleAction(false);
-      trigger(finalUrl);
+      const message = handleServerResponse(response.data);
+      if (message) {
+        setModalMsg(() => message);
+      } else {
+        toggleAction(false);
+        trigger(finalUrl);
+      }
     }
   };
 
@@ -67,6 +73,7 @@ function GamesPanel({
         handleDelete={handleDeleteGame}
         handlePrompt={() => toggleAction(true)}
         canAdd={!!user}
+        gridItem={props => <GameItem handleToggle={handleToggleModal} {...props} />}
       />
       <Modal
         open={showModal}
@@ -76,7 +83,7 @@ function GamesPanel({
         dismissModal={() => toggleAction(false)}
         handleSubmit={handleCreateGame}
       >
-        <SearchForm inputName="Search" />
+        <SearchForm inputName="Search by Game Title" />
       </Modal>
     </div>
   );

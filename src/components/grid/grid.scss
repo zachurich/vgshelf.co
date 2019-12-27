@@ -1,3 +1,4 @@
+@import "../../styles/vars.scss";
 @import "../../styles/util.scss";
 .grid {
   display: grid;
@@ -15,44 +16,5 @@
 }
 
 .grid-small {
-  grid-template-columns: repeat(auto-fill, minmax(6rem, 2fr));
-}
-
-.grid-item {
-  display: flex;
-  cursor: pointer;
-  justify-self: center;
-  width: 100%;
-  .grid-item-content {
-    display: flex;
-    width: 100%;
-    font-weight: var(--weight-bold);
-    @include box-shadow(var(--solid-drop-shadow), 4px);
-    border-radius: 5px;
-    background-color: white;
-    border-radius: 10px;
-    .grid-item-image-wrap {
-      flex-basis: 25%;
-      @include flex-center;
-      .grid-item-image {
-        width: 100px;
-        height: 130px;
-        overflow: hidden;
-        border-radius: 5px;
-        position: relative;
-        // border: 5px solid #ffffff;
-        @include position(-10px, auto, auto, 10px);
-        @include box-shadow(var(--solid-drop-shadow), 3px);
-        img {
-          object-fit: cover;
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
-    .grid-item-text {
-      flex-basis: calc(75% - 35px);
-      padding: 15px 15px 15px var(--default-spacing);
-    }
-  }
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 2fr));
 }

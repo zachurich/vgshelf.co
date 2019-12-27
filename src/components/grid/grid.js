@@ -10,38 +10,21 @@ const Grid = ({
   prettyRoute,
   handleToggle = () => {},
   handleDelete,
-  canAdd = false
+  compareItems = [],
+  canAdd = false,
+  gridItem = () => {}
 }) => {
-  let imageSize;
-  if (size === "large") {
-    imageSize = "cover_big";
-  } else if (size === "med") {
-    imageSize = "cover_big";
-  } else {
-    imageSize = "cover_big";
-  }
+  if (!data && !data.length > 0) return null;
   return (
     <ul className={`grid grid-${size}`}>
-      {data.length > 0 &&
-        data.map((item, index) => {
-          return (
-            <li key={item.id} className="grid-item" onClick={() => handleToggle(item.id)}>
-              <div className="grid-item-content">
-                <span className="grid-item-image-wrap">
-                  <div className="grid-item-image">
-                    {item.imageUrl && (
-                      <img
-                        className=""
-                        src={`${item.imageUrl.replace("thumb", imageSize)}`}
-                      />
-                    )}
-                  </div>
-                </span>
-                <span className="grid-item-text">{item.title}</span>
-              </div>
-            </li>
-          );
-        })}
+      {data.map((item, index) => {
+        const itemAlreadyToggled = compareItems.map(item => item.id).includes(item.id);
+        return (
+          <React.Fragment key={item.id}>
+            {gridItem({ item, itemAlreadyToggled, handleToggle })}
+          </React.Fragment>
+        );
+      })}
       {canAdd && handlePrompt && (
         <div className="grid-item item-add" onClick={() => handlePrompt(true)}>
           <span className="">+</span>

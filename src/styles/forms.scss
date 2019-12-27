@@ -1,6 +1,7 @@
 @import "./util.scss";
 
-form {
+form,
+.form {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -13,6 +14,8 @@ label {
 }
 
 input[type="text"] {
+  outline: none;
+  appearance: none;
   font-weight: var(--weight-bold);
   box-sizing: border-box;
   padding: 10px 10px;

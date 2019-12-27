@@ -23,7 +23,8 @@ const Modal = ({
     console.log(value);
     setDisplayValue(() => value);
   };
-  const handleSelectValue = (e, { suggestion }) => {
+  const handleSelectValue = suggestion => {
+    console.log(suggestion);
     setSelection(() => suggestion);
   };
 
@@ -59,9 +60,14 @@ const Modal = ({
     <div>
       {open && (
         <section ref={containerRef} className="modal" onClick={handleDismiss}>
-          <p>{message}</p>
           <div className="modal-container">
-            <div className="modal-content">{hydratedChildren}</div>
+            <div className="modal-content">
+              {message ? (
+                <p className="modal-error-message">{message}</p>
+              ) : (
+                hydratedChildren
+              )}
+            </div>
             <div className="modal-footer">
               <div>
                 <a

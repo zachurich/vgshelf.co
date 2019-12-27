@@ -1,3 +1,4 @@
+@import "./vars.scss";
 @import "./util.scss";
 
 :root {
@@ -114,22 +115,17 @@ img {
   }
   &-secondary {
     @include box-shadow(var(--solid-drop-shadow), 4px);
-    background-color: white;
-    &:hover {
-      background-color: var(--white-hover);
-      @include box-shadow(var(--gray-drop-shadow-hover), 6px);
-      color: initial;
-    }
+    @include apply-hover;
   }
   &-primary {
     color: white;
     @include box-shadow(var(--main-blue-hover), 4px);
-    background-color: var(--main-blue);
-    &:hover {
-      background-color: var(--main-blue-hover);
-      @include box-shadow(var(--blue-drop-shadow-hover), 6px);
-      color: white;
-    }
+    @include apply-hover(
+      $bg: var(--main-blue),
+      $hovBg: var(--main-blue-hover),
+      $hovDrop: var(--blue-drop-shadow-hover),
+      $hovColor: white
+    );
   }
 
   &-nav {
@@ -140,12 +136,12 @@ img {
     padding: 8px 20px;
     color: white;
     @include box-shadow(var(--main-blue-hover), 4px);
-    background-color: var(--main-blue);
-    &:hover {
-      background-color: var(--main-blue-hover);
-      @include box-shadow(var(--blue-drop-shadow-hover), 6px);
-      color: white;
-    }
+    @include apply-hover(
+      $bg: var(--main-blue),
+      $hovBg: var(--main-blue-hover),
+      $hovDrop: var(--blue-drop-shadow-hover),
+      $hovColor: white
+    );
   }
 
   &.disabled {

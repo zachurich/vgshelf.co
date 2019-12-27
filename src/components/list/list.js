@@ -1,4 +1,4 @@
-import "./list.scss";
+import "./style.scss";
 import React from "react";
 import Link from "next/link";
 
@@ -6,7 +6,7 @@ const List = ({
   data = [],
   handlePrompt = null,
   destRoute,
-  prettyRoute,
+  prettyRoute = destRoute, // optionally override the appearance of the url
   handleToggle = () => {},
   handleDelete,
   canAdd = false
@@ -22,7 +22,7 @@ const List = ({
                   pathname: destRoute,
                   query: { id: item.id, title: item.title }
                 }}
-                as={`${prettyRoute}/${item.title}/${item.id}`}
+                as={`${prettyRoute}/${item.title.toLowerCase()}/${item.id}`}
               >
                 <a className="">
                   <span>{item.title}</span>

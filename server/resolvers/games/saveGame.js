@@ -33,7 +33,7 @@ const optionallyAddGameToDb = async ({ title, igdbId, slug, imageUrl, thumbnailU
 const addGameToCollection = async (collection, game) => {
   const collectionObj = await Collection.findOne({ _id: collection });
   if (objectHasGame(collectionObj, game)) {
-    return createResponse("Collection already has game!", {}, 500);
+    return createResponse("Collection already has game!", {}, 400);
   } else {
     collectionObj.games = addGameToObj(collectionObj, game);
     const data = await collectionObj.save();
@@ -44,7 +44,7 @@ const addGameToCollection = async (collection, game) => {
 const addGameToUser = async (userId, game) => {
   const user = await User.findOne({ userId });
   if (objectHasGame(user, game)) {
-    return createResponse("User already assigned game!", {});
+    return createResponse("User already assigned game!", {}, 400);
   } else {
     user.games = addGameToObj(user, game);
     const data = await user.save();

@@ -1,3 +1,4 @@
+import get from "lodash/get";
 import React from "react";
 import Grid from "../grid/grid";
 import Modal from "../modal/modal";
@@ -18,7 +19,7 @@ function CollectionsPanel({ user, initialCollections, userName }) {
   const [showModal, setShowModal] = React.useState(false);
   let fetchUrl = ENDPOINTS.COLLECTION;
   const { data: collections, error, finalUrl } = useDataFetch(
-    { user: user.id, userName },
+    { user: get(user, "id"), userName },
     fetchUrl
   );
 
@@ -49,7 +50,6 @@ function CollectionsPanel({ user, initialCollections, userName }) {
       <List
         data={collections || initialCollections}
         destRoute={ROUTES.GAMES}
-        prettyRoute={ROUTES.COLLECTIONS}
         handleDelete={handleDeleteCollection}
         handlePrompt={() => handleToggleModal(true)}
         canAdd={!!user}

@@ -54,6 +54,11 @@
   }
 }
 
+.modal-error-message {
+  width: 100%;
+  text-align: center;
+}
+
 .dark-theme .modal {
   animation: fadeInDarkTheme 0.2s ease-in-out forwards;
   color: white;

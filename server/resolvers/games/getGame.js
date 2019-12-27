@@ -1,3 +1,4 @@
+const uniqBy = require("lodash/uniqBy");
 const User = require("../../models/User");
 const Game = require("../../models/Game");
 const Collection = require("../../models/Collection");
@@ -63,7 +64,7 @@ async function retrieveAllGames(queryObject, type) {
     let foundGame = await Game.findOne({ _id: game._id });
     gameDetails.push(createDetailedGame(foundGame));
   }
-  return createResponse(`Retrieved all games from ${type}!`, gameDetails);
+  return createResponse(`Retrieved all games from ${type}!`, uniqBy(gameDetails, "id"));
 }
 
 module.exports = GetGame;
