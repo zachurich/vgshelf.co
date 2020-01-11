@@ -13,16 +13,9 @@
     min-width: calc(100vw - var(--games-toggle-padding));
     max-width: none;
   }
-  &-close {
-    display: flex;
-    position: absolute;
-    top: 20px;
+  .button-toggle {
+    top: 46px;
     right: 20px;
-    border-radius: 50px;
-    border: none;
-    @include w-h(40px);
-    @include flex-center;
-    @include box-shadow($drop: 3px);
     a {
       position: relative;
       right: 1px; // visual purposes

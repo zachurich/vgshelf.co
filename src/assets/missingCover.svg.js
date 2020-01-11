@@ -1,6 +1,11 @@
-import React from "react";
+import random from "lodash/random";
+import React, { useState, useEffect } from "react";
+import { getColor, documentExists } from "../common/utils";
+import { siteColors } from "../common/constants";
+import { useRandomColor } from "../common/hooks";
 
-function MissingCover({ color = "#017BFD" }) {
+function MissingCover() {
+  const color = useRandomColor();
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

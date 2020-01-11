@@ -9,7 +9,7 @@ const GameToggleItem = ({ item, itemAlreadyToggled, handleToggle }) => {
     <li
       key={item.id}
       className={`game-toggle-item ${itemAlreadyToggled ? "toggled" : ""}`}
-      onClick={() => handleToggle(item.id)}
+      onClick={() => handleToggle(item)}
     >
       <div className="game-toggle-item-content">
         <span className="game-toggle-item-image-wrap">

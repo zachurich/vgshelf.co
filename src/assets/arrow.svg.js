@@ -1,8 +1,17 @@
 import react from "react";
 
-function ArrowSVG({ width = "16", height = "16", fill = "none", stroke = "" }) {
+function ArrowSVG({
+  width = "16",
+  height = width,
+  fill = "none",
+  stroke = "#282822",
+  rotate = "0deg"
+}) {
   return (
     <svg
+      style={{
+        transform: `rotate(${rotate})`
+      }}
       width={width}
       height={height}
       viewBox="0 0 55 86"
@@ -12,9 +21,9 @@ function ArrowSVG({ width = "16", height = "16", fill = "none", stroke = "" }) {
       <path
         d="M43 12L12 43L43 74"
         stroke={stroke}
-        stroke-width="24"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="24"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

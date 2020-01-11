@@ -1,0 +1,26 @@
+@import "../../styles/util.scss";
+.title {
+  text-align: center;
+  position: relative;
+  h3 {
+    background: white;
+    padding: 8px 20px;
+    @include border-radius;
+    @include box-shadow;
+    color: var(--main-blue);
+    display: inline-block;
+    margin: 50px auto 40px;
+    font-weight: var(--weight-black);
+    span {
+      text-transform: capitalize;
+    }
+    &.pink {
+      color: var(--main-pink);
+    }
+  }
+}
+
+.breadcrumb {
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: capitalize;
+}

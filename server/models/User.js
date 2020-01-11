@@ -4,8 +4,9 @@ const uniqueRequired = { unique: true, required: true };
 // Users need to be able to add custom properties to a game, but we don't want
 // to modify the game for everyone, so users have their own game instance that wraps
 // the shared game
-const game = {
+const userGame = {
   properties: [],
+  added: { type: Date, default: Date.now },
   id: {
     type: mongoose.Types.ObjectId,
     ref: "Game"
@@ -23,7 +24,7 @@ const User = new mongoose.Schema({
       ref: "Collection"
     }
   ],
-  games: [game]
+  games: [userGame]
 });
 
 module.exports = mongoose.model("User", User);

@@ -3,6 +3,11 @@
 $border-radius-top: 5px 5px 0 0;
 $border-radius-bottom: 0 0 5px 5px;
 
+.search-label {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 input[type="text"].search-suggestions-open {
   border-radius: $border-radius-top;
 }

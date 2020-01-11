@@ -6,12 +6,14 @@ import Grid from "../grid/grid";
 import Modal from "../modal/modal";
 import { SearchForm } from "../searchForm/searchForm";
 import { trigger } from "@zeit/swr";
-import { ENDPOINTS } from "../../../common/routes";
+import { ENDPOINTS, ROUTES } from "../../../common/routes";
 import { fetchGames, createGame, fetchSimple } from "../../api/gamesApi";
 import { fetchCover } from "../../api/search";
 import { appendParam, handleServerResponse } from "../../common/utils";
 import { useDataFetch } from "../../common/hooks";
 import GameItem from "../gameItem/gameItem";
+
+import "./styles.scss";
 
 function GamesPanel({
   initialGames = [],
@@ -65,14 +67,33 @@ function GamesPanel({
     <div className="games-panel">
       <Title
         header={title ? title : user ? "All My Games" : `${userName} Games`}
-        borderColor="pink"
-      />
+        breadCrumb={
+          collection
+            ? {
+                route: ROUTES.APP,
+                text: user ? "My Dashboard" : `${userName}'s Dashboard`
+              }
+            : null
+        }
+        color={collection ? "pink" : "blue"}
+      >
+        {!!user && (
+          <div
+            onClick={() => toggleAction(true)}
+            className="button button-toggle button-secondary"
+          >
+            <a>+</a>
+          </div>
+        )}
+      </Title>
+
       <Grid
         data={games || initialGames}
         size="large"
         handleDelete={handleDeleteGame}
         handlePrompt={() => toggleAction(true)}
         canAdd={!!user}
+        sortKey={"added"}
         gridItem={props => <GameItem handleToggle={handleToggleModal} {...props} />}
       />
       <Modal

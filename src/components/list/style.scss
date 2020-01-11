@@ -1,20 +1,25 @@
 @import "../../styles/util.scss";
 .list {
   .list-item {
-    padding: 15px;
+    // padding: 15px;
     background-color: white;
-    border-radius: 10px;
+    @include border-radius;
     @include box-shadow(var(--solid-drop-shadow));
     font-weight: var(--weight-black);
     text-align: center;
     margin-bottom: var(--default-spacing);
     @include transition;
     @include apply-hover;
+    & > * {
+      display: inline-block;
+      padding: 15px;
+      width: calc(100% - 30px);
+    }
   }
 }
 
 .list-item-add {
-  border-radius: 10px;
+  @include border-radius;
   border: 4px dashed var(--solid-drop-shadow);
   color: var(--solid-drop-shadow);
   display: flex;

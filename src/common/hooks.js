@@ -1,7 +1,10 @@
+import { useState, useEffect } from "react";
+import random from "lodash/random";
 import { useRouter } from "next/router";
 import { fetchSimple } from "../api/gamesApi";
 import useSWR from "@zeit/swr";
-import { appendParam } from "./utils";
+import { appendParam, getColor } from "./utils";
+import { siteColors } from "./constants";
 
 /**
  * @description Simple wrapper for next's useRouter
@@ -25,4 +28,12 @@ export const useDataFetch = (params, endpoint) => {
     }
   });
   return { ...useSWR(fetchUrl, fetchSimple), finalUrl: fetchUrl };
+};
+
+export const useRandomColor = (initialColor = "#017BFD") => {
+  const [color, setColor] = useState(() => initialColor);
+  useEffect(() => {
+    setColor(() => getColor(siteColors[random(siteColors.length - 1)]));
+  }, [process.browser]);
+  return color;
 };

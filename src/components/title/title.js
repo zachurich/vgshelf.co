@@ -1,11 +1,26 @@
 import React from "react";
 
-import "./title.scss";
+import "./styles.scss";
+import Link from "next/link";
+import ArrowSVG from "../../assets/arrow.svg";
 
-const Title = ({ header, borderColor }) => {
+const Title = ({ header, breadCrumb, color, children }) => {
   return (
     <div className="title">
-      <h3 className={`title-text ${borderColor}`}>{header.toLowerCase()}</h3>
+      <h3 className={`title-text ${color}`}>
+        {breadCrumb && (
+          <>
+            <Link href={breadCrumb.route}>
+              <a className="breadcrumb">{breadCrumb.text}</a>
+            </Link>
+            &nbsp;
+            <ArrowSVG width="12" rotate="180deg" />
+            &nbsp;
+          </>
+        )}
+        <span>{header}</span>
+        {children}
+      </h3>
     </div>
   );
 };

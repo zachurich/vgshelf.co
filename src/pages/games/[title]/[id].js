@@ -1,22 +1,17 @@
-import _ from "lodash";
+import get from "lodash/get";
 
 import React from "react";
-import { Nav, Meta } from "../components/index";
-import Grid from "../components/grid/grid";
-import Modal from "../components/modal/modal";
-import Title from "../components/title/title";
-import { fetchGames, createGame, deleteGame } from "../api/gamesApi";
-import { formatUserName } from "../common/utils";
-import { SearchForm } from "../components/searchForm/searchForm";
-import { fetchCover } from "../api/search";
-import GameTogglePanel from "../components/gameTogglePanel/gameTogglePanel";
-import { updateCollection } from "../api/collectionsApi";
-import GamesPanel from "../components/gamesPanel/gamesPanel";
-import { useParams, useDataFetch } from "../common/hooks";
-import { trigger } from "@zeit/swr";
-import { ENDPOINTS } from "../../common/routes";
+import { Nav, Meta } from "../../../components/index";
+import { fetchGames, createGame, deleteGame } from "../../../api/gamesApi";
+import { formatUserName, toggleItemInArray } from "../../../common/utils";
+import GameTogglePanel from "../../../components/gameTogglePanel/gameTogglePanel";
+import { updateCollection } from "../../../api/collectionsApi";
+import GamesPanel from "../../../components/gamesPanel/gamesPanel";
+import { useParams, useDataFetch } from "../../../common/hooks";
+import { trigger, mutate } from "@zeit/swr";
+import { ENDPOINTS } from "../../../../common/routes";
 
-import "../styles/games.scss";
+import "../../../styles/games.scss";
 
 const Games = ({ initialGames = [], user }) => {
   const [showModal, setShowModal] = React.useState(false);
@@ -24,11 +19,10 @@ const Games = ({ initialGames = [], user }) => {
   const { id: collectionId, title: collectionTitle, userName } = useParams();
 
   let fetchUrl = ENDPOINTS.GAME;
-  const { data: games, error, finalUrl } = useDataFetch(
-    { user: user.id, collection: collectionId, userName },
+  const { data: games, error, isValidating, finalUrl } = useDataFetch(
+    { user: get(user, "id"), collection: collectionId, userName },
     fetchUrl
   );
-
   const handleToggleTogglePanel = () => {
     if (collectionId) {
       setShowTogglePanel(() => !showTogglePanel);
@@ -41,17 +35,21 @@ const Games = ({ initialGames = [], user }) => {
   };
 
   const handleToggleGame = async game => {
-    let currentGames = games.map(game => game.id);
-    if (currentGames.includes(game)) {
-      currentGames = currentGames.filter(currentGame => currentGame !== game);
-    } else {
-      currentGames = currentGames.concat(game);
+    // Compose array with added/removed game
+    const { newItems, newItemsProps } = toggleItemInArray(games, game, "id");
+
+    // Go ahead and update the data client side
+    mutate(finalUrl, newItems, false);
+
+    // Fire and forget the server request
+    try {
+      await updateCollection(null, {
+        id: collectionId,
+        games: newItemsProps
+      });
+    } catch (error) {
+      console.log(error);
     }
-    const response = await updateCollection(null, {
-      id: collectionId,
-      games: currentGames
-    });
-    trigger(finalUrl);
   };
 
   return (
@@ -65,7 +63,7 @@ const Games = ({ initialGames = [], user }) => {
           handleToggleGame={handleToggleGame}
         />
       )}
-      <div className="games-panel-wrapper">
+      <div className="games-panel-wrapper container">
         {/* This component should contain all games IN THE CURRENT COLLECTION */}
         <GamesPanel
           title={`${collectionTitle} Shelf` || `${formatUserName(user)}'s Games`}
@@ -84,10 +82,10 @@ const Games = ({ initialGames = [], user }) => {
  * THIS RUNS ONCE ON THE SERVER, ON REFRESH
  * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
  */
-Games.getInitialProps = async ({ req, res, query }) => {
-  if (req && req.user) {
-    const collectionId = query.id;
-    const userId = req.user.id;
+Games.getInitialProps = async ({ req, query }) => {
+  if (req) {
+    const { id: collectionId } = query;
+    const userId = get(req, "user.id");
     try {
       const games = await fetchGames(req, userId, collectionId);
       return { initialGames: games };

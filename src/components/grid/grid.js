@@ -1,6 +1,7 @@
 import "./grid.scss";
 import React from "react";
 import Link from "next/link";
+import { sortByDate } from "../../common/utils";
 
 const Grid = ({
   data = [],
@@ -12,12 +13,13 @@ const Grid = ({
   handleDelete,
   compareItems = [],
   canAdd = false,
+  sortKey = "added",
   gridItem = () => {}
 }) => {
   if (!data && !data.length > 0) return null;
   return (
     <ul className={`grid grid-${size}`}>
-      {data.map((item, index) => {
+      {sortByDate(data, sortKey).map((item, index) => {
         const itemAlreadyToggled = compareItems.map(item => item.id).includes(item.id);
         return (
           <React.Fragment key={item.id}>

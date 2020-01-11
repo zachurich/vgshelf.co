@@ -46,7 +46,7 @@ function CollectionsPanel({ user, initialCollections, userName }) {
 
   return (
     <section className="collections-panel">
-      <Title header={user ? "Shelves" : `${userName} Shelves`} />
+      <Title header={user ? "Shelves" : `${userName} Shelves`} color="pink" />
       <List
         data={collections || initialCollections}
         destRoute={ROUTES.GAMES}

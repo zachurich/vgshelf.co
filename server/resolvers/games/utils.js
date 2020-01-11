@@ -1,11 +1,12 @@
 const { createResponse } = require("../utils");
 
-exports.createDetailedGame = game => {
+exports.createDetailedGame = (globalGame, userGame) => {
   return {
-    id: `${game["_id"]}`,
-    title: game.title,
-    imageUrl: game.imageUrl,
-    thumbnailUrl: game.thumbnailUrl
+    id: `${globalGame._id}`,
+    title: globalGame.title,
+    imageUrl: globalGame.imageUrl,
+    added: userGame.added,
+    properties: userGame.properties
   };
 };
 

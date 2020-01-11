@@ -1,6 +1,7 @@
 import "./style.scss";
 import React from "react";
 import Link from "next/link";
+import { sortByDate } from "../../common/utils";
 
 const List = ({
   data = [],
@@ -14,7 +15,7 @@ const List = ({
   return (
     <ul className="list list-row">
       {data.length > 0 &&
-        data.map((item, index) => {
+        sortByDate(data, "created").map((item, index) => {
           return (
             <li key={item.id} className="list-item" onClick={() => handleToggle(item.id)}>
               <Link

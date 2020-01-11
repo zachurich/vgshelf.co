@@ -2,19 +2,30 @@
 @import "../../styles/util.scss";
 
 .game-toggle-item {
+  box-sizing: border-box;
+  border: 6px solid transparent;
   display: flex;
   max-height: 84px;
   cursor: pointer;
   justify-self: center;
   width: 100%;
+  @include border-radius(14px);
+  @include transition;
+  &.toggled {
+    border: 6px solid var(--main-blue) !important;
+  }
+
+  &:hover {
+    border: 6px solid var(--main-pink);
+  }
+
   .game-toggle-item-content {
     display: flex;
     width: 100%;
     font-weight: var(--weight-bold);
     @include box-shadow(var(--solid-drop-shadow), 4px);
-    border-radius: 5px;
     background-color: white;
-    border-radius: 10px;
+    @include border-radius;
     .game-toggle-item-image-wrap {
       flex-basis: 25%;
       @include flex-center;

@@ -35,7 +35,7 @@ $mobile: 400px;
   box-shadow: 0px $drop $blur $color;
 }
 
-@mixin transition($timing: 0.15s) {
+@mixin transition($timing: 0.05s) {
   transition: $timing ease-in-out;
 }
 

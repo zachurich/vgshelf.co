@@ -113,6 +113,24 @@ img {
     transform: translateY(-2px);
     cursor: pointer;
   }
+  &-toggle {
+    position: absolute;
+    border: none;
+    @include w-h(40px);
+    @include flex-center;
+    @include box-shadow($drop: 3px);
+    border-radius: 50%;
+    font-size: 40px;
+    font-weight: 800;
+    bottom: 50px;
+    background-color: white;
+    z-index: 9999;
+    * {
+      display: flex;
+      @include flex-center;
+      color: var(--main-blue);
+    }
+  }
   &-secondary {
     @include box-shadow(var(--solid-drop-shadow), 4px);
     @include apply-hover;
@@ -153,7 +171,7 @@ img {
 }
 
 .item-add {
-  border-radius: 10px;
+  @include border-radius;
   border: 4px dashed var(--solid-drop-shadow);
   color: var(--solid-drop-shadow);
   display: flex;

@@ -2,6 +2,10 @@ import isNull from "lodash/isNull";
 import get from "lodash/get";
 import { isRegExp } from "util";
 
+export const sortByDate = (arr, sortKey) => {
+  return arr.sort((prior, next) => new Date(next[sortKey]) - new Date(prior[sortKey]));
+};
+
 export const lastItem = (arr, index, cols = 3) => {
   if ((index + 1) % cols === 0) {
     return true;
@@ -46,8 +50,10 @@ export const escapeNull = (value, fallback) => {
   return fallback;
 };
 
+export const documentExists = () => typeof document !== "undefined";
+
 export const getColor = color => {
-  if (document && document.body) {
+  if (documentExists()) {
     return getComputedStyle(document.body).getPropertyValue(color);
   }
   return null;
@@ -58,4 +64,28 @@ export const handleServerResponse = (response = {}) => {
     return response.msg;
   }
   return null;
+};
+
+/**
+ *
+ * @param {Array} array - Array to add/remove from
+ * @param {*} item - Object or string
+ * @param {String} property - Optionally provide a property to search an array of objects
+ * @returns {Object} - Object containing:
+ * - newItems (updated array)
+ * - newItemsProps (array of only the properties of the updates items)
+ */
+export const toggleItemInArray = (array, item, property = null) => {
+  const currentItems = _.cloneDeep(array);
+  const itemOrObj = property ? item[property] : item;
+  let newItems = [];
+  if (_.some(currentItems, property ? [property, itemOrObj] : itemOrObj)) {
+    newItems = currentItems.filter(currentItem => currentItem[property] !== itemOrObj);
+  } else {
+    newItems = currentItems.concat(item);
+  }
+  return {
+    newItems,
+    newItemsProps: property ? newItems.map(item => item[property]) : null
+  };
 };

@@ -24,7 +24,7 @@ function GameTogglePanel({
   return (
     <section className="games-toggle-panel">
       <button
-        className="games-toggle-panel-close button button-secondary"
+        className="games-toggle-panel-close button button-toggle button-secondary"
         onClick={handleClosePanel}
       >
         <a>
@@ -37,6 +37,7 @@ function GameTogglePanel({
         data={games || []}
         compareItems={currentCollectionGames}
         size="small"
+        canAdd={!!user}
         handleToggle={handleToggleGame}
         gridItem={props => <GameToggleItem handleToggle={handleToggleGame} {...props} />}
       />
