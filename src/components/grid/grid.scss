@@ -18,3 +18,20 @@
 .grid-small {
   grid-template-columns: repeat(auto-fill, minmax(10rem, 2fr));
 }
+
+.grid-empty {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 40px 0 80px;
+  min-height: calc(75vh - 80px);
+  p {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    border-radius: 10px;
+  }
+}
+
+.grid-filter {
+  margin-bottom: var(--default-spacing);
+}

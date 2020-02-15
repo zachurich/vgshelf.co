@@ -13,25 +13,23 @@ import { ENDPOINTS } from "../../../../common/routes";
 
 import "../../../styles/games.scss";
 
-const Games = ({ initialGames = [], user }) => {
+const Games = ({ initialGames = [], user, username }) => {
   const [showModal, setShowModal] = React.useState(false);
-  const [showTogglePanel, setShowTogglePanel] = React.useState(false);
-  const { id: collectionId, title: collectionTitle, userName } = useParams();
+  const [showTogglePanel, setShowTogglePanel] = React.useState(true);
+  const { id: collectionId, title: collectionTitle } = useParams();
 
   let fetchUrl = ENDPOINTS.GAME;
-  const { data: games, error, isValidating, finalUrl } = useDataFetch(
-    { user: get(user, "id"), collection: collectionId, userName },
+  const { data, isValidating, finalUrl } = useDataFetch(
+    { user: get(user, "id"), collection: collectionId },
     fetchUrl
   );
+
+  const games = data ? data.games : null;
+
   const handleToggleTogglePanel = () => {
     if (collectionId) {
       setShowTogglePanel(() => !showTogglePanel);
     }
-  };
-
-  const handleDeleteGame = async id => {
-    await deleteGame(null, { id, user: user.id });
-    trigger(finalUrl);
   };
 
   const handleToggleGame = async game => {
@@ -39,7 +37,7 @@ const Games = ({ initialGames = [], user }) => {
     const { newItems, newItemsProps } = toggleItemInArray(games, game, "id");
 
     // Go ahead and update the data client side
-    mutate(finalUrl, newItems, false);
+    mutate(finalUrl, { games: newItems }, false);
 
     // Fire and forget the server request
     try {
@@ -55,7 +53,7 @@ const Games = ({ initialGames = [], user }) => {
   return (
     <main className="games">
       <Meta title={"Games"} />
-      {collectionId && showTogglePanel && (
+      {collectionId && showTogglePanel && user && (
         <GameTogglePanel
           user={user}
           currentCollectionGames={games}
@@ -68,8 +66,9 @@ const Games = ({ initialGames = [], user }) => {
         <GamesPanel
           title={`${collectionTitle} Shelf` || `${formatUserName(user)}'s Games`}
           user={user}
-          userName={userName}
+          userName={username}
           collectionId={collectionId}
+          parentControlled={true}
           initialGames={games || initialGames}
           handlePrompt={() => handleToggleTogglePanel(true)}
         />
@@ -87,8 +86,8 @@ Games.getInitialProps = async ({ req, query }) => {
     const { id: collectionId } = query;
     const userId = get(req, "user.id");
     try {
-      const games = await fetchGames(req, userId, collectionId);
-      return { initialGames: games };
+      const { games, username } = await fetchGames(req, userId, collectionId);
+      return { initialGames: games, username };
     } catch (e) {
       console.log(e);
     }

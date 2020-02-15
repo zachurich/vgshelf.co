@@ -4,8 +4,8 @@ import Link from "next/link";
 export function LoginButton({ user, classes = "button-secondary" }) {
   return (
     <Link
-      href={{ pathname: user ? "/dashboard?userName=[user]" : "/login" }}
-      as={user ? `/dashboard?userName=${user.nickname}` : "/login"}
+      href={{ pathname: user ? "/dashboard/[user]" : "/login" }}
+      as={user ? `/dashboard/${user.nickname}` : "/login"}
     >
       <a className={`button ${classes}`}>{user ? "Continue" : "Log In"}</a>
     </Link>

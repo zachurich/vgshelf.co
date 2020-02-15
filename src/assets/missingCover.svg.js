@@ -5,7 +5,7 @@ import { siteColors } from "../common/constants";
 import { useRandomColor } from "../common/hooks";
 
 function MissingCover() {
-  const color = useRandomColor();
+  const color = "#017bfd";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -5,14 +5,14 @@ const { createResponse, handleResponse, handleErrors } = require("../utils");
 const { objectHasGame, addGameToObj } = require("./utils");
 
 const SaveGame = async (req, res, next) => {
-  const { id, collection } = req.body;
+  const { id, collection, properties = {} } = req.body;
   let response;
   try {
     const gameToAdd = await handleErrors(optionallyAddGameToDb(req.body));
     if (collection) {
       response = await handleErrors(addGameToCollection(collection, gameToAdd));
     }
-    response = await handleErrors(addGameToUser(id, gameToAdd));
+    response = await handleErrors(addGameToUser(id, gameToAdd, properties));
   } catch (e) {
     response = createResponse("There was an error saving the game!", e, 500);
   }
@@ -41,12 +41,12 @@ const addGameToCollection = async (collection, game) => {
   }
 };
 
-const addGameToUser = async (userId, game) => {
+const addGameToUser = async (userId, game, properties) => {
   const user = await User.findOne({ userId });
   if (objectHasGame(user, game)) {
-    return createResponse("User already assigned game!", {}, 400);
+    return createResponse("You already have this game!", {}, 400);
   } else {
-    user.games = addGameToObj(user, game);
+    user.games = addGameToObj(user, { ...game, properties });
     const data = await user.save();
     return createResponse("Game assigned to user!", data);
   }

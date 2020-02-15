@@ -1,4 +1,6 @@
 import ShelfSVG from "../assets/shelf.svg";
+import SearchSVG from "../assets/search.svg";
+import CompletenessSVG from "../assets/completeness.svg";
 
 /**
  * Landing
@@ -15,7 +17,7 @@ export const shortFeatures = {
   heading: "Made for serious and casual collectors.",
   content: [
     {
-      image: "",
+      image: SearchSVG,
       text: "Search through thousands of game titles and add them to your collection."
     },
     {
@@ -23,7 +25,7 @@ export const shortFeatures = {
       text: "Categorize your collection by creating and organizing custom shelves."
     },
     {
-      image: "",
+      image: CompletenessSVG,
       text:
         "Keep track of game details. Do you have the box? Manual? Physical and/or digital copy?"
     }

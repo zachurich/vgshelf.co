@@ -14,6 +14,7 @@ import { trigger } from "@zeit/swr";
 import List from "../list/list";
 import "./collectionsPanel.scss";
 import { useDataFetch } from "../../common/hooks";
+import Loader from "../loader/loader";
 
 function CollectionsPanel({ user, initialCollections, userName }) {
   const [showModal, setShowModal] = React.useState(false);
@@ -46,14 +47,27 @@ function CollectionsPanel({ user, initialCollections, userName }) {
 
   return (
     <section className="collections-panel">
-      <Title header={user ? "Shelves" : `${userName} Shelves`} color="pink" />
-      <List
-        data={collections || initialCollections}
-        destRoute={ROUTES.GAMES}
-        handleDelete={handleDeleteCollection}
-        handlePrompt={() => handleToggleModal(true)}
-        canAdd={!!user}
-      />
+      <Title header={user ? "Shelves" : `${userName} Shelves`} color="pink">
+        {!!user && (
+          <div
+            onClick={() => handleToggleModal(true)}
+            className="button button-toggle button-secondary"
+          >
+            <a>+</a>
+          </div>
+        )}
+      </Title>
+      {!collections ? (
+        <Loader />
+      ) : (
+        <List
+          data={collections || initialCollections}
+          destRoute={ROUTES.GAMES}
+          handleDelete={handleDeleteCollection}
+          handlePrompt={() => handleToggleModal(true)}
+          canAdd={!!user}
+        />
+      )}
       <Modal
         open={showModal}
         closeText="Close"

@@ -10,10 +10,10 @@ const GetGame = async (req, res) => {
   let response = {};
   let query;
   try {
-    if (userName) {
+    if (userName && !collection) {
       // Get all games via unauthed username
       query = await handleErrors(buildQueryGamesByUsername(userName));
-      response = await handleErrors(retrieveAllGames(query.queryObject, query.type));
+      response = await handleErrors(retrieveAllGames(query));
     } else if (id) {
       // Get a single game by _id
       query = { _id: id };
@@ -25,7 +25,7 @@ const GetGame = async (req, res) => {
     } else {
       throw Error("No params provided!");
     }
-    response = await handleErrors(retrieveAllGames(query.queryObject, query.type));
+    response = await handleErrors(retrieveAllGames(query));
   } catch (error) {
     response = createResponse("There was an error retrieving the game(s)!", error, 500);
   }
@@ -35,19 +35,19 @@ const GetGame = async (req, res) => {
 async function buildQueryGamesInCollection(collection) {
   const type = "collection";
   const queryObject = await Collection.findOne({ _id: collection });
-  return { queryObject, type };
+  return { queryObject, type, user: queryObject.user };
 }
 
 async function buildQueryGamesInUser(user) {
   const type = "user";
   const queryObject = await User.findOne({ userId: user });
-  return { queryObject, type };
+  return { queryObject, type, user: queryObject.id };
 }
 
 async function buildQueryGamesByUsername(username) {
   const type = "userName";
   const queryObject = await User.findOne({ username });
-  return { queryObject, type };
+  return { queryObject, type, user: queryObject.id };
 }
 
 async function retrieveSingleGame(filter) {
@@ -55,14 +55,22 @@ async function retrieveSingleGame(filter) {
   return createResponse("Retrieved single game!", game);
 }
 
-async function retrieveAllGames(queryObject, type) {
+async function retrieveAllGames({ queryObject, type, user }) {
   const { games } = queryObject;
   const gameDetails = [];
   for (const userGame of games) {
     let globalGame = await Game.findOne({ _id: userGame._id });
     gameDetails.push(createDetailedGame(globalGame, userGame));
   }
-  return createResponse(`Retrieved all games from ${type}!`, uniqBy(gameDetails, "id"));
+  try {
+    const { username } = await User.findOne({ _id: user });
+    return createResponse(`Retrieved all games from ${type}!`, {
+      username,
+      games: uniqBy(gameDetails, "id")
+    });
+  } catch (error) {
+    throw Error("User not found!", error);
+  }
 }
 
 module.exports = GetGame;

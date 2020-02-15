@@ -1,38 +1,62 @@
 import "./grid.scss";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { sortByDate } from "../../common/utils";
 
 const Grid = ({
   data = [],
   size, // ["small", "med", "large"]
-  handlePrompt = null,
-  destRoute,
-  prettyRoute,
-  handleToggle = () => {},
-  handleDelete,
   compareItems = [],
-  canAdd = false,
   sortKey = "added",
+  filtering = {
+    enabled: false,
+    type: "title"
+  },
+  handleToggle = () => {},
   gridItem = () => {}
 }) => {
-  if (!data && !data.length > 0) return null;
+  const [search, setSearch] = useState("");
+
+  if (!data) return null;
+
+  if (data && !data.length) {
+    return (
+      <div className="grid-empty">
+        <p>This shelf is empty.</p>
+      </div>
+    );
+  }
+
+  // Data passes thru as is if filtering is not enabled
+  const filterData = data => {
+    if (!filtering.enabled) {
+      return data;
+    }
+    return data.filter(item => item[filtering.type].includes(search));
+  };
+
   return (
-    <ul className={`grid grid-${size}`}>
-      {sortByDate(data, sortKey).map((item, index) => {
-        const itemAlreadyToggled = compareItems.map(item => item.id).includes(item.id);
-        return (
-          <React.Fragment key={item.id}>
-            {gridItem({ item, itemAlreadyToggled, handleToggle })}
-          </React.Fragment>
-        );
-      })}
-      {canAdd && handlePrompt && (
-        <div className="grid-item item-add" onClick={() => handlePrompt(true)}>
-          <span className="">+</span>
-        </div>
+    <>
+      {filtering.enabled && (
+        <input
+          className="grid-filter"
+          type="text"
+          value={search}
+          placeholder="Filter by Title..."
+          onChange={e => setSearch(e.target.value)}
+        />
       )}
-    </ul>
+      <ul className={`grid grid-${size}`}>
+        {filterData(sortByDate(data, sortKey)).map((item, index) => {
+          const itemAlreadyToggled = compareItems.map(item => item.id).includes(item.id);
+          return (
+            <React.Fragment key={item.id}>
+              {gridItem({ item, itemAlreadyToggled, handleToggle })}
+            </React.Fragment>
+          );
+        })}
+      </ul>
+    </>
   );
 };
 

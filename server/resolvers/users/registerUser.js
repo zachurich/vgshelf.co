@@ -45,7 +45,7 @@ const UserResponseHandler = async (req, res, next) => {
       200
     );
   }
-  return handleResponse(res, response, `${ROUTES.APP}?userName=${mongoUser.username}`);
+  return handleResponse(res, response, `${ROUTES.APP}/${mongoUser.username}`);
 };
 
 module.exports = { InitUser, UserResponseHandler };

@@ -9,17 +9,16 @@ import "./styles.scss";
 import ArrowSVG from "../../assets/arrow.svg";
 import { getColor } from "../../common/utils";
 import Title from "../title/title";
+import Loader from "../loader/loader";
 
 function GameTogglePanel({
-  handleToggleGame,
-  handleClosePanel,
-  currentCollectionGames,
-  user
+  handleToggleGame, // add/remove game from collection
+  handleClosePanel, // close this panel
+  currentCollectionGames, // used to compare all games to what games the user has in the collection
+  user // available when logged in
 }) {
-  // currentCollectionGames is used to compare all games to what games the user has in the collection
-
-  let fetchUrl = ENDPOINTS.GAME;
-  const { data: games, error } = useDataFetch({ user: get(user, "id") }, fetchUrl);
+  const { data, error } = useDataFetch({ user: get(user, "id") }, ENDPOINTS.GAME);
+  const games = get(data, "games", null);
 
   return (
     <section className="games-toggle-panel">
@@ -28,19 +27,26 @@ function GameTogglePanel({
         onClick={handleClosePanel}
       >
         <a>
-          <ArrowSVG stroke={getColor("--main-blue")} />
+          <ArrowSVG stroke={getColor("--main-blue") || "#017bfd"} />
         </a>
       </button>
       <Title header={"Add to Shelf"} borderColor="blue" />
       {/* This component should contain all games - Search/Toggle in collection*/}
-      <Grid
-        data={games || []}
-        compareItems={currentCollectionGames}
-        size="small"
-        canAdd={!!user}
-        handleToggle={handleToggleGame}
-        gridItem={props => <GameToggleItem handleToggle={handleToggleGame} {...props} />}
-      />
+      {!currentCollectionGames ? (
+        <Loader />
+      ) : (
+        <Grid
+          data={games || []}
+          compareItems={currentCollectionGames}
+          size="small"
+          filtering={{ enabled: true, type: "title" }}
+          canAdd={!!user}
+          handleToggle={handleToggleGame}
+          gridItem={props => (
+            <GameToggleItem handleToggle={handleToggleGame} {...props} />
+          )}
+        />
+      )}
     </section>
   );
 }

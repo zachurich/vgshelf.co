@@ -6,13 +6,16 @@ import "./nav.scss";
 import { formatUserName } from "../../common/utils";
 import { ROUTES } from "../../../common/routes";
 import { LoginButton } from "../buttons/buttons";
+import Logo from "../../assets/logo.svg";
 
 const Nav = ({ user, menuVisible }) => {
   return (
     <nav className="nav">
       <div className="nav-logo">
         <Link href="/">
-          <a className="">vgshelf</a>
+          <a>
+            <Logo />
+          </a>
         </Link>
       </div>
       <ul className="nav-links">
@@ -27,9 +30,7 @@ const Nav = ({ user, menuVisible }) => {
           {user ? (
             <Menu showMenu={menuVisible} user={user} />
           ) : (
-            <Link href={ROUTES.LOGIN}>
-              <LoginButton user={user} classes={"button-nav"} />
-            </Link>
+            <LoginButton user={user} classes={"button-nav"} />
           )}
         </li>
       </ul>

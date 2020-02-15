@@ -1,23 +1,23 @@
 import get from "lodash/get";
 import React from "react";
-import { Meta } from "../components/index";
-import CollectionsPanel from "../components/collectionsPanel/collectionsPanel";
-import { fetchGames, fetchGamesByUserName } from "../api/gamesApi";
-import GamesPanel from "../components/gamesPanel/gamesPanel";
-import { useParams } from "../common/hooks";
+import { Meta } from "../../components/index";
+import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
+import { fetchGames, fetchGamesByUserName } from "../../api/gamesApi";
+import GamesPanel from "../../components/gamesPanel/gamesPanel";
+import { useParams } from "../../common/hooks";
 
 const Dashboard = ({ initialGames = [], initialCollections = [], user }) => {
-  const { userName } = useParams();
+  const { username } = useParams();
   return (
     <div className="dashboard">
       <Meta title={"Dashboard"} />
       <main className="main">
-        <GamesPanel user={user} userName={userName} initialGames={initialGames} />
+        <GamesPanel user={user} userName={username} initialGames={initialGames} />
       </main>
       <section className="panel-right">
         <CollectionsPanel
           user={user}
-          userName={userName}
+          userName={username}
           initialCollections={initialCollections}
         />
       </section>
@@ -31,16 +31,16 @@ const Dashboard = ({ initialGames = [], initialCollections = [], user }) => {
  */
 Dashboard.getInitialProps = async ({ req, query }) => {
   if (req) {
-    let games = [];
-    const { userName, id: collectionId } = query;
+    let response;
+    const { username } = query;
     const userId = get(req, "user.id");
     try {
       if (req.user && userId) {
-        games = await fetchGames(req, userId, collectionId);
-      } else if (userName) {
-        games = await fetchGamesByUserName(req, userName);
+        response = await fetchGames(req, userId);
+      } else if (username) {
+        response = await fetchGamesByUserName(req, username);
       }
-      return { initialGames: games };
+      return { initialGames: response.games };
     } catch (e) {
       console.log(e);
     }

@@ -14,6 +14,7 @@
   @include box-shadow(var(--solid-drop-shadow));
   border-radius: 5px;
   font-weight: var(--weight-bold);
+  z-index: 3;
 }
 
 .menu-button {

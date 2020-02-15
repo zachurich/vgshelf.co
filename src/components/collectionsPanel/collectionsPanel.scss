@@ -4,4 +4,12 @@
   min-height: calc(100% - 40px);
   @include subtle-border(1px, left);
   padding: 0 40px 40px;
+
+  .button-toggle {
+    right: 20px;
+    top: 45px;
+    * {
+      color: var(--main-pink);
+    }
+  }
 }

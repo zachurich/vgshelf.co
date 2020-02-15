@@ -11,6 +11,7 @@ import {
 import "@reach/combobox/styles.css";
 
 import "./searchForm.scss";
+import { useDebounce } from "../../common/hooks";
 
 export const SearchForm = ({
   inputName,
@@ -20,7 +21,7 @@ export const SearchForm = ({
   handleSelectValue
 }) => {
   const [focused, setFocused] = React.useState(false);
-  const [timer, setTimer] = React.useState(null);
+  const { debounce } = useDebounce();
   const [suggestions, setSuggestions] = React.useState([]);
 
   const getResults = async value => {
@@ -51,9 +52,7 @@ export const SearchForm = ({
           onFocus={() => setFocused(() => true)}
           onChange={e => {
             let valueOnInput = e.target.value;
-            console.log(valueOnInput);
-            let timeout = debounce(timer, getResults, valueOnInput);
-            setTimer(() => timeout);
+            debounce(getResults, valueOnInput);
           }}
         />
         <ComboboxPopover

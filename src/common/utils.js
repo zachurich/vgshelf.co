@@ -31,7 +31,7 @@ export const debounce = (timer, callback, ...args) => {
   if (timer) clearTimeout(timer);
   return setTimeout(() => {
     callback(...args);
-  }, 500);
+  }, 300);
 };
 
 export const appendParam = (url, { key, value }) => {

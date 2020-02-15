@@ -17,13 +17,16 @@
     text-transform: uppercase;
     margin-bottom: var(--default-spacing);
     &:after {
-      @include position(auto, 0, -10px, 0);
+      @include position(auto, 0, -12px, 0);
       content: " ";
       position: absolute;
       width: 100%;
       height: 9px;
       background: #deded8;
       border-radius: 23px;
+      @include animate(grow-horizontal) {
+        transform: scaleX(0);
+      }
     }
   }
 
@@ -64,9 +67,9 @@
     flex-direction: column;
     justify-content: flex-end;
     padding: var(--default-spacing);
-    flex-basis: calc(100% / 3 - 50px);
-    margin: 0 25px;
-    max-width: 3var (--default-spacing);
+    flex-basis: calc(100% / 3 - 30px);
+    max-width: 350px;
+    margin: 0 15px 20px;
     height: 384px;
     background: #f5f5f2;
     border: 10px solid #ffffff;
@@ -74,13 +77,15 @@
     box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.16);
     @include border-radius;
     @include responsive-max($tablet) {
-      flex-basis: calc(100% / 3 - 25px);
-      margin: 0 12.5px;
+      flex-basis: 100%;
+      margin: 0 10px 20px;
+      max-width: 350px;
     }
 
     @include responsive-max($mobile) {
       flex-basis: 100%;
-      margin: 12.5px 0;
+      margin: 10px 0;
+      max-width: 100%;
     }
   }
 
@@ -88,10 +93,15 @@
     display: flex;
     width: 100%;
     height: 200px;
-    margin-bottom: var(--default-spacing);
+    margin-bottom: calc(var(--default-spacing) + 30px);
+    justify-content: center;
+    svg {
+      max-width: 250px;
+    }
   }
 
   .feature-description {
+    width: 100%;
     align-self: flex-end;
     text-align: center;
   }
@@ -128,6 +138,9 @@
     flex-direction: row;
     align-items: center;
     margin: 50px 0;
+    @include responsive-max($mobile) {
+      flex-direction: column;
+    }
     .feature-image {
       flex-basis: calc(100% / 2 - 110px);
       margin-right: 110px;
@@ -136,6 +149,11 @@
       min-height: 233px;
       border: 9px dashed #292929;
       border-radius: 5px;
+      @include responsive-max($mobile) {
+        flex-basis: 100%;
+        margin-right: 0;
+        width: 100%;
+      }
       img {
         display: inline-block;
       }
@@ -143,13 +161,23 @@
     .feature-content {
       flex-basis: calc(100% / 2);
       text-align: right;
+      @include responsive-max($mobile) {
+        flex-basis: 100%;
+      }
     }
 
     &:nth-of-type(2) {
       flex-direction: row-reverse;
+      @include responsive-max($mobile) {
+        flex-direction: column;
+      }
       .feature-image {
         margin-left: 110px;
         margin-right: 0;
+        @include responsive-max($mobile) {
+          margin-left: 0;
+          // width: 100%;
+        }
       }
       .feature-content {
         text-align: left;

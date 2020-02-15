@@ -3,7 +3,7 @@ import random from "lodash/random";
 import { useRouter } from "next/router";
 import { fetchSimple } from "../api/gamesApi";
 import useSWR from "@zeit/swr";
-import { appendParam, getColor } from "./utils";
+import { appendParam, getColor, debounce } from "./utils";
 import { siteColors } from "./constants";
 
 /**
@@ -36,4 +36,15 @@ export const useRandomColor = (initialColor = "#017BFD") => {
     setColor(() => getColor(siteColors[random(siteColors.length - 1)]));
   }, [process.browser]);
   return color;
+};
+
+export const useDebounce = () => {
+  const [timer, setTimer] = useState(null);
+  return {
+    timer,
+    debounce: function(fnToDebounce, input) {
+      let timeout = debounce(timer, fnToDebounce, input);
+      setTimer(() => timeout);
+    }
+  };
 };

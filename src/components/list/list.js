@@ -32,11 +32,6 @@ const List = ({
             </li>
           );
         })}
-      {canAdd && handlePrompt && (
-        <div className="item-add" onClick={() => handlePrompt(true)}>
-          <span className="list-add-item">+</span>
-        </div>
-      )}
     </ul>
   );
 };
