@@ -15,6 +15,7 @@ import List from "../list/list";
 import "./collectionsPanel.scss";
 import { useDataFetch } from "../../common/hooks";
 import Loader from "../loader/loader";
+import { ButtonToggle } from "../buttons/buttons";
 
 function CollectionsPanel({ user, initialCollections, userName }) {
   const [showModal, setShowModal] = React.useState(false);
@@ -25,7 +26,7 @@ function CollectionsPanel({ user, initialCollections, userName }) {
   );
 
   const handleToggleModal = toggle => {
-    setShowModal(() => toggle);
+    setShowModal(() => toggle || !showModal);
   };
 
   const handleCreateCollection = async title => {
@@ -48,14 +49,7 @@ function CollectionsPanel({ user, initialCollections, userName }) {
   return (
     <section className="collections-panel">
       <Title header={user ? "Shelves" : `${userName} Shelves`} color="pink">
-        {!!user && (
-          <div
-            onClick={() => handleToggleModal(true)}
-            className="button button-toggle button-secondary"
-          >
-            <a>+</a>
-          </div>
-        )}
+        {!!user && <ButtonToggle handleToggle={() => handleToggleModal(true)} />}
       </Title>
       {!collections ? (
         <Loader />
@@ -75,7 +69,7 @@ function CollectionsPanel({ user, initialCollections, userName }) {
         dismissModal={() => handleToggleModal(false)}
         handleSubmit={handleCreateCollection}
       >
-        <BasicForm inputName="Title" />
+        <BasicForm inputName="Create a Shelf" placeholder="Shelf Name" />
       </Modal>
     </section>
   );

@@ -3,8 +3,8 @@
 .grid {
   display: grid;
   grid-auto-rows: 0fr;
-  grid-column-gap: var(--default-spacing);
-  grid-row-gap: var(--default-spacing);
+  grid-column-gap: $base-spacing;
+  grid-row-gap: $base-spacing;
 }
 
 .grid-large {
@@ -33,5 +33,5 @@
 }
 
 .grid-filter {
-  margin-bottom: var(--default-spacing);
+  margin-bottom: $base-spacing;
 }

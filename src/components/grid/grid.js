@@ -32,7 +32,12 @@ const Grid = ({
     if (!filtering.enabled) {
       return data;
     }
-    return data.filter(item => item[filtering.type].includes(search));
+    return data.filter(item => {
+      return (
+        item[filtering.type].includes(search) ||
+        item[filtering.type].toLowerCase().includes(search.toLowerCase())
+      );
+    });
   };
 
   return (

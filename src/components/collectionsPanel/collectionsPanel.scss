@@ -3,11 +3,13 @@
 .collections-panel {
   min-height: calc(100% - 40px);
   @include subtle-border(1px, left);
-  padding: 0 40px 40px;
-
+  padding: 0 $comfortable-spacing $comfortable-spacing;
+  @include responsive-max($tablet) {
+    @include subtle-border(1px, top);
+  }
   .button-toggle {
-    right: 20px;
-    top: 45px;
+    right: 0;
+    top: 48px;
     * {
       color: var(--main-pink);
     }

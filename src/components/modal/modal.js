@@ -72,7 +72,7 @@ const Modal = ({
               <div>
                 <a
                   ref={closeRef}
-                  className="button button-secondary"
+                  className="modal-close button button-secondary"
                   onClick={handleDismiss}
                 >
                   {closeText}

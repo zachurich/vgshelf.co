@@ -7,13 +7,13 @@
 .menu-list {
   position: absolute;
   top: 56px;
-  right: var(--default-spacing);
-  @include position(56px, var(--default-spacing));
+  right: $base-spacing;
+  @include position(56px, $base-spacing);
   background: white;
-  padding: var(--default-spacing);
+  padding: $base-spacing;
   @include box-shadow(var(--solid-drop-shadow));
   border-radius: 5px;
-  font-weight: var(--weight-bold);
+  font-weight: $weight-bold;
   z-index: 3;
 }
 

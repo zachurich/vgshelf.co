@@ -22,3 +22,15 @@ export function SignUpButton({ user, text, classes = "button-primary" }) {
   }
   return null;
 }
+
+export function ButtonToggle({ handleToggle, additionalClasses = "", ...props }) {
+  return (
+    <div
+      onClick={handleToggle}
+      className={`button button-toggle button-secondary ${additionalClasses}`}
+      {...props}
+    >
+      {props.children || <a>+</a>}
+    </div>
+  );
+}

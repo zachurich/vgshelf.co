@@ -15,6 +15,7 @@ import { useDebounce } from "../../common/hooks";
 
 export const SearchForm = ({
   inputName,
+  placeholder,
   displayValue,
   handleChange,
   handleSubmit,
@@ -45,6 +46,7 @@ export const SearchForm = ({
       >
         <ComboboxInput
           autoComplete="off"
+          placeholder={placeholder}
           className={suggestions.length > 0 && focused ? "search-suggestions-open" : ""}
           type="text"
           aria-labelledby={inputName}

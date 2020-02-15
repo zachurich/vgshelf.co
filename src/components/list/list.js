@@ -1,7 +1,8 @@
-import "./style.scss";
 import React from "react";
 import Link from "next/link";
 import { sortByDate } from "../../common/utils";
+
+import "./styles.scss";
 
 const List = ({
   data = [],

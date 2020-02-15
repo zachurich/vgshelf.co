@@ -10,7 +10,7 @@
   .game-item-content {
     display: flex;
     width: 100%;
-    font-weight: var(--weight-bold);
+    font-weight: $weight-bold;
     @include box-shadow(var(--solid-drop-shadow), 4px);
     border-radius: 5px;
     background-color: white;
@@ -37,7 +37,7 @@
     }
     .game-item-text {
       flex-basis: calc(75% - 35px);
-      padding: 15px 15px 15px var(--default-spacing);
+      padding: 15px 15px 15px $base-spacing;
     }
   }
 

@@ -4,8 +4,11 @@
   height: $nav-height;
   display: flex;
   justify-content: space-between;
-  padding: 0 50px;
+  padding: 0 $comfortable-spacing;
   @include subtle-border;
+  @include responsive-max($mobile) {
+    padding: 0 $base-spacing;
+  }
 }
 
 .nav-logo {

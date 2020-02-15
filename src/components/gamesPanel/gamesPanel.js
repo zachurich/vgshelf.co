@@ -9,12 +9,13 @@ import { trigger } from "@zeit/swr";
 import { ENDPOINTS, ROUTES } from "../../../common/routes";
 import { fetchGames, createGame, fetchSimple } from "../../api/gamesApi";
 import { fetchCover } from "../../api/search";
-import { appendParam, handleServerResponse } from "../../common/utils";
+import { appendParam, handleServerResponse, scrollTop } from "../../common/utils";
 import { useDataFetch } from "../../common/hooks";
 import GameItem from "../gameItem/gameItem";
 
 import "./styles.scss";
 import { decideHeader, decideBreadCrumb } from "./util";
+import { ButtonToggle } from "../buttons/buttons";
 
 function GamesPanel({
   initialGames = [],
@@ -23,6 +24,7 @@ function GamesPanel({
   collectionId: collection = null,
   userName = null,
   handlePrompt = null,
+  showTogglePanel = false,
   title = null
 }) {
   const [showModal, setShowModal] = React.useState(false);
@@ -33,29 +35,40 @@ function GamesPanel({
     : {};
 
   const games = _.get(data, "games", initialGames);
-
   const handleToggleModal = toggle => {
+    scrollTop();
     setModalMsg(() => null);
-    setShowModal(() => toggle);
+    setShowModal(() => toggle || !showModal);
   };
   const toggleAction = handlePrompt || handleToggleModal; // prefer handleToggle prop
 
+  const handleError = response => {
+    const message = handleServerResponse(response);
+    if (message) {
+      setModalMsg(() => message);
+    }
+  };
+
   const handleCreateGame = async value => {
     if (value) {
-      const coverData = await fetchCover(null, value.id);
-      const response = await createGame(null, {
-        id: user.id,
-        title: value.name,
-        igdbId: value.id,
-        slug: value.slug,
-        imageUrl: get(coverData[0], "url")
-      });
-      const message = handleServerResponse(response.data);
-      if (message) {
-        setModalMsg(() => message);
-      } else {
-        toggleAction(false);
-        trigger(finalUrl);
+      try {
+        const coverData = await fetchCover(null, value.id);
+        const response = await createGame(null, {
+          id: user.id,
+          title: value.name,
+          igdbId: value.id,
+          slug: value.slug,
+          imageUrl: get(coverData[0], "url")
+        });
+        const message = handleServerResponse(response.data);
+        if (message) {
+          setModalMsg(() => message);
+        } else {
+          toggleAction(false);
+          trigger(finalUrl);
+        }
+      } catch (error) {
+        handleError(error.response.data);
       }
     }
   };
@@ -73,12 +86,12 @@ function GamesPanel({
         color={collection ? "pink" : "blue"}
       >
         {!!user && (
-          <div
-            onClick={() => toggleAction(true)}
-            className="button button-toggle button-secondary"
-          >
-            <a>+</a>
-          </div>
+          <ButtonToggle
+            additionalClasses={`button-add ${
+              showTogglePanel || showModal ? "button-add-close" : "button-add-open"
+            }`}
+            handleToggle={() => toggleAction()}
+          />
         )}
       </Title>
       {!games && !initialGames ? (
@@ -102,7 +115,7 @@ function GamesPanel({
         dismissModal={() => toggleAction(false)}
         handleSubmit={handleCreateGame}
       >
-        <SearchForm inputName="Search by Game Title" />
+        <SearchForm inputName="Search by Game Title" placeholder="Game Title" />
       </Modal>
     </div>
   );

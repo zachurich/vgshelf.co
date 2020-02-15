@@ -3,7 +3,7 @@ import get from "lodash/get";
 import React from "react";
 import { Nav, Meta } from "../../../components/index";
 import { fetchGames, createGame, deleteGame } from "../../../api/gamesApi";
-import { formatUserName, toggleItemInArray } from "../../../common/utils";
+import { formatUserName, toggleItemInArray, scrollTop } from "../../../common/utils";
 import GameTogglePanel from "../../../components/gameTogglePanel/gameTogglePanel";
 import { updateCollection } from "../../../api/collectionsApi";
 import GamesPanel from "../../../components/gamesPanel/gamesPanel";
@@ -28,6 +28,7 @@ const Games = ({ initialGames = [], user, username }) => {
 
   const handleToggleTogglePanel = () => {
     if (collectionId) {
+      scrollTop();
       setShowTogglePanel(() => !showTogglePanel);
     }
   };
@@ -70,7 +71,8 @@ const Games = ({ initialGames = [], user, username }) => {
           collectionId={collectionId}
           parentControlled={true}
           initialGames={games || initialGames}
-          handlePrompt={() => handleToggleTogglePanel(true)}
+          showTogglePanel={showTogglePanel}
+          handlePrompt={handleToggleTogglePanel}
         />
       </div>
     </main>

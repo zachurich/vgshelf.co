@@ -10,7 +10,7 @@
     color: var(--main-blue);
     display: inline-block;
     margin: 50px auto 40px;
-    font-weight: var(--weight-black);
+    font-weight: $weight-black;
     span {
       text-transform: capitalize;
     }

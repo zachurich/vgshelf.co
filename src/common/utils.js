@@ -43,6 +43,12 @@ export const appendParam = (url, { key, value }) => {
   return (url += `${key}=${value}`);
 };
 
+export const scrollTop = () => {
+  if (documentExists()) {
+    window.scrollTo(0, 0);
+  }
+};
+
 export const escapeNull = (value, fallback) => {
   if (!isNull(value)) {
     return value;
@@ -60,7 +66,8 @@ export const getColor = color => {
 };
 
 export const handleServerResponse = (response = {}) => {
-  if (+get(response, "code") === 400) {
+  const errorCodes = new Set([400, 500]);
+  if (errorCodes.has(+get(response, "code"))) {
     return response.msg;
   }
   return null;

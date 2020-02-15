@@ -13,9 +13,9 @@
     position: relative;
     font-size: 48px;
     color: var(--main-blue);
-    font-weight: var(--weight-black);
+    font-weight: $weight-black;
     text-transform: uppercase;
-    margin-bottom: var(--default-spacing);
+    margin-bottom: $base-spacing;
     &:after {
       @include position(auto, 0, -12px, 0);
       content: " ";
@@ -31,7 +31,7 @@
   }
 
   .landing-subtitle h3 {
-    font-weight: var(--weight-bold);
+    font-weight: $weight-bold;
     font-size: 24px;
     margin-top: 0;
   }
@@ -66,7 +66,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: var(--default-spacing);
+    padding: $base-spacing;
     flex-basis: calc(100% / 3 - 30px);
     max-width: 350px;
     margin: 0 15px 20px;
@@ -93,7 +93,7 @@
     display: flex;
     width: 100%;
     height: 200px;
-    margin-bottom: calc(var(--default-spacing) + 30px);
+    margin-bottom: calc($base-spacing + 30px);
     justify-content: center;
     svg {
       max-width: 250px;
@@ -125,7 +125,7 @@
   border-radius: 5px;
   box-sizing: padding-box;
   h3 {
-    margin: 10px var(--default-spacing);
+    margin: 10px $base-spacing;
   }
 }
 
@@ -216,7 +216,7 @@
 
 .call-to-action-title {
   font-size: 32px;
-  font-weight: var(--weight-black);
+  font-weight: $weight-black;
   h2 {
     margin-top: 0;
   }

@@ -10,6 +10,7 @@ import ArrowSVG from "../../assets/arrow.svg";
 import { getColor } from "../../common/utils";
 import Title from "../title/title";
 import Loader from "../loader/loader";
+import { ButtonToggle } from "../buttons/buttons";
 
 function GameTogglePanel({
   handleToggleGame, // add/remove game from collection
@@ -22,14 +23,7 @@ function GameTogglePanel({
 
   return (
     <section className="games-toggle-panel">
-      <button
-        className="games-toggle-panel-close button button-toggle button-secondary"
-        onClick={handleClosePanel}
-      >
-        <a>
-          <ArrowSVG stroke={getColor("--main-blue") || "#017bfd"} />
-        </a>
-      </button>
+      <ButtonToggle handleToggle={handleClosePanel} />
       <Title header={"Add to Shelf"} borderColor="blue" />
       {/* This component should contain all games - Search/Toggle in collection*/}
       {!currentCollectionGames ? (
