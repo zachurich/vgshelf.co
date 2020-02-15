@@ -1,7 +1,0 @@
-.searchForm-suggestionsContainer {
-  top: 75px;
-}
-
-.react-autosuggest__suggestion--highlighted {
-  @apply .bg-gray-200;
-}

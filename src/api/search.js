@@ -1,5 +1,5 @@
 import { createUrl } from "../common/utils";
-import { ENDPOINTS } from "../common/constants";
+import { ENDPOINTS } from "../../common/routes";
 import axios from "axios";
 
 export const fetchResults = async (req, input) => {

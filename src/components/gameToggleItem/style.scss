@@ -1,0 +1,57 @@
+@import "../../styles/vars.scss";
+@import "../../styles/util.scss";
+
+.game-toggle-item {
+  box-sizing: border-box;
+  border: 6px solid transparent;
+  display: flex;
+  max-height: 84px;
+  cursor: pointer;
+  justify-self: center;
+  width: 100%;
+  @include border-radius(14px);
+  @include transition;
+  &.toggled {
+    border: 6px solid var(--main-blue) !important;
+  }
+
+  &:hover {
+    border: 6px solid var(--main-pink);
+  }
+
+  .game-toggle-item-content {
+    display: flex;
+    width: 100%;
+    font-weight: $weight-bold;
+    @include box-shadow(var(--solid-drop-shadow), 4px);
+    background-color: white;
+    @include border-radius;
+    .game-toggle-item-image-wrap {
+      flex-basis: 25%;
+      @include flex-center;
+      .game-toggle-item-image {
+        width: 58px;
+        height: 78px;
+        overflow: hidden;
+        border-radius: 5px;
+        position: relative;
+        @include position(-10px, auto, auto, 10px);
+        @include box-shadow(var(--solid-drop-shadow), 3px);
+        img,
+        svg {
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .game-toggle-item-text {
+      width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-basis: calc(75% - 35px);
+      padding: 15px 15px 15px $base-spacing;
+    }
+  }
+}

@@ -1,14 +1,23 @@
 import React from "react";
 
-export const BasicForm = ({ inputName, value, handleChange, handleSubmit }) => {
+import "./styles.scss";
+
+export const BasicForm = ({
+  inputName,
+  placeholder,
+  value,
+  handleChange,
+  handleSubmit
+}) => {
   return (
-    <form className="mb-6 w-full" onChange={handleChange} onSubmit={handleSubmit}>
-      <label className="block mb-2" htmlFor={`${inputName.toLowerCase()}-title`}>
+    <form className="basic-form" onChange={handleChange} onSubmit={handleSubmit}>
+      <label className="basic-form-label" htmlFor={`${inputName.toLowerCase()}-title`}>
         {inputName}
       </label>
       <input
-        className="shadow rounded w-full appearance-none border py-2 px-3 leading-tight text-base"
+        className="basic-form-input"
         name={`${inputName.toLowerCase()}-title`}
+        placeholder={placeholder}
         type="text"
         value={value}
         onChange={handleChange}

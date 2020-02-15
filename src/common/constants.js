@@ -1,11 +1,1 @@
-export const ENDPOINTS = {
-  COLLECTION: "/api/collection",
-  GAME: "/api/game",
-  SEARCH: "/api/external/search/",
-  COVER: "/api/external/cover/"
-};
-
-export const ROUTES = {
-  COLLECTIONS: "/collections",
-  GAMES: "/games"
-};
+export const siteColors = ["--main-blue", "--main-green", "--main-yellow", "--main-pink"];

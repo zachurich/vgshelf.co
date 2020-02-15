@@ -1,0 +1,33 @@
+@import "../../styles/util.scss";
+
+.games-toggle-panel {
+  --games-toggle-padding: 60px;
+  position: relative;
+  max-width: 400px;
+  min-height: calc(100vh - 94px);
+  flex-basis: calc(100% / 3 - var(--games-toggle-padding));
+  padding: 0 30px 30px;
+  @include subtle-border(1px, right);
+  @include responsive-max($tablet) {
+    flex-basis: 100%;
+    min-width: calc(100vw - var(--games-toggle-padding));
+    max-width: none;
+    @include subtle-border(1px, bottom);
+  }
+  .button-toggle {
+    top: 46px;
+    right: -20px;
+    @include responsive-max($tablet) {
+      top: auto;
+      right: auto;
+    }
+    @include responsive-max($mobile) {
+      display: none;
+    }
+    a {
+      position: relative;
+      left: 1px;
+      transform: rotate(45deg);
+    }
+  }
+}

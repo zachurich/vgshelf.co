@@ -1,8 +1,9 @@
 const User = require("../../models/User");
 const passport = require("passport");
 const { handleResponse, createResponse, userExists } = require("../utils");
+const { ROUTES } = require("../../../common/routes");
 
-const RegisterUser = (req, res, next) => {
+const InitUser = (req, res, next) => {
   passport.authenticate("auth0", (err, user) => {
     const { id, displayName, nickname } = user;
     const mongoUser = new User({
@@ -11,7 +12,7 @@ const RegisterUser = (req, res, next) => {
       emailAddress: displayName
     });
     if (err) return next(err);
-    if (!user) return res.redirect("/login");
+    if (!user) return res.redirect(ROUTES.LOGIN);
     req.logIn(user, err => {
       if (err) return next(err);
       req.mongoUser = mongoUser;
@@ -20,19 +21,31 @@ const RegisterUser = (req, res, next) => {
   })(req, res, next);
 };
 
-const RegisterUserResponseHandler = async (req, res, next) => {
+const UserResponseHandler = async (req, res, next) => {
   const { mongoUser, userExists } = req;
   if (!userExists) {
     try {
       await mongoUser.save();
-      response = createResponse("Created!", mongoUser.username, 200);
+      response = createResponse(
+        `Created user ${mongoUser.username}!`,
+        mongoUser.username,
+        200
+      );
     } catch (e) {
-      response = createResponse("There was an error registering the user", e, 500);
+      response = createResponse(
+        `There was an error registering user ${mongoUser.username}`,
+        e,
+        500
+      );
     }
   } else {
-    response = createResponse("This user already exists!", mongoUser.username, 200);
+    response = createResponse(
+      `Logging in ${mongoUser.username}!`,
+      mongoUser.username,
+      200
+    );
   }
-  return handleResponse(res, response, "/");
+  return handleResponse(res, response, `${ROUTES.APP}/${mongoUser.username}`);
 };
 
-module.exports = { RegisterUser, RegisterUserResponseHandler };
+module.exports = { InitUser, UserResponseHandler };

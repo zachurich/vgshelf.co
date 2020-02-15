@@ -29,13 +29,20 @@ exports.userExists = (userId, req, res, next) => {
       req.userExists = false;
       next();
     }
-
     if (obj) {
       req.userExists = true;
     } else {
       req.userExists = false;
     }
-
     next();
   });
+};
+
+exports.handleErrors = async fn => {
+  try {
+    const response = await fn;
+    return response;
+  } catch (e) {
+    throw e;
+  }
 };

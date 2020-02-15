@@ -1,30 +1,32 @@
+import get from "lodash/get";
 import React from "react";
 import Grid from "../grid/grid";
 import Modal from "../modal/modal";
 import { BasicForm } from "../basicForm/basicForm";
-import { ROUTES, ENDPOINTS } from "../../common/constants";
+import { ROUTES, ENDPOINTS } from "../../../common/routes";
 import {
   fetchCollections,
   createCollection,
   deleteCollection
 } from "../../api/collectionsApi";
 import Title from "../title/title";
-import useSWR, { trigger } from "@zeit/swr";
-import { fetchSimple } from "../../api/gamesApi";
-import { appendParam } from "../../common/utils";
+import { trigger } from "@zeit/swr";
+import List from "../list/list";
+import "./collectionsPanel.scss";
+import { useDataFetch } from "../../common/hooks";
+import Loader from "../loader/loader";
+import { ButtonToggle } from "../buttons/buttons";
 
-function CollectionsPanel({ user, initialCollections }) {
+function CollectionsPanel({ user, initialCollections, userName }) {
   const [showModal, setShowModal] = React.useState(false);
   let fetchUrl = ENDPOINTS.COLLECTION;
-
-  if (user) {
-    fetchUrl = appendParam(fetchUrl, { key: "user", value: user.id });
-  }
-
-  const { data: collections, error } = useSWR(fetchUrl, fetchSimple);
+  const { data: collections, error, finalUrl } = useDataFetch(
+    { user: get(user, "id"), userName },
+    fetchUrl
+  );
 
   const handleToggleModal = toggle => {
-    setShowModal(() => toggle);
+    setShowModal(() => toggle || !showModal);
   };
 
   const handleCreateCollection = async title => {
@@ -35,26 +37,31 @@ function CollectionsPanel({ user, initialCollections }) {
         name: title,
         games: []
       });
-      trigger(fetchUrl);
+      trigger(finalUrl);
     }
   };
 
   const handleDeleteCollection = async id => {
     await deleteCollection(null, { id });
-    trigger(fetchUrl);
+    trigger(finalUrl);
   };
 
   return (
-    <section className="w-1/4 relative border-l h-screen">
-      <Title header="Shelves" />
-      <Grid
-        data={collections || initialCollections}
-        size="row"
-        destRoute={ROUTES.GAMES}
-        prettyRoute={ROUTES.COLLECTIONS}
-        handleDelete={handleDeleteCollection}
-        handlePrompt={() => handleToggleModal(true)}
-      />
+    <section className="collections-panel">
+      <Title header={user ? "Shelves" : `${userName} Shelves`} color="pink">
+        {!!user && <ButtonToggle handleToggle={() => handleToggleModal(true)} />}
+      </Title>
+      {!collections ? (
+        <Loader />
+      ) : (
+        <List
+          data={collections || initialCollections}
+          destRoute={ROUTES.GAMES}
+          handleDelete={handleDeleteCollection}
+          handlePrompt={() => handleToggleModal(true)}
+          canAdd={!!user}
+        />
+      )}
       <Modal
         open={showModal}
         closeText="Close"
@@ -62,7 +69,7 @@ function CollectionsPanel({ user, initialCollections }) {
         dismissModal={() => handleToggleModal(false)}
         handleSubmit={handleCreateCollection}
       >
-        <BasicForm inputName="Title" />
+        <BasicForm inputName="Create a Shelf" placeholder="Shelf Name" />
       </Modal>
     </section>
   );

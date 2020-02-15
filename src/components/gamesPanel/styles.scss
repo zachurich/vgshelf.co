@@ -1,0 +1,15 @@
+@import "../../styles/util.scss";
+
+.games-panel {
+  padding: 0 $comfortable-spacing $comfortable-spacing;
+  @include responsive-max($mobile) {
+    padding: 0 0 $comfortable-spacing;
+  }
+  .button-toggle {
+    right: $base-spacing;
+    top: 45px;
+    @include responsive-max($mobile) {
+      top: auto;
+    }
+  }
+}

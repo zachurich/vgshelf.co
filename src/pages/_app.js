@@ -3,7 +3,9 @@ import React from "react";
 import App, { Container } from "next/app";
 import { Nav } from "../components";
 
-import "../styles/index.css";
+import "normalize.css";
+import "../styles/index.scss";
+import Footer from "../components/footer/footer";
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -17,12 +19,31 @@ class MyApp extends App {
     return { pageProps };
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: props.pageProps.user
-    };
+  state = {
+    user: this.props.pageProps.user,
+    showNavMenu: false
+  };
+
+  componentDidMount() {
+    if (document) {
+      document.body.addEventListener("click", this.toggleMenu);
+    }
   }
+
+  componentWillUnmount() {
+    if (document) {
+      document.body.removeEventListener("click", this.toggleMenu);
+    }
+  }
+
+  toggleMenu = e => {
+    const { target } = e;
+    if (target.classList.contains("menu-toggle")) {
+      this.setState({ showNavMenu: !this.state.showNavMenu });
+    } else if (this.state.showNavMenu) {
+      this.setState({ showNavMenu: false });
+    }
+  };
 
   render() {
     const { Component, pageProps } = this.props;
@@ -34,8 +55,9 @@ class MyApp extends App {
 
     return (
       <Container>
-        <Nav user={this.state.user} />
+        <Nav user={this.state.user} menuVisible={this.state.showNavMenu} />
         <Component {...props} />
+        <Footer />
       </Container>
     );
   }

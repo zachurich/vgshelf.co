@@ -1,54 +1,75 @@
+const uniqBy = require("lodash/uniqBy");
 const User = require("../../models/User");
 const Game = require("../../models/Game");
 const Collection = require("../../models/Collection");
 const { createDetailedGame } = require("./utils");
-const { handleResponse, createResponse } = require("../utils");
+const { handleResponse, createResponse, handleErrors } = require("../utils");
 
 const GetGame = async (req, res) => {
-  const { id, user = null, collection = null } = req.query;
+  const { id, user = null, collection = null, userName = null } = req.query;
   let response = {};
+  let query;
   try {
-    if (!user) {
-      const gameFilter = { _id: id };
-      response = await retrieveSingleGame(gameFilter);
+    if (userName && !collection) {
+      // Get all games via unauthed username
+      query = await handleErrors(buildQueryGamesByUsername(userName));
+      response = await handleErrors(retrieveAllGames(query));
+    } else if (id) {
+      // Get a single game by _id
+      query = { _id: id };
+      response = await handleErrors(retrieveSingleGame(query));
+    } else if (collection) {
+      query = await handleErrors(buildQueryGamesInCollection(collection));
+    } else if (user) {
+      query = await handleErrors(buildQueryGamesInUser(user));
     } else {
-      let queryObject;
-      let type;
-      if (collection) {
-        type = "collection";
-        queryObject = await Collection.findOne({ _id: collection });
-      } else {
-        type = "user";
-        queryObject = await User.findOne({ userId: user });
-      }
-      response = await retrieveAllGames(queryObject, type);
+      throw Error("No params provided!");
     }
+    response = await handleErrors(retrieveAllGames(query));
   } catch (error) {
     response = createResponse("There was an error retrieving the game(s)!", error, 500);
   }
   return handleResponse(res, response);
 };
 
-async function retrieveSingleGame(filter) {
-  try {
-    const game = await Game.findOne(filter);
-    return createResponse("Retrieved single game!", game);
-  } catch (e) {
-    throw e;
-  }
+async function buildQueryGamesInCollection(collection) {
+  const type = "collection";
+  const queryObject = await Collection.findOne({ _id: collection });
+  return { queryObject, type, user: queryObject.user };
 }
 
-async function retrieveAllGames(queryObject, type) {
+async function buildQueryGamesInUser(user) {
+  const type = "user";
+  const queryObject = await User.findOne({ userId: user });
+  return { queryObject, type, user: queryObject.id };
+}
+
+async function buildQueryGamesByUsername(username) {
+  const type = "userName";
+  const queryObject = await User.findOne({ username });
+  return { queryObject, type, user: queryObject.id };
+}
+
+async function retrieveSingleGame(filter) {
+  const game = await Game.findOne(filter);
+  return createResponse("Retrieved single game!", game);
+}
+
+async function retrieveAllGames({ queryObject, type, user }) {
   const { games } = queryObject;
   const gameDetails = [];
+  for (const userGame of games) {
+    let globalGame = await Game.findOne({ _id: userGame._id });
+    gameDetails.push(createDetailedGame(globalGame, userGame));
+  }
   try {
-    for (i in games) {
-      let game = await Game.findOne({ _id: games[i] });
-      gameDetails.push(createDetailedGame(game));
-    }
-    return createResponse(`Retrieved all games from ${type}!`, gameDetails);
-  } catch (e) {
-    throw e;
+    const { username } = await User.findOne({ _id: user });
+    return createResponse(`Retrieved all games from ${type}!`, {
+      username,
+      games: uniqBy(gameDetails, "id")
+    });
+  } catch (error) {
+    throw Error("User not found!", error);
   }
 }
 

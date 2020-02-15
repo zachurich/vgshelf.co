@@ -2,33 +2,36 @@ import React from "react";
 import Link from "next/link";
 import { Menu } from "../index";
 
-import "./nav.css";
+import "./nav.scss";
 import { formatUserName } from "../../common/utils";
+import { ROUTES } from "../../../common/routes";
+import { LoginButton } from "../buttons/buttons";
+import Logo from "../../assets/logo.svg";
 
-const Nav = props => {
-  const { user } = props;
-  const [showMenu, setShowMenu] = React.useState(false);
-  const toggleMenu = () => setShowMenu(() => !showMenu);
+const Nav = ({ user, menuVisible }) => {
   return (
-    <nav className="flex items-center justify-between flex-wrap relative px-6 py-2 border-b border-gray">
-      <div className="nav-logo flex items-center flex-shrink-0 mr-6">
+    <nav className="nav">
+      <div className="nav-logo">
         <Link href="/">
-          <a className="font-black text-lg">vgshelf</a>
+          <a>
+            <Logo />
+          </a>
         </Link>
       </div>
-      {/* <div className="nav-user flex-grow text-right">
-        <span>{formatUserName(user)}</span>
-      </div> */}
-      <ul className="nav-links flex justify-end flex-grow items-center">
-        {user && (
-          <li className="mr-6">
+      <ul className="nav-links">
+        {/* {user && (
+          <li className="nav-link-item">
             <Link href="/collections">
               <a>Collections</a>
             </Link>
           </li>
-        )}
-        <li className="flex">
-          <Menu showMenu={showMenu} toggleMenu={toggleMenu} user={user} />
+        )} */}
+        <li className="nav-link-item flex">
+          {user ? (
+            <Menu showMenu={menuVisible} user={user} />
+          ) : (
+            <LoginButton user={user} classes={"button-nav"} />
+          )}
         </li>
       </ul>
     </nav>

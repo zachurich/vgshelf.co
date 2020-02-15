@@ -1,75 +1,67 @@
-import "./grid.css";
-import React from "react";
+import "./grid.scss";
+import React, { useState } from "react";
 import Link from "next/link";
+import { sortByDate } from "../../common/utils";
 
 const Grid = ({
   data = [],
-  size, // ["small", "med", "large", "row"]
-  handlePrompt = null,
-  destRoute,
-  prettyRoute,
+  size, // ["small", "med", "large"]
+  compareItems = [],
+  sortKey = "added",
+  filtering = {
+    enabled: false,
+    type: "title"
+  },
   handleToggle = () => {},
-  handleDelete,
-  compareItems = []
+  gridItem = () => {}
 }) => {
-  let imageSize;
-  if (size === "large") {
-    imageSize = "720p";
-  } else if (size === "med") {
-    imageSize = "cover_big";
-  } else {
-    imageSize = "cover_big";
+  const [search, setSearch] = useState("");
+
+  if (!data) return null;
+
+  if (data && !data.length) {
+    return (
+      <div className="grid-empty">
+        <p>This shelf is empty.</p>
+      </div>
+    );
   }
+
+  // Data passes thru as is if filtering is not enabled
+  const filterData = data => {
+    if (!filtering.enabled) {
+      return data;
+    }
+    return data.filter(item => {
+      return (
+        item[filtering.type].includes(search) ||
+        item[filtering.type].toLowerCase().includes(search.toLowerCase())
+      );
+    });
+  };
+
   return (
-    <ul className={`grid grid-${size} flex flex-wrap container mx-auto px-6 py-10`}>
-      {data.length > 0 &&
-        data.map((item, index) => {
+    <>
+      {filtering.enabled && (
+        <input
+          className="grid-filter"
+          type="text"
+          value={search}
+          placeholder="Filter by Title..."
+          onChange={e => setSearch(e.target.value)}
+        />
+      )}
+      <ul className={`grid grid-${size}`}>
+        {filterData(sortByDate(data, sortKey)).map((item, index) => {
           const itemAlreadyToggled = compareItems.map(item => item.id).includes(item.id);
           return (
-            <li
-              key={item.id}
-              className="grid-item flex justify-center"
-              onClick={() => handleToggle(item.id)}
-            >
-              {destRoute ? (
-                <Link
-                  href={{
-                    pathname: destRoute,
-                    query: { id: item.id, title: item.title }
-                  }}
-                  as={`${prettyRoute}/${item.title}/${item.id}`}
-                >
-                  <a className="bg-gray-200 hover:bg-gray-300">
-                    <span>{item.title}</span>
-                  </a>
-                </Link>
-              ) : (
-                <div className="grid-item-content flex justify-center  flex-wrap rounded-lg">
-                  <span
-                    className={`inline-block grid-item-image border-white border-8 hover:border-blue-500 rounded-lg shadow-md ${
-                      itemAlreadyToggled ? "border-blue-500" : "border-white"
-                    }`}
-                  >
-                    <img
-                      // className="h-full w-auto"
-                      src={`${item.imageUrl.replace("thumb", imageSize)}`}
-                    />
-                  </span>
-                  <span className="grid-item-text mt-2">{item.title}</span>
-                </div>
-              )}
-            </li>
+            <React.Fragment key={item.id}>
+              {gridItem({ item, itemAlreadyToggled, handleToggle })}
+            </React.Fragment>
           );
         })}
-      {handlePrompt && (
-        <div
-          className="grid-item grid-item-last border-4 border-dashed border-gray-300 hover:bg-gray-300"
-          onClick={() => handlePrompt(true)}
-        >
-          <span className="text-3xl">+</span>
-        </div>
-      )}
-    </ul>
+      </ul>
+    </>
   );
 };
 

@@ -1,74 +1,121 @@
 import _ from "lodash";
-import React from "react";
+import get from "lodash/get";
+import React, { useEffect } from "react";
 import Title from "../title/title";
 import Grid from "../grid/grid";
 import Modal from "../modal/modal";
 import { SearchForm } from "../searchForm/searchForm";
-import useSWR, { trigger } from "@zeit/swr";
-import { ENDPOINTS } from "../../common/constants";
+import { trigger } from "@zeit/swr";
+import { ENDPOINTS, ROUTES } from "../../../common/routes";
 import { fetchGames, createGame, fetchSimple } from "../../api/gamesApi";
 import { fetchCover } from "../../api/search";
-import { appendParam } from "../../common/utils";
+import { appendParam, handleServerResponse, scrollTop } from "../../common/utils";
+import { useDataFetch } from "../../common/hooks";
+import GameItem from "../gameItem/gameItem";
 
-function GamesPanel({ initialGames = [], user, collectionId = null }) {
+import "./styles.scss";
+import { decideHeader, decideBreadCrumb } from "./util";
+import { ButtonToggle } from "../buttons/buttons";
+
+function GamesPanel({
+  initialGames = [],
+  user,
+  parentControlled = false, // if parent controlled, disable data fetching here
+  collectionId: collection = null,
+  userName = null,
+  handlePrompt = null,
+  showTogglePanel = false,
+  title = null
+}) {
   const [showModal, setShowModal] = React.useState(false);
-
-  let fetchUrl = ENDPOINTS.GAME;
-
-  if (user) {
-    fetchUrl = appendParam(fetchUrl, { key: "user", value: user.id });
-  }
-  if (collectionId) {
-    fetchUrl = appendParam(fetchUrl, { key: "collection", value: collectionId });
-  }
-
-  const { data: games, error } = useSWR(fetchUrl, fetchSimple);
-
-  const handleToggleModal = toggle => {
-    setShowModal(() => toggle);
-  };
   const [modalMsg, setModalMsg] = React.useState(null);
+
+  const { data, error, finalUrl } = !parentControlled
+    ? useDataFetch({ user: get(user, "id"), collection, userName }, ENDPOINTS.GAME)
+    : {};
+
+  const games = _.get(data, "games", initialGames);
+  const handleToggleModal = toggle => {
+    scrollTop();
+    setModalMsg(() => null);
+    setShowModal(() => toggle || !showModal);
+  };
+  const toggleAction = handlePrompt || handleToggleModal; // prefer handleToggle prop
+
+  const handleError = response => {
+    const message = handleServerResponse(response);
+    if (message) {
+      setModalMsg(() => message);
+    }
+  };
 
   const handleCreateGame = async value => {
     if (value) {
-      const coverData = await fetchCover(null, value.id);
-      const response = await createGame(null, {
-        id: user.id,
-        title: value.name,
-        igdbId: value.id,
-        slug: value.slug,
-        imageUrl: _.get(coverData[0], "url")
-      });
-      const message = _.get(response, "data.msg");
-      setModalMsg(() => message);
-      handleToggleModal(false);
-      trigger(fetchUrl);
+      try {
+        const coverData = await fetchCover(null, value.id);
+        const response = await createGame(null, {
+          id: user.id,
+          title: value.name,
+          igdbId: value.id,
+          slug: value.slug,
+          imageUrl: get(coverData[0], "url")
+        });
+        const message = handleServerResponse(response.data);
+        if (message) {
+          setModalMsg(() => message);
+        } else {
+          toggleAction(false);
+          trigger(finalUrl);
+        }
+      } catch (error) {
+        handleError(error.response.data);
+      }
     }
   };
 
   const handleDeleteGame = async id => {
     await deleteGame(null, { id, user: user.id });
-    trigger(fetchUrl);
+    trigger(finalUrl);
   };
 
   return (
-    <div>
-      <Title header={"All My Games"} />
-      <Grid
-        data={games || initialGames}
-        size="med"
-        handleDelete={handleDeleteGame}
-        handlePrompt={() => handleToggleModal(true)}
-      />
+    <div className="games-panel">
+      <Title
+        header={decideHeader(title, user, userName)}
+        breadCrumb={decideBreadCrumb(collection, user, userName)}
+        color={collection ? "pink" : "blue"}
+      >
+        {!!user && (
+          <ButtonToggle
+            additionalClasses={`button-add ${
+              showTogglePanel || showModal ? "button-add-close" : "button-add-open"
+            }`}
+            handleToggle={() => toggleAction()}
+          />
+        )}
+      </Title>
+      {!games && !initialGames ? (
+        <Loader />
+      ) : (
+        <Grid
+          data={games || initialGames}
+          size="large"
+          handleDelete={handleDeleteGame}
+          handlePrompt={() => toggleAction(true)}
+          canAdd={!!user}
+          sortKey={"added"}
+          gridItem={props => <GameItem handleToggle={handleToggleModal} {...props} />}
+        />
+      )}
       <Modal
         open={showModal}
         closeText="Close"
         submitText="Submit"
         message={modalMsg}
-        dismissModal={() => handleToggleModal(false)}
+        dismissModal={() => toggleAction(false)}
         handleSubmit={handleCreateGame}
       >
-        <SearchForm inputName="Search" />
+        <SearchForm inputName="Search by Game Title" placeholder="Game Title" />
       </Modal>
     </div>
   );

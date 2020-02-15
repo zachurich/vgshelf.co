@@ -1,82 +1,78 @@
 import React from "react";
 import { fetchResults } from "../../api/search";
 import { debounce } from "../../common/utils";
-import Autosuggest from "react-autosuggest";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption
+} from "@reach/combobox";
+import "@reach/combobox/styles.css";
 
-import "./searchForm.css";
-
-const getSuggestions = results => {
-  return results.map(result => ({ ...result }));
-};
-
-const getValue = value => value.name;
-
-const renderSuggestion = suggestion => (
-  <div className="w-full py-3 px-3">{suggestion.name}</div>
-);
-
-function renderSuggestionsContainer({ containerProps, children, query }) {
-  return (
-    <div
-      {...containerProps}
-      className="searchForm-suggestionsContainer absolute w-full bg-white rounded shadow"
-    >
-      {children}
-    </div>
-  );
-}
+import "./searchForm.scss";
+import { useDebounce } from "../../common/hooks";
 
 export const SearchForm = ({
   inputName,
+  placeholder,
   displayValue,
   handleChange,
   handleSubmit,
   handleSelectValue
 }) => {
-  const [timer, setTimer] = React.useState(null);
+  const [focused, setFocused] = React.useState(false);
+  const { debounce } = useDebounce();
   const [suggestions, setSuggestions] = React.useState([]);
+
   const getResults = async value => {
-    if (typeof value == "string") {
-      const results = await fetchResults(null, value);
-      setSuggestions(() => getSuggestions(results));
-    }
+    const results = await fetchResults(null, value);
+    setSuggestions(() => results);
   };
 
-  const clearResults = () => {
-    setSuggestions(() => []);
-  };
+  const pluckSuggestion = item =>
+    suggestions.filter(suggestion => suggestion.name === item)[0];
 
   return (
-    <form
-      className="mb-6 w-full relative"
-      onChange={e => {
-        let valueOnInput = e.target.value;
-        let timeout = debounce(timer, getResults, valueOnInput);
-        setTimer(() => timeout);
-      }}
-      onSubmit={e => e.preventDefault()}
-    >
-      <label className="block mb-2" htmlFor={`${inputName.toLowerCase()}-title`}>
+    <div className="form">
+      <label className="search-label" htmlFor={`${inputName.toLowerCase()}-title`}>
         {inputName}
       </label>
-      <Autosuggest
-        suggestions={suggestions}
-        onSuggestionsFetchRequested={getResults}
-        onSuggestionsClearRequested={clearResults}
-        getSuggestionValue={getValue}
-        renderSuggestion={renderSuggestion}
-        onSuggestionSelected={handleSelectValue}
-        // alwaysRenderSuggestions={true}
-        renderSuggestionsContainer={renderSuggestionsContainer}
-        inputProps={{
-          className:
-            "shadow rounded w-full appearance-none border py-2 px-3 leading-tight text-base",
-          name: `${inputName.toLowerCase()}-title`,
-          type: "text",
-          value: displayValue,
-          onChange: handleChange
+      <Combobox
+        onSelect={item => {
+          setFocused(() => false);
+          handleSelectValue(pluckSuggestion(item));
         }}
-      />
-    </form>
+      >
+        <ComboboxInput
+          autoComplete="off"
+          placeholder={placeholder}
+          className={suggestions.length > 0 && focused ? "search-suggestions-open" : ""}
+          type="text"
+          aria-labelledby={inputName}
+          onBlur={() => setFocused(() => false)}
+          onFocus={() => setFocused(() => true)}
+          onChange={e => {
+            let valueOnInput = e.target.value;
+            debounce(getResults, valueOnInput);
+          }}
+        />
+        <ComboboxPopover
+          className="search-option-list-container"
+          style={{ zIndex: 99999 }}
+        >
+          <ComboboxList className="search-option-list" aria-labelledby="Select an Option">
+            {suggestions.length > 0 &&
+              suggestions.map(item => (
+                <ComboboxOption
+                  className="search-option"
+                  key={item.id}
+                  value={item.name}
+                />
+              ))}
+          </ComboboxList>
+        </ComboboxPopover>
+      </Combobox>
+    </div>
   );
 };

@@ -1,36 +1,31 @@
 import React from "react";
 import Link from "next/link";
 
-import "./menu.css";
+import "./menu.scss";
 
 const Menu = ({ showMenu, toggleMenu, user }) => {
   const loggedIn = !!user;
   return (
-    <>
-      <button className="menu-button" onClick={() => toggleMenu()}>
-        <img
-          className="w-10 h-10 bg-gray-200 rounded-full mr-4"
-          {...(loggedIn && { src: user.picture })}
-        />
+    <div className="menu">
+      <button className="menu-button">
+        <img className="menu-toggle" {...(loggedIn && { src: user.picture })} />
       </button>
       {showMenu && (
-        <div className="menu-list absolute p-6 shadow rounded z-10">
-          <ul className="flex flex-no-wrap flex-col items-center">
-            <li className="block">
-              {loggedIn ? (
-                <Link href="/logout">
-                  <a>Logout</a>
-                </Link>
-              ) : (
-                <Link href="/login">
-                  <a>Login</a>
-                </Link>
-              )}
-            </li>
-          </ul>
-        </div>
+        <ul className="menu-list">
+          <li className="block">
+            {loggedIn ? (
+              <Link href="/logout">
+                <a>Logout</a>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <a>Login</a>
+              </Link>
+            )}
+          </li>
+        </ul>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,0 +1,44 @@
+@import "../../styles/util.scss";
+.list {
+  @include responsive-max($tablet) {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .list-item {
+    // padding: 15px;
+    background-color: white;
+    @include border-radius;
+    @include box-shadow(var(--solid-drop-shadow));
+    font-weight: $weight-black;
+    text-align: center;
+    margin-bottom: $base-spacing;
+    @include transition;
+    @include apply-hover;
+    & > * {
+      display: inline-block;
+      padding: 15px;
+      width: calc(100% - 30px);
+    }
+
+    @include responsive-max($tablet) {
+      margin-right: $base-spacing;
+      flex: 1;
+      white-space: nowrap;
+    }
+  }
+}
+
+.list-item-add {
+  @include border-radius;
+  border: 4px dashed var(--solid-drop-shadow);
+  color: var(--solid-drop-shadow);
+  display: flex;
+  @include flex-center;
+  font-size: 40px;
+  font-weight: $weight-black;
+  @include transition(0.05s);
+  &:hover {
+    border: 4px dashed var(--main-blue);
+    color: var(--main-blue);
+  }
+}

@@ -1,0 +1,18 @@
+@import "./util.scss";
+
+.games {
+  display: flex;
+  @include responsive-max($tablet) {
+    flex-direction: column;
+  }
+}
+
+.games-panel-wrapper {
+  flex: 1;
+  padding: 0 30px;
+  @include responsive-max($tablet) {
+    &.container {
+      margin: 0;
+    }
+  }
+}

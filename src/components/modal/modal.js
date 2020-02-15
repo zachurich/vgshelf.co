@@ -2,7 +2,7 @@ import React from "react";
 import { CSSTransition } from "react-transition-group";
 import Router from "next/router";
 
-import "./modal.css";
+import "./modal.scss";
 
 const Modal = ({
   open = false,
@@ -13,6 +13,8 @@ const Modal = ({
   message,
   children
 }) => {
+  const containerRef = React.useRef(null);
+  const closeRef = React.useRef(null);
   const [selection, setSelection] = React.useState(null);
   const [displayValue, setDisplayValue] = React.useState("");
   const handleChange = (e, { newValue } = {}) => {
@@ -21,7 +23,8 @@ const Modal = ({
     console.log(value);
     setDisplayValue(() => value);
   };
-  const handleSelectValue = (e, { suggestion }) => {
+  const handleSelectValue = suggestion => {
+    console.log(suggestion);
     setSelection(() => suggestion);
   };
 
@@ -30,9 +33,12 @@ const Modal = ({
     setDisplayValue(() => "");
   };
 
-  const handleDismiss = () => {
-    handleClearValues();
-    dismissModal();
+  const handleDismiss = e => {
+    const target = e.target;
+    if (target === containerRef.current || target === closeRef.current) {
+      handleClearValues();
+      dismissModal();
+    }
   };
 
   const handleSubmitAndClear = e => {
@@ -53,16 +59,33 @@ const Modal = ({
   return (
     <div>
       {open && (
-        <section className="modal">
-          <p>{message}</p>
-          <div className="modal-container rounded-lg p-10">
-            {hydratedChildren}
-            <div className="modal-footer py-2">
-              <div className="button">
-                <a onClick={handleDismiss}>{closeText}</a>
+        <section ref={containerRef} className="modal" onClick={handleDismiss}>
+          <div className="modal-container">
+            <div className="modal-content">
+              {message ? (
+                <p className="modal-error-message">{message}</p>
+              ) : (
+                hydratedChildren
+              )}
+            </div>
+            <div className="modal-footer">
+              <div>
+                <a
+                  ref={closeRef}
+                  className="modal-close button button-secondary"
+                  onClick={handleDismiss}
+                >
+                  {closeText}
+                </a>
               </div>
-              <div className="modal-submit button submit">
-                <a onClick={handleSubmitAndClear}>{submitText}</a>
+              <div className="modal-submit submit">
+                <a
+                  className={`button button-primary ${!(selection || displayValue) &&
+                    "disabled"}`}
+                  onClick={handleSubmitAndClear}
+                >
+                  {submitText}
+                </a>
               </div>
             </div>
           </div>

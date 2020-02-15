@@ -14,7 +14,7 @@ const RemoveGame = async (req, res, next) => {
     // const data = await game.save();
     response = createResponse("Game removed from user!", data);
   } catch (e) {
-    response = createResponse("There was an error remove the game!", e, 500);
+    response = createResponse("There was an error removing the game!", e, 500);
   }
   return handleResponse(res, response);
 };

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const uniqueRequired = { unique: true, required: true };
 
-const collection = new mongoose.Schema({
+const Collection = new mongoose.Schema({
   user: {
     type: mongoose.Types.ObjectId,
     ref: "User"
@@ -17,4 +17,4 @@ const collection = new mongoose.Schema({
   ]
 });
 
-module.exports = mongoose.model("Collection", collection);
+module.exports = mongoose.model("Collection", Collection);

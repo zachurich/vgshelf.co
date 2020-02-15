@@ -75,16 +75,6 @@ const init = async () => {
 
     server.use(api);
 
-    server.get("/collections/:title/:id", redirectIfUnauthed, (req, res, next) => {
-      return app.render(req, res, "/games", {
-        id: req.params.id,
-        title: req.params.title
-      });
-    });
-
-    server.get("/collections", redirectIfUnauthed);
-    server.get("/games", redirectIfUnauthed);
-
     server.get("*", (req, res) => {
       return handle(req, res);
     });
