@@ -21,7 +21,7 @@ const MongoStore = require("connect-mongo")(session);
 const api = require("./server/endpoints/index");
 const proxy = require("./server/endpoints/proxy");
 const auth = require("./server/endpoints/auth");
-const { ensureAuthenticated } = require("./server/endpoints/utils");
+const { checkAuthentication } = require("./server/resolvers/utils");
 
 mongoose.connect("mongodb://localhost:27017/test", { useNewUrlParser: true });
 
@@ -30,11 +30,6 @@ const { connection } = mongoose;
 connection.on("error", err => {
   console.log(`Error connecting to db: ${err}`);
 });
-
-function redirectIfUnauthed(req, res, next) {
-  if (!req.isAuthenticated()) return res.redirect("/login");
-  next();
-}
 
 const init = async () => {
   try {

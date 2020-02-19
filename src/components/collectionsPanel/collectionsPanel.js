@@ -19,10 +19,11 @@ import { ButtonToggle } from "../buttons/buttons";
 
 function CollectionsPanel({ user, initialCollections, userName }) {
   const [showModal, setShowModal] = React.useState(false);
-  let fetchUrl = ENDPOINTS.COLLECTION;
   const { data: collections, error, finalUrl } = useDataFetch(
     { user: get(user, "id"), userName },
-    fetchUrl
+    ENDPOINTS.COLLECTION,
+    "",
+    initialCollections
   );
 
   const handleToggleModal = toggle => {
@@ -62,14 +63,15 @@ function CollectionsPanel({ user, initialCollections, userName }) {
           canAdd={!!user}
         />
       )}
-      <Modal
-        open={showModal}
-        closeText="Close"
-        submitText="Submit"
-        dismissModal={() => handleToggleModal(false)}
-        handleSubmit={handleCreateCollection}
-      >
-        <BasicForm inputName="Create a Shelf" placeholder="Shelf Name" />
+      <Modal open={showModal} dismissModal={() => handleToggleModal(false)}>
+        <BasicForm
+          inputName="Create a Shelf"
+          placeholder="Shelf Name"
+          handleSubmit={handleCreateCollection}
+          handleDismiss={() => handleToggleModal(false)}
+          closeText="Cancel"
+          submitText="Add Shelf"
+        />
       </Modal>
     </section>
   );

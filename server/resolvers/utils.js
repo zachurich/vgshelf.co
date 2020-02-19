@@ -1,6 +1,6 @@
 const User = require("../models/User");
 
-exports.createResponse = (msg, data, code = 200) => {
+createResponse = (msg, data, code = 200) => {
   return {
     msg,
     data,
@@ -8,7 +8,7 @@ exports.createResponse = (msg, data, code = 200) => {
   };
 };
 
-exports.handleResponse = (res, response, redirect = false) => {
+handleResponse = (res, response, redirect = false) => {
   console.log(response);
   const { code } = response;
   if (code >= 500 && code < 600) {
@@ -22,7 +22,7 @@ exports.handleResponse = (res, response, redirect = false) => {
   }
 };
 
-exports.userExists = (userId, req, res, next) => {
+userExists = (userId, req, res, next) => {
   User.findOne({ userId }, (err, obj) => {
     req.userId = userId;
     if (err) {
@@ -38,11 +38,30 @@ exports.userExists = (userId, req, res, next) => {
   });
 };
 
-exports.handleErrors = async fn => {
+handleErrors = async fn => {
   try {
     const response = await fn;
     return response;
   } catch (e) {
     throw e;
   }
+};
+
+checkAuthentication = (req, res, next) => {
+  console.log(req.get("host"));
+  if (req.get("host").includes("/api") && !req.isAuthenticated()) {
+    res.status(401);
+    return res.send(
+      createResponse("You must be authenticated to use this API!", {}, 401)
+    );
+  }
+  next();
+};
+
+module.exports = {
+  createResponse,
+  handleResponse,
+  userExists,
+  handleErrors,
+  checkAuthentication
 };

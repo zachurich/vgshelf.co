@@ -1,6 +1,5 @@
 import React from "react";
 import { fetchResults } from "../../api/search";
-import { debounce } from "../../common/utils";
 import {
   Combobox,
   ComboboxInput,
@@ -12,18 +11,35 @@ import "@reach/combobox/styles.css";
 
 import "./searchForm.scss";
 import { useDebounce } from "../../common/hooks";
+import FormControls from "../formControls/formControls";
 
 export const SearchForm = ({
   inputName,
   placeholder,
-  displayValue,
-  handleChange,
   handleSubmit,
-  handleSelectValue
+  handleAddSelection,
+  dismissModal,
+  closeText,
+  submitText
 }) => {
   const [focused, setFocused] = React.useState(false);
   const { debounce } = useDebounce();
   const [suggestions, setSuggestions] = React.useState([]);
+  const [selection, setSelection] = React.useState(null);
+
+  const handleSelectValue = suggestion => {
+    setSelection(() => suggestion);
+    handleAddSelection(suggestion);
+  };
+
+  const handleClearValues = () => {
+    setSelection(() => "");
+  };
+
+  const handleDismiss = () => {
+    handleClearValues();
+    dismissModal();
+  };
 
   const getResults = async value => {
     const results = await fetchResults(null, value);
@@ -73,6 +89,13 @@ export const SearchForm = ({
           </ComboboxList>
         </ComboboxPopover>
       </Combobox>
+      <FormControls
+        handleDismiss={handleDismiss}
+        closeText={closeText}
+        disabled={!selection}
+        submitText={submitText}
+        handleSubmit={() => handleSubmit(selection)}
+      />
     </div>
   );
 };

@@ -16,6 +16,7 @@ import GameItem from "../gameItem/gameItem";
 import "./styles.scss";
 import { decideHeader, decideBreadCrumb } from "./util";
 import { ButtonToggle } from "../buttons/buttons";
+import FormSelections from "../formSelections/formSelections";
 
 function GamesPanel({
   initialGames = [],
@@ -29,18 +30,30 @@ function GamesPanel({
 }) {
   const [showModal, setShowModal] = React.useState(false);
   const [modalMsg, setModalMsg] = React.useState(null);
+  const [selections, setSelections] = React.useState([]);
 
-  const { data, error, finalUrl } = !parentControlled
-    ? useDataFetch({ user: get(user, "id"), collection, userName }, ENDPOINTS.GAME)
+  const { data: games, error, finalUrl } = !parentControlled
+    ? useDataFetch(
+        { user: get(user, "id"), collection, userName },
+        ENDPOINTS.GAME,
+        "games",
+        initialGames
+      )
     : {};
 
-  const games = _.get(data, "games", initialGames);
   const handleToggleModal = toggle => {
     scrollTop();
     setModalMsg(() => null);
     setShowModal(() => toggle || !showModal);
   };
-  const toggleAction = handlePrompt || handleToggleModal; // prefer handleToggle prop
+
+  const handleAddSelection = async selection => {
+    const coverData = await fetchCover(null, selection.id);
+    selection.cover = get(coverData[0], "url");
+    setSelections(() => selections.concat(selection));
+  };
+
+  const toggleAction = handlePrompt || handleToggleModal; // prefer handlePrompt prop
 
   const handleError = response => {
     const message = handleServerResponse(response);
@@ -107,15 +120,17 @@ function GamesPanel({
           gridItem={props => <GameItem handleToggle={handleToggleModal} {...props} />}
         />
       )}
-      <Modal
-        open={showModal}
-        closeText="Close"
-        submitText="Submit"
-        message={modalMsg}
-        dismissModal={() => toggleAction(false)}
-        handleSubmit={handleCreateGame}
-      >
-        <SearchForm inputName="Search by Game Title" placeholder="Game Title" />
+      <Modal open={showModal} message={modalMsg} dismissModal={() => toggleAction(false)}>
+        <FormSelections selections={selections} />
+        <SearchForm
+          inputName="Search by Game Title"
+          placeholder="Game Title"
+          closeText="Cancel"
+          submitText={`Add ${selections.length !== 0 ? selections.length : ""} Game`}
+          dismissModal={() => handleToggleModal(false)}
+          handleAddSelection={handleAddSelection}
+          handleSubmit={handleCreateGame}
+        />
       </Modal>
     </div>
   );

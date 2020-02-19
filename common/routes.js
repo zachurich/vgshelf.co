@@ -10,5 +10,6 @@ exports.ROUTES = {
   APP: "/dashboard",
   COLLECTIONS: "/collections",
   GAMES: "/games",
-  LOGIN: "/login"
+  LOGIN: "/login",
+  LOGOUT: "/logout"
 };

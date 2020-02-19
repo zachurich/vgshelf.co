@@ -11,3 +11,7 @@ exports.COMPLETENESS = {
   BEATEN: "Beaten",
   COMPLETED: "Completed"
 };
+
+exports.IMAGES = {
+  MISSING: "/static/missing-thumb.png"
+};

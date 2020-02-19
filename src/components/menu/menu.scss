@@ -5,10 +5,10 @@
 }
 
 .menu-list {
+  text-align: center;
   position: absolute;
-  top: 56px;
+  top: $nav-height;
   right: $base-spacing;
-  @include position(56px, $base-spacing);
   background: white;
   padding: $base-spacing;
   @include box-shadow(var(--solid-drop-shadow));
@@ -32,4 +32,11 @@
 .menu-button img {
   @include w-h(100%);
   border-radius: 5px;
+}
+
+.menu-item {
+  margin-bottom: $compact-spacing;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 }

@@ -18,8 +18,12 @@ function GameTogglePanel({
   currentCollectionGames, // used to compare all games to what games the user has in the collection
   user // available when logged in
 }) {
-  const { data, error } = useDataFetch({ user: get(user, "id") }, ENDPOINTS.GAME);
-  const games = get(data, "games", null);
+  const { data: games, error } = useDataFetch(
+    { user: get(user, "id") },
+    ENDPOINTS.GAME,
+    "games",
+    null
+  );
 
   return (
     <section className="games-toggle-panel">

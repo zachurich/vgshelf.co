@@ -16,7 +16,7 @@
   --main-pink-dark: #c61d54;
   --main-blue-hover: #016bdc;
   --white-hover: #e1e1e1;
-  --solid-drop-shadow: rgba(0, 0, 0, 0.25);
+  --solid-drop-shadow: #b7b7b6;
   --gray-drop-shadow-hover: #c7c7c7;
   --blue-drop-shadow-hover: #005cbe;
 }
@@ -194,6 +194,10 @@ img {
         * {
           transform: rotate(45deg);
         }
+      }
+      &:hover,
+      &:focus {
+        transform: none;
       }
     }
   }

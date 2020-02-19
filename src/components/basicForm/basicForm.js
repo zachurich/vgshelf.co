@@ -1,16 +1,27 @@
 import React from "react";
 
 import "./styles.scss";
+import FormControls from "../formControls/formControls";
 
 export const BasicForm = ({
   inputName,
   placeholder,
-  value,
-  handleChange,
-  handleSubmit
+  handleSubmit,
+  handleDismiss,
+  closeText,
+  submitText
 }) => {
+  const [displayValue, setDisplayValue] = React.useState("");
+  const handleChange = e => {
+    let value = e.target.value;
+    setDisplayValue(() => value);
+  };
   return (
-    <form className="basic-form" onChange={handleChange} onSubmit={handleSubmit}>
+    <form
+      className="basic-form"
+      onChange={handleChange}
+      onSubmit={() => handleSubmit(displayValue)}
+    >
       <label className="basic-form-label" htmlFor={`${inputName.toLowerCase()}-title`}>
         {inputName}
       </label>
@@ -19,8 +30,15 @@ export const BasicForm = ({
         name={`${inputName.toLowerCase()}-title`}
         placeholder={placeholder}
         type="text"
-        value={value}
+        value={displayValue}
         onChange={handleChange}
+      />
+      <FormControls
+        handleDismiss={handleDismiss}
+        closeText={closeText}
+        disabled={!displayValue}
+        submitText={submitText}
+        handleSubmit={() => handleSubmit(displayValue)}
       />
     </form>
   );

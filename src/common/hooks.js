@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { useState, useEffect } from "react";
 import random from "lodash/random";
 import { useRouter } from "next/router";
@@ -20,14 +21,28 @@ export const useParams = params => {
  * @param {Object} params - Key/value pairs for appending query params to the request url
  * @param {String} endpoint - the base endpoint
  */
-export const useDataFetch = (params, endpoint) => {
+export const useDataFetch = (params, endpoint, dataKey, initialData) => {
   let fetchUrl = endpoint;
   Object.entries(params).forEach(([key, value]) => {
     if (value) {
       fetchUrl = appendParam(fetchUrl, { key, value });
     }
   });
-  return { ...useSWR(fetchUrl, fetchSimple), finalUrl: fetchUrl };
+
+  const { data, error } = useSWR(fetchUrl, fetchSimple);
+  let returnData;
+  if (dataKey) {
+    returnData = _.get(data, dataKey, initialData);
+  } else if (data) {
+    returnData = data;
+  } else {
+    returnData = initialData;
+  }
+  return {
+    data: returnData,
+    error,
+    finalUrl: fetchUrl
+  };
 };
 
 export const useRandomColor = (initialColor = "#017BFD") => {
