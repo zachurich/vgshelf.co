@@ -1,7 +1,7 @@
 import get from "lodash/get";
 import React from "react";
 import { Meta } from "../components/index";
-import { fetchGames } from "../api/gamesApi";
+import { fetchGamesByUserId } from "../api/gamesApi";
 import Landing from "../components/landing/landing";
 
 const Home = ({ initialGames = [], initialCollections = [], user }) => {

@@ -4,7 +4,7 @@ import React from "react";
 import { trigger, mutate } from "@zeit/swr";
 
 import { Nav, Meta } from "../../../components/index";
-import { fetchGames, createGame, deleteGame } from "../../../api/gamesApi";
+import { fetchGamesByUserId, createGame, deleteGame } from "../../../api/gamesApi";
 import GameTogglePanel from "../../../components/gameTogglePanel/gameTogglePanel";
 import { updateCollection } from "../../../api/collectionsApi";
 import GamesPanel from "../../../components/gamesPanel/gamesPanel";

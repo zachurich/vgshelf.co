@@ -2,7 +2,7 @@ import get from "lodash/get";
 import React from "react";
 import { Meta } from "../../components/index";
 import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
-import { fetchGames, fetchGamesByUserName } from "../../api/gamesApi";
+import { fetchGamesByUserId, fetchGamesByUserName } from "../../api/gamesApi";
 import GamesPanel from "../../components/gamesPanel/gamesPanel";
 import { useParams } from "../../common/hooks";
 
