@@ -2,11 +2,11 @@ import _ from "lodash";
 import { useState, useEffect, useRef } from "react";
 import random from "lodash/random";
 import { useRouter } from "next/router";
-import { fetchSimple } from "../api/gamesApi";
+import { fetcher } from "../api/gamesApi";
 import useSWR from "@zeit/swr";
 import { appendParam, getColor, debounce } from "./utils";
 import { siteColors } from "./constants";
-import { ENDPOINTS } from "./routes";
+import { API_ENDPOINTS } from "./routes";
 
 /**
  * @description Simple wrapper for next's useRouter
@@ -18,18 +18,24 @@ export const useParams = params => {
 };
 
 export const useGameFetch = (initialData = [], params = {}) => {
-  return useDataFetch(params, ENDPOINTS.GAME, "games", initialData);
+  return useDataFetch(params, API_ENDPOINTS.GAME, "games", initialData);
 };
 
 export const useCollectionFetch = (initialData = []) => {
   const { username } = useParams();
-  return useDataFetch({ userName: username }, ENDPOINTS.COLLECTION, "", initialData);
+  return useDataFetch({ userName: username }, API_ENDPOINTS.COLLECTION, "", initialData);
 };
 
 /**
  * @description Wraps Zeit's useSWR hook used for cache invalidation/revalidation and polling
  * @param {Object} params - Key/value pairs for appending query params to the request url
  * @param {String} endpoint - the base endpoint
+ * @returns {Object} {
+ *   data?: Data;
+ *   error?: Error;
+ *   revalidate: () => Promise<boolean>;
+ *   isValidating: boolean;
+ * }
  */
 export const useDataFetch = (params, endpoint, dataKey, initialData) => {
   let fetchUrl = endpoint;
@@ -38,7 +44,7 @@ export const useDataFetch = (params, endpoint, dataKey, initialData) => {
       fetchUrl = appendParam(fetchUrl, { key, value });
     }
   });
-  const { data, error } = useSWR(fetchUrl, fetchSimple);
+  const { data, error, isValidating } = useSWR(fetchUrl, fetcher);
   let returnData;
   if (dataKey) {
     returnData = _.get(data, dataKey, initialData);
@@ -50,7 +56,8 @@ export const useDataFetch = (params, endpoint, dataKey, initialData) => {
   return {
     data: returnData,
     error,
-    finalUrl: fetchUrl
+    finalUrl: fetchUrl,
+    isLoading: isValidating
   };
 };
 

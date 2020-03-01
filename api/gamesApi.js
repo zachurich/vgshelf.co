@@ -1,9 +1,10 @@
 import get from "lodash/get";
 import { escapeNull } from "../common/utils";
-import { ENDPOINTS } from "../common/routes";
+import { API_ENDPOINTS, API_ROUTES } from "../common/routes";
 import axios from "axios";
 
-export const fetchSimple = async (url, headers = {}) => {
+// fetcher to use for any client-side GETs using useSWR
+export const fetcher = async (url, headers = {}) => {
   try {
     const { data: response } = await axios.get(url);
     return escapeNull(get(response, "data"), []);
@@ -12,9 +13,10 @@ export const fetchSimple = async (url, headers = {}) => {
   }
 };
 
+// calls for server-side fetching
 export const fetchGamesByUserId = async userId => {
   try {
-    const { data: response } = await axios.get(ENDPOINTS.GAME, {
+    const { data: response } = await axios.get(API_ENDPOINTS.GAME, {
       params: {
         userId
       }
@@ -27,7 +29,7 @@ export const fetchGamesByUserId = async userId => {
 
 export const fetchGamesByCollectionId = async collectionId => {
   try {
-    const { data: response } = await axios.get(ENDPOINTS.GAME, {
+    const { data: response } = await axios.get(API_ENDPOINTS.GAME, {
       params: {
         collectionId
       }
@@ -40,7 +42,7 @@ export const fetchGamesByCollectionId = async collectionId => {
 
 export const fetchGamesByUserName = async userName => {
   try {
-    const { data: response } = await axios.get(ENDPOINTS.GAME, {
+    const { data: response } = await axios.get(API_ENDPOINTS.GAME, {
       params: {
         userName
       }
@@ -51,28 +53,20 @@ export const fetchGamesByUserName = async userName => {
   }
 };
 
-export const createGame = async (data, token) => {
+export const createGame = async data => {
   try {
-    const result = await axios.post(ENDPOINTS.GAME, data, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const result = await axios.post(API_ROUTES.GAME + "/create", data);
     return result;
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteGame = async (data, token) => {
+export const deleteGame = async data => {
   try {
-    const result = await axios.delete(
-      ENDPOINTS.GAME,
-      {
-        data
-      },
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }
-    );
+    const result = await axios.delete(API_ROUTES.GAME + "/remove", {
+      data
+    });
     return result;
   } catch (error) {
     throw error;

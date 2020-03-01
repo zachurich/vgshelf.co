@@ -17,24 +17,22 @@ import { ButtonToggle } from "../buttons/buttons";
 import FormSelections from "../formSelections/formSelections";
 
 import "./styles.scss";
+import Loader from "../loader/loader";
 
 function GamesPanel({
-  initialGames = [],
-  parentControlled = false, // if parent controlled, disable data fetching here
+  games = [],
   collectionId = null,
   user = null,
   userName = null,
   handlePrompt = null,
   showTogglePanel = false,
-  title = null
+  title = null,
+  isLoading = false,
+  refreshData = () => {}
 }) {
   const [showModal, setShowModal] = React.useState(false);
   const [modalMsg, setModalMsg] = useState(null);
   const [selections, setSelections] = useState([]);
-  const { username } = useParams();
-  const { data: games, error, finalUrl } = !parentControlled
-    ? useGameFetch(initialGames, { userName: username })
-    : {};
 
   const handleToggleModal = toggle => {
     scrollTop();
@@ -66,19 +64,16 @@ function GamesPanel({
     let message;
     for (const game of games) {
       try {
-        const response = await createGame(
-          {
-            userId: user.sub,
-            title: game.name,
-            igdbId: game.id,
-            slug: game.slug,
-            imageUrl: game.cover
-          },
-          accessToken
-        );
+        const response = await createGame({
+          userId: user.sub,
+          title: game.name,
+          igdbId: game.id,
+          slug: game.slug,
+          imageUrl: game.cover
+        });
         message = handleServerResponse(response.data);
       } catch (error) {
-        handleError(error.response.data);
+        handleError(error.respose ? error.response.data : error);
       }
     }
 
@@ -86,13 +81,13 @@ function GamesPanel({
       setModalMsg(() => message);
     } else {
       toggleAction(false);
-      trigger(finalUrl);
+      refreshData();
     }
   };
 
   const handleDeleteGame = async id => {
     await deleteGame(null, { id, user: user.id });
-    trigger(finalUrl);
+    refreshData();
   };
 
   return (
@@ -111,13 +106,14 @@ function GamesPanel({
           />
         )}
       </Title>
-      {!games && !initialGames ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <Grid
           data={games || initialGames}
           size="large"
           handleDelete={handleDeleteGame}
+          filtering={{ enabled: true, type: "title" }}
           handlePrompt={() => toggleAction(true)}
           canAdd={!!user}
           sortKey={"added"}

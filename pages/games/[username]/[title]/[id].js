@@ -17,7 +17,7 @@ import "../../../../styles/games.scss";
 const Games = ({ user, initialGames = [], initialCollection = [] }) => {
   const [showTogglePanel, setShowTogglePanel] = useState(true);
   const { username, id: collectionId, title: collectionTitle } = useParams();
-  const { data: collectionGames, finalUrl } = useGameFetch([]);
+  const { data: collectionGames, finalUrl } = useGameFetch([], { collectionId });
 
   const handleToggleTogglePanel = () => {
     if (collectionId) {
@@ -35,8 +35,8 @@ const Games = ({ user, initialGames = [], initialCollection = [] }) => {
 
     // Fire and forget the server request
     try {
-      await updateCollection(null, {
-        id: collectionId,
+      await updateCollection({
+        collectionId,
         games: newItemsProps
       });
     } catch (error) {
@@ -64,7 +64,7 @@ const Games = ({ user, initialGames = [], initialCollection = [] }) => {
           userName={username}
           collectionId={collectionId}
           parentControlled={true}
-          initialGames={collectionGames || initialCollection}
+          games={collectionGames || initialCollection}
           showTogglePanel={showTogglePanel}
           handlePrompt={handleToggleTogglePanel}
         />

@@ -13,6 +13,13 @@ const List = ({
   handleDelete,
   canAdd = false
 }) => {
+  if (data && !data.length) {
+    return (
+      <div className="grid-empty">
+        <p>This user has no shelves.</p>
+      </div>
+    );
+  }
   return (
     <ul className="list list-row">
       {data.length > 0 &&

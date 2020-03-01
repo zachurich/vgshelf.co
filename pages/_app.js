@@ -4,7 +4,7 @@ import App from "next/app";
 import { Nav } from "../components";
 import Footer from "../components/footer/footer";
 import Router from "next/router";
-import { ROUTES } from "../common/routes";
+import { APP_ROUTES } from "../common/routes";
 import auth0 from "../common/auth";
 
 import "normalize.css";
@@ -16,10 +16,11 @@ class MyApp extends App {
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
     }
-
     if (ctx.req) {
-      const { user } = await auth0.getSession(ctx.req);
-      return { pageProps, user };
+      const auth = await auth0.getSession(ctx.req);
+      if (auth) {
+        return { pageProps, user: auth.user };
+      }
     }
 
     return { pageProps };

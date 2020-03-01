@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import Modal from "../modal/modal";
 import { BasicForm } from "../basicForm/basicForm";
-import { ROUTES } from "../../common/routes";
+import { APP_ROUTES } from "../../common/routes";
 import { createCollection, deleteCollection } from "../../api/collectionsApi";
 import Title from "../title/title";
-import { trigger } from "@zeit/swr";
+import { mutate } from "@zeit/swr";
 import List from "../list/list";
 import "./collectionsPanel.scss";
 import { useCollectionFetch } from "../../common/hooks";
 import Loader from "../loader/loader";
 import { ButtonToggle } from "../buttons/buttons";
+import { toggleItemInArray } from "../../common/utils";
 
-function CollectionsPanel({ user, initialCollections, userName }) {
+function CollectionsPanel({
+  user,
+  collections,
+  userName,
+  isLoading,
+  fetchKey,
+  refreshData = () => {}
+}) {
   const [showModal, setShowModal] = useState(false);
-  const { data: collections, error, finalUrl } = useCollectionFetch(initialCollections);
-
   const handleToggleModal = toggle => {
     setShowModal(() => toggle || !showModal);
   };
@@ -22,18 +28,17 @@ function CollectionsPanel({ user, initialCollections, userName }) {
   const handleCreateCollection = async title => {
     if (title.length > 0) {
       handleToggleModal(false);
-      await createCollection(null, {
-        userId: user.id,
+      await createCollection({
+        userId: user.sub,
         collectionName: title,
         games: []
       });
-      trigger(finalUrl);
     }
   };
 
   const handleDeleteCollection = async id => {
-    await deleteCollection(null, { id });
-    trigger(finalUrl);
+    await deleteCollection({ id });
+    refreshData();
   };
 
   return (
@@ -41,12 +46,12 @@ function CollectionsPanel({ user, initialCollections, userName }) {
       <Title header={user ? "Shelves" : `${userName} Shelves`} color="pink">
         {!!user && <ButtonToggle handleToggle={() => handleToggleModal(true)} />}
       </Title>
-      {!collections.length ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <List
-          data={collections || initialCollections}
-          destRoute={ROUTES.GAMES}
+          data={collections}
+          destRoute={APP_ROUTES.GAMES}
           userName={userName}
           handleDelete={handleDeleteCollection}
           handlePrompt={() => handleToggleModal(true)}

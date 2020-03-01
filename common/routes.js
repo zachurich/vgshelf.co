@@ -1,13 +1,21 @@
 import { createUrl } from "./utils";
 
-export const ENDPOINTS = {
-  COLLECTION: createUrl("/api/collection"),
-  GAME: createUrl("/api/game"),
-  SEARCH: createUrl("/api/external/search/"),
-  COVER: createUrl("/api/external/cover/")
+// External API routes
+export const API_ENDPOINTS = {
+  COLLECTION: createUrl(process.env.API_BASE, "/api/collection"),
+  GAME: createUrl(process.env.API_BASE, "/api/game"),
+  SEARCH: createUrl(process.env.API_BASE, "/api/external/search/"),
+  COVER: createUrl(process.env.API_BASE, "/api/external/cover/")
 };
 
-export const ROUTES = {
+// Nextjs API routes
+export const API_ROUTES = {
+  COLLECTION: createUrl(process.env.HOST, "/api/collections"),
+  GAME: createUrl(process.env.HOST, "/api/games")
+};
+
+// Application routes
+export const APP_ROUTES = {
   HOME: "/",
   APP: "/dashboard",
   COLLECTIONS: "/collections",

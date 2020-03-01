@@ -1,4 +1,4 @@
-import { ROUTES } from "../../common/routes";
+import { APP_ROUTES } from "../../common/routes";
 
 export const decideHeader = (title, user, userName) => {
   if (title) {
@@ -13,7 +13,7 @@ export const decideHeader = (title, user, userName) => {
 export const decideBreadCrumb = (collection, loggedIn, userName) => {
   if (collection) {
     return {
-      route: `${ROUTES.APP}/${userName}`,
+      route: `${APP_ROUTES.APP}/${userName}`,
       text: loggedIn ? "My Dashboard" : `${userName}'s Dashboard`
     };
   }

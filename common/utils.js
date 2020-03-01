@@ -1,6 +1,5 @@
 import isNull from "lodash/isNull";
 import get from "lodash/get";
-const { API_BASE } = process.env;
 
 export const sortByDate = (arr, sortKey) => {
   return arr.sort((prior, next) => new Date(next[sortKey]) - new Date(prior[sortKey]));
@@ -17,8 +16,7 @@ export const lastItem = (arr, index, cols = 3) => {
 
 export const genTestObj = (length, obj = { name: "test" }) => Array(length).fill(obj);
 
-export const createUrl = (endpoint, ssl = false) =>
-  `http${ssl ? "s" : ""}://${API_BASE}${endpoint}`;
+export const createUrl = (base, endpoint) => `${base}${endpoint}`;
 
 export const formatUserName = user => {
   if (user && user.displayName) {

@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 
 import "./menu.scss";
-import { ROUTES } from "../../common/routes";
+import { APP_ROUTES } from "../../common/routes";
 import { useToggle } from "../../common/hooks";
 
 const MenuItem = ({ route, text, children }) => {
@@ -28,18 +28,8 @@ const Menu = ({ user }) => {
   function renderLoggedInMenu() {
     return (
       <ul ref={menuRef} className="menu-list">
-        <MenuItem route={ROUTES.APP} text="Dashboard" />
-        <MenuItem>
-          <a
-            onClick={e => {
-              e.preventDefault();
-              logout({ returnTo: process.env.HOST + ROUTES.HOME });
-              toggleMenu(false);
-            }}
-          >
-            Log Out
-          </a>
-        </MenuItem>
+        <MenuItem route={APP_ROUTES.APP} text="Dashboard" />
+        <MenuItem route={APP_ROUTES.LOGOUT} text="Logout" />
       </ul>
     );
   }
