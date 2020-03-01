@@ -1,10 +1,9 @@
-import { createUrl } from "../common/utils";
 import { ENDPOINTS } from "../common/routes";
 import axios from "axios";
 
-export const fetchCollectionsByUserId = async (req, userId) => {
+export const fetchCollectionsByUserId = async userId => {
   try {
-    const { data: response } = await axios.get(createUrl(req, ENDPOINTS.COLLECTION), {
+    const { data: response } = await axios.get(ENDPOINTS.COLLECTION, {
       params: {
         user: userId
       }
@@ -15,18 +14,18 @@ export const fetchCollectionsByUserId = async (req, userId) => {
   }
 };
 
-export const createCollection = async (req, data) => {
+export const createCollection = async data => {
   try {
-    const result = await axios.post(createUrl(req, ENDPOINTS.COLLECTION), data);
+    const result = await axios.post(ENDPOINTS.COLLECTION, data);
     return result;
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteCollection = async (req, data) => {
+export const deleteCollection = async data => {
   try {
-    const result = await axios.delete(createUrl(req, ENDPOINTS.COLLECTION), {
+    const result = await axios.delete(ENDPOINTS.COLLECTION, {
       data
     });
     return result;
@@ -35,9 +34,9 @@ export const deleteCollection = async (req, data) => {
   }
 };
 
-export const updateCollection = async (req, data) => {
+export const updateCollection = async (data, headers = {}) => {
   try {
-    const result = await axios.put(createUrl(req, ENDPOINTS.COLLECTION), data);
+    const result = await axios.put(ENDPOINTS.COLLECTION, data, headers);
     return result;
   } catch (error) {
     throw error;

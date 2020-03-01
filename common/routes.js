@@ -1,8 +1,10 @@
+import { createUrl } from "./utils";
+
 export const ENDPOINTS = {
-  COLLECTION: "/api/collection",
-  GAME: "/api/game",
-  SEARCH: "/api/external/search/",
-  COVER: "/api/external/cover/"
+  COLLECTION: createUrl("/api/collection"),
+  GAME: createUrl("/api/game"),
+  SEARCH: createUrl("/api/external/search/"),
+  COVER: createUrl("/api/external/cover/")
 };
 
 export const ROUTES = {
@@ -10,6 +12,7 @@ export const ROUTES = {
   APP: "/dashboard",
   COLLECTIONS: "/collections",
   GAMES: "/games",
-  LOGIN: "/login",
-  LOGOUT: "/logout"
+  LOGIN: "/api/login",
+  LOGOUT: "/api/logout",
+  ERROR: "/error"
 };

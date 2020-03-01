@@ -2,11 +2,11 @@ import get from "lodash/get";
 import React from "react";
 import { Meta } from "../../components/index";
 import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
-import { fetchGamesByUserId, fetchGamesByUserName } from "../../api/gamesApi";
+import { fetchGamesByUserName } from "../../api/gamesApi";
 import GamesPanel from "../../components/gamesPanel/gamesPanel";
 import { useParams } from "../../common/hooks";
 
-const Dashboard = ({ initialGames = [], initialCollections = [], user }) => {
+const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
   const { username } = useParams();
   return (
     <div className="dashboard">
@@ -33,13 +33,8 @@ Dashboard.getInitialProps = async ({ req, query }) => {
   if (req) {
     let response;
     const { username } = query;
-    const userId = get(req, "user.id");
     try {
-      if (req.user && userId) {
-        response = await fetchGamesByUserId(req, userId);
-      } else if (username) {
-        response = await fetchGamesByUserName(req, username);
-      }
+      response = await fetchGamesByUserName(username);
       return { initialGames: response.games };
     } catch (e) {
       console.log(e);

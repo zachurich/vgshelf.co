@@ -1,20 +1,20 @@
 import get from "lodash/get";
-import { createUrl, escapeNull } from "../common/utils";
+import { escapeNull } from "../common/utils";
 import { ENDPOINTS } from "../common/routes";
 import axios from "axios";
 
-export const fetchSimple = async url => {
+export const fetchSimple = async (url, headers = {}) => {
   try {
-    const { data: response } = await axios.get(createUrl(null, url));
+    const { data: response } = await axios.get(url);
     return escapeNull(get(response, "data"), []);
   } catch (error) {
     throw error;
   }
 };
 
-export const fetchGamesByUserId = async (req, userId) => {
+export const fetchGamesByUserId = async userId => {
   try {
-    const { data: response } = await axios.get(createUrl(req, ENDPOINTS.GAME), {
+    const { data: response } = await axios.get(ENDPOINTS.GAME, {
       params: {
         userId
       }
@@ -25,9 +25,9 @@ export const fetchGamesByUserId = async (req, userId) => {
   }
 };
 
-export const fetchGamesByCollectionId = async (req, collectionId) => {
+export const fetchGamesByCollectionId = async collectionId => {
   try {
-    const { data: response } = await axios.get(createUrl(req, ENDPOINTS.GAME), {
+    const { data: response } = await axios.get(ENDPOINTS.GAME, {
       params: {
         collectionId
       }
@@ -38,9 +38,9 @@ export const fetchGamesByCollectionId = async (req, collectionId) => {
   }
 };
 
-export const fetchGamesByUserName = async (req, userName) => {
+export const fetchGamesByUserName = async userName => {
   try {
-    const { data: response } = await axios.get(createUrl(req, ENDPOINTS.GAME), {
+    const { data: response } = await axios.get(ENDPOINTS.GAME, {
       params: {
         userName
       }
@@ -51,20 +51,28 @@ export const fetchGamesByUserName = async (req, userName) => {
   }
 };
 
-export const createGame = async (req, data) => {
+export const createGame = async (data, token) => {
   try {
-    const result = await axios.post(createUrl(req, ENDPOINTS.GAME), data);
+    const result = await axios.post(ENDPOINTS.GAME, data, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
     return result;
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteGame = async (req, data) => {
+export const deleteGame = async (data, token) => {
   try {
-    const result = await axios.delete(createUrl(req, ENDPOINTS.GAME), {
-      data
-    });
+    const result = await axios.delete(
+      ENDPOINTS.GAME,
+      {
+        data
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
     return result;
   } catch (error) {
     throw error;

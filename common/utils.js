@@ -17,7 +17,7 @@ export const lastItem = (arr, index, cols = 3) => {
 
 export const genTestObj = (length, obj = { name: "test" }) => Array(length).fill(obj);
 
-export const createUrl = (req, endpoint, ssl = false) =>
+export const createUrl = (endpoint, ssl = false) =>
   `http${ssl ? "s" : ""}://${API_BASE}${endpoint}`;
 
 export const formatUserName = user => {

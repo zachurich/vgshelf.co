@@ -1,11 +1,14 @@
 import _ from "lodash";
 import React from "react";
-import App, { Container } from "next/app";
+import App from "next/app";
 import { Nav } from "../components";
+import Footer from "../components/footer/footer";
+import Router from "next/router";
+import { ROUTES } from "../common/routes";
+import auth0 from "../common/auth";
 
 import "normalize.css";
 import "../styles/index.scss";
-import Footer from "../components/footer/footer";
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -14,49 +17,22 @@ class MyApp extends App {
       pageProps = await Component.getInitialProps(ctx);
     }
 
+    if (ctx.req) {
+      const { user } = await auth0.getSession(ctx.req);
+      return { pageProps, user };
+    }
+
     return { pageProps };
   }
 
-  state = {
-    user: this.props.pageProps.user,
-    showNavMenu: false
-  };
-
-  componentDidMount() {
-    if (document) {
-      document.body.addEventListener("click", this.toggleMenu);
-    }
-  }
-
-  componentWillUnmount() {
-    if (document) {
-      document.body.removeEventListener("click", this.toggleMenu);
-    }
-  }
-
-  toggleMenu = e => {
-    const { target } = e;
-    if (target.classList.contains("menu-toggle")) {
-      this.setState({ showNavMenu: !this.state.showNavMenu });
-    } else if (this.state.showNavMenu) {
-      this.setState({ showNavMenu: false });
-    }
-  };
-
   render() {
     const { Component, pageProps } = this.props;
-
-    const props = {
-      ...pageProps,
-      user: this.state.user
-    };
-
     return (
-      <Container>
-        <Nav user={this.state.user} menuVisible={this.state.showNavMenu} />
-        <Component {...props} />
+      <>
+        <Nav user={this.props.user} />
+        <Component user={this.props.user} {...pageProps} />
         <Footer />
-      </Container>
+      </>
     );
   }
 }

@@ -1,9 +1,5 @@
 import React from "react";
-
-import "./landing.scss";
-import Link from "next/link";
 import { LoginButton, SignUpButton } from "../buttons/buttons";
-import ShelfSVG from "../../assets/shelf.svg";
 import {
   shortFeatures,
   longFeatures,
@@ -11,6 +7,8 @@ import {
   popularGames,
   callToAction
 } from "../../common/copy";
+
+import "./landing.scss";
 
 function CallToAction(props) {
   return (
@@ -47,8 +45,8 @@ function Landing(props) {
         </div>
         <div className="container">
           <div className="features-short-features">
-            {shortFeatures.content.map(({ image, text }) => (
-              <div className="short-feature">
+            {shortFeatures.content.map(({ image, text }, index) => (
+              <div key={text + index} className="short-feature">
                 <div className="feature-art">
                   <>{image && image()}</>
                 </div>
@@ -65,8 +63,8 @@ function Landing(props) {
           <h3>{longFeatures.heading}</h3>
         </div>
         <div className="features-indepth-features">
-          {longFeatures.content.map(({ image, text }) => (
-            <div className="indepth-feature">
+          {longFeatures.content.map(({ image, text }, index) => (
+            <div key={text + index} className="indepth-feature">
               <div className="feature-image">{image && image()}</div>
               <div className="feature-content">
                 <p>{text}</p>

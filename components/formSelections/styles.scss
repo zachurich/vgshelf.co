@@ -11,12 +11,14 @@
   padding: 10px;
   max-width: 220px;
   .form-selection {
-    overflow: hidden;
     margin: $compact-spacing / 2;
     width: 50px;
-    border: 6px solid white;
-    @include border-radius;
-    @include box-shadow;
+    &.loaded {
+      overflow: hidden;
+      border: 6px solid white;
+      @include border-radius;
+      @include box-shadow;
+    }
     img {
       display: flex;
       @include border-radius(5px);

@@ -1,30 +1,21 @@
-import get from "lodash/get";
 import React from "react";
 import Grid from "../grid/grid";
-import { fetchGames } from "../../api/gamesApi";
-import { ENDPOINTS } from "../../common/routes";
-import { useDataFetch } from "../../common/hooks";
+import { useGameFetch } from "../../common/hooks";
 import GameToggleItem from "../gameToggleItem/gameToggleItem";
-import "./styles.scss";
-import ArrowSVG from "../../assets/arrow.svg";
-import { getColor } from "../../common/utils";
 import Title from "../title/title";
 import Loader from "../loader/loader";
 import { ButtonToggle } from "../buttons/buttons";
 
+import "./styles.scss";
+
 function GameTogglePanel({
+  user, // available when logged in
+  initialGames,
   handleToggleGame, // add/remove game from collection
   handleClosePanel, // close this panel
-  currentCollectionGames, // used to compare all games to what games the user has in the collection
-  user // available when logged in
+  currentCollectionGames // used to compare all games to what games the user has in the collection
 }) {
-  const { data: games, error } = useDataFetch(
-    { userId: get(user, "id") },
-    ENDPOINTS.GAME,
-    "games",
-    null
-  );
-
+  const { data: games, error } = useGameFetch(initialGames, { userId: user.sub });
   return (
     <section className="games-toggle-panel">
       <ButtonToggle handleToggle={handleClosePanel} />
@@ -34,7 +25,7 @@ function GameTogglePanel({
         <Loader />
       ) : (
         <Grid
-          data={games || []}
+          data={games}
           compareItems={currentCollectionGames}
           size="small"
           filtering={{ enabled: true, type: "title" }}

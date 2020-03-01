@@ -1,32 +1,23 @@
 import get from "lodash/get";
 
-import React from "react";
-import { trigger, mutate } from "@zeit/swr";
+import React, { useState } from "react";
+import { mutate } from "@zeit/swr";
 
-import { Nav, Meta } from "../../../components/index";
-import { fetchGamesByUserId, createGame, deleteGame } from "../../../api/gamesApi";
-import GameTogglePanel from "../../../components/gameTogglePanel/gameTogglePanel";
-import { updateCollection } from "../../../api/collectionsApi";
-import GamesPanel from "../../../components/gamesPanel/gamesPanel";
+import { Meta } from "../../../../components/index";
+import { fetchGamesByCollectionId, fetchGamesByUserName } from "../../../../api/gamesApi";
+import GameTogglePanel from "../../../../components/gameTogglePanel/gameTogglePanel";
+import { updateCollection } from "../../../../api/collectionsApi";
+import GamesPanel from "../../../../components/gamesPanel/gamesPanel";
 
-import { formatUserName, toggleItemInArray, scrollTop } from "../../../common/utils";
-import { useParams, useDataFetch } from "../../../common/hooks";
-import { ENDPOINTS } from "../../../common/routes";
+import { formatUserName, toggleItemInArray, scrollTop } from "../../../../common/utils";
+import { useParams, useGameFetch } from "../../../../common/hooks";
 
-import "../../../styles/games.scss";
+import "../../../../styles/games.scss";
 
-const Games = ({ initialGames = [], user, username }) => {
-  const [showModal, setShowModal] = React.useState(false);
-  const [showTogglePanel, setShowTogglePanel] = React.useState(true);
-  const { id: collectionId, title: collectionTitle } = useParams();
-
-  let fetchUrl = ENDPOINTS.GAME;
-  const { data, isValidating, finalUrl } = useDataFetch(
-    { user: get(user, "id"), collection: collectionId },
-    fetchUrl
-  );
-
-  const games = data ? data.games : null;
+const Games = ({ user, initialGames = [], initialCollection = [] }) => {
+  const [showTogglePanel, setShowTogglePanel] = useState(true);
+  const { username, id: collectionId, title: collectionTitle } = useParams();
+  const { data: collectionGames, finalUrl } = useGameFetch([]);
 
   const handleToggleTogglePanel = () => {
     if (collectionId) {
@@ -37,7 +28,7 @@ const Games = ({ initialGames = [], user, username }) => {
 
   const handleToggleGame = async game => {
     // Compose array with added/removed game
-    const { newItems, newItemsProps } = toggleItemInArray(games, game, "id");
+    const { newItems, newItemsProps } = toggleItemInArray(collectionGames, game, "id");
 
     // Go ahead and update the data client side
     mutate(finalUrl, { games: newItems }, false);
@@ -59,7 +50,8 @@ const Games = ({ initialGames = [], user, username }) => {
       {collectionId && showTogglePanel && user && (
         <GameTogglePanel
           user={user}
-          currentCollectionGames={games}
+          currentCollectionGames={collectionGames}
+          initialGames={initialGames}
           handleClosePanel={() => handleToggleTogglePanel(false)}
           handleToggleGame={handleToggleGame}
         />
@@ -72,7 +64,7 @@ const Games = ({ initialGames = [], user, username }) => {
           userName={username}
           collectionId={collectionId}
           parentControlled={true}
-          initialGames={games || initialGames}
+          initialGames={collectionGames || initialCollection}
           showTogglePanel={showTogglePanel}
           handlePrompt={handleToggleTogglePanel}
         />
@@ -87,11 +79,11 @@ const Games = ({ initialGames = [], user, username }) => {
  */
 Games.getInitialProps = async ({ req, query }) => {
   if (req) {
-    const { id: collectionId } = query;
-    const userId = get(req, "user.id");
+    const { id: collectionId, username: userName } = query;
     try {
-      const { games, username } = await fetchGamesByUserId(req, userId, collectionId);
-      return { initialGames: games, username };
+      const { games: initialCollection } = await fetchGamesByCollectionId(collectionId);
+      const { games: initialGames } = await fetchGamesByUserName(userName);
+      return { initialGames, initialCollection };
     } catch (e) {
       console.log(e);
     }

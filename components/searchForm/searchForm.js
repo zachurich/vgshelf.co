@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { fetchResults } from "../../api/search";
 import {
   Combobox,
@@ -22,14 +22,16 @@ export const SearchForm = ({
   closeText,
   submitText
 }) => {
-  const [focused, setFocused] = React.useState(false);
+  const [focused, setFocused] = useState(false);
+  const [displayValue, setDisplayValue] = useState("");
   const { debounce } = useDebounce();
-  const [suggestions, setSuggestions] = React.useState([]);
-  const [selection, setSelection] = React.useState(null);
+  const [suggestions, setSuggestions] = useState([]);
+  const [selection, setSelection] = useState(null);
 
   const handleSelectValue = suggestion => {
     setSelection(() => suggestion);
     handleAddSelection(suggestion);
+    setDisplayValue(() => "");
   };
 
   const handleClearValues = () => {
@@ -42,7 +44,7 @@ export const SearchForm = ({
   };
 
   const getResults = async value => {
-    const results = await fetchResults(null, value);
+    const results = await fetchResults(value);
     setSuggestions(() => results);
   };
 
@@ -55,6 +57,9 @@ export const SearchForm = ({
         {inputName}
       </label>
       <Combobox
+        style={{
+          position: "relative"
+        }}
         onSelect={item => {
           setFocused(() => false);
           handleSelectValue(pluckSuggestion(item));
@@ -63,19 +68,25 @@ export const SearchForm = ({
         <ComboboxInput
           autoComplete="off"
           placeholder={placeholder}
-          className={suggestions.length > 0 && focused ? "search-suggestions-open" : ""}
           type="text"
           aria-labelledby={inputName}
           onBlur={() => setFocused(() => false)}
           onFocus={() => setFocused(() => true)}
+          value={displayValue}
           onChange={e => {
             let valueOnInput = e.target.value;
+            setDisplayValue(() => valueOnInput);
             debounce(getResults, valueOnInput);
           }}
         />
         <ComboboxPopover
           className="search-option-list-container"
-          style={{ zIndex: 99999 }}
+          style={{
+            position: "absolute",
+            width: "100%",
+            zIndex: 99999
+          }}
+          portal={false}
         >
           <ComboboxList className="search-option-list" aria-labelledby="Select an Option">
             {suggestions.length > 0 &&
@@ -94,7 +105,7 @@ export const SearchForm = ({
         closeText={closeText}
         disabled={!selection}
         submitText={submitText}
-        handleSubmit={() => handleSubmit(selection)}
+        handleSubmit={() => handleSubmit()}
       />
     </div>
   );

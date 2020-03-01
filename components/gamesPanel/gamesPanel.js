@@ -1,54 +1,54 @@
 import _ from "lodash";
 import get from "lodash/get";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
+
 import Title from "../title/title";
 import Grid from "../grid/grid";
 import Modal from "../modal/modal";
 import { SearchForm } from "../searchForm/searchForm";
 import { trigger } from "@zeit/swr";
-import { ENDPOINTS, ROUTES } from "../../common/routes";
-import { fetchGames, createGame, fetchSimple } from "../../api/gamesApi";
+import { createGame } from "../../api/gamesApi";
 import { fetchCover } from "../../api/search";
-import { appendParam, handleServerResponse, scrollTop } from "../../common/utils";
-import { useDataFetch } from "../../common/hooks";
+import { handleServerResponse, scrollTop } from "../../common/utils";
+import { useGameFetch, useToggle, useParams } from "../../common/hooks";
 import GameItem from "../gameItem/gameItem";
-
-import "./styles.scss";
 import { decideHeader, decideBreadCrumb } from "./util";
 import { ButtonToggle } from "../buttons/buttons";
 import FormSelections from "../formSelections/formSelections";
 
+import "./styles.scss";
+
 function GamesPanel({
   initialGames = [],
-  user,
   parentControlled = false, // if parent controlled, disable data fetching here
-  collectionId: collection = null,
+  collectionId = null,
+  user = null,
   userName = null,
   handlePrompt = null,
   showTogglePanel = false,
   title = null
 }) {
   const [showModal, setShowModal] = React.useState(false);
-  const [modalMsg, setModalMsg] = React.useState(null);
-  const [selections, setSelections] = React.useState([]);
-
+  const [modalMsg, setModalMsg] = useState(null);
+  const [selections, setSelections] = useState([]);
+  const { username } = useParams();
   const { data: games, error, finalUrl } = !parentControlled
-    ? useDataFetch(
-        { userId: get(user, "id"), collectionId, userName },
-        ENDPOINTS.GAME,
-        "games",
-        initialGames
-      )
+    ? useGameFetch(initialGames, { userName: username })
     : {};
 
   const handleToggleModal = toggle => {
     scrollTop();
-    setModalMsg(() => null);
+    clearModalData();
     setShowModal(() => toggle || !showModal);
   };
 
+  const clearModalData = () => {
+    setModalMsg(() => null);
+    setSelections(() => []);
+  };
+
   const handleAddSelection = async selection => {
-    const coverData = await fetchCover(null, selection.id);
+    const coverData = await fetchCover(selection.id);
     selection.cover = get(coverData[0], "url");
     setSelections(() => selections.concat(selection));
   };
@@ -62,27 +62,31 @@ function GamesPanel({
     }
   };
 
-  const handleCreateGame = async value => {
-    if (value) {
+  const handleAddGames = async games => {
+    let message;
+    for (const game of games) {
       try {
-        const coverData = await fetchCover(null, value.id);
-        const response = await createGame(null, {
-          userId: user.id,
-          title: value.name,
-          igdbId: value.id,
-          slug: value.slug,
-          imageUrl: get(coverData[0], "url")
-        });
-        const message = handleServerResponse(response.data);
-        if (message) {
-          setModalMsg(() => message);
-        } else {
-          toggleAction(false);
-          trigger(finalUrl);
-        }
+        const response = await createGame(
+          {
+            userId: user.sub,
+            title: game.name,
+            igdbId: game.id,
+            slug: game.slug,
+            imageUrl: game.cover
+          },
+          accessToken
+        );
+        message = handleServerResponse(response.data);
       } catch (error) {
         handleError(error.response.data);
       }
+    }
+
+    if (message) {
+      setModalMsg(() => message);
+    } else {
+      toggleAction(false);
+      trigger(finalUrl);
     }
   };
 
@@ -95,8 +99,8 @@ function GamesPanel({
     <div className="games-panel">
       <Title
         header={decideHeader(title, user, userName)}
-        breadCrumb={decideBreadCrumb(collection, user, userName)}
-        color={collection ? "pink" : "blue"}
+        breadCrumb={decideBreadCrumb(collectionId, user, userName)}
+        color={collectionId ? "pink" : "blue"}
       >
         {!!user && (
           <ButtonToggle
@@ -126,10 +130,12 @@ function GamesPanel({
           inputName="Search by Game Title"
           placeholder="Game Title"
           closeText="Cancel"
-          submitText={`Add ${selections.length !== 0 ? selections.length : ""} Game`}
-          dismissModal={() => handleToggleModal(false)}
+          submitText={`Add ${selections.length !== 0 ? selections.length : ""} Game${
+            selections.length <= 1 ? "" : "s"
+          }`}
+          dismissModal={() => toggleAction(false)}
           handleAddSelection={handleAddSelection}
-          handleSubmit={handleCreateGame}
+          handleSubmit={() => handleAddGames(selections)}
         />
       </Modal>
     </div>

@@ -1,10 +1,9 @@
-import { createUrl } from "../common/utils";
 import { ENDPOINTS } from "../common/routes";
 import axios from "axios";
 
-export const fetchResults = async (req, input) => {
+export const fetchResults = async input => {
   try {
-    const { data: response } = await axios.post(createUrl(req, ENDPOINTS.SEARCH), {
+    const { data: response } = await axios.post(ENDPOINTS.SEARCH, {
       title: input
     });
     return response.data;
@@ -13,10 +12,10 @@ export const fetchResults = async (req, input) => {
   }
 };
 
-export const fetchCover = async (req, input) => {
+export const fetchCover = async gameId => {
   try {
-    const { data: response } = await axios.post(createUrl(req, ENDPOINTS.COVER), {
-      id: input
+    const { data: response } = await axios.post(ENDPOINTS.COVER, {
+      gameId
     });
     return response.data;
   } catch (error) {

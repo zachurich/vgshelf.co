@@ -6,7 +6,7 @@ import "./styles.scss";
 
 const List = ({
   data = [],
-  handlePrompt = null,
+  userName = null,
   destRoute,
   prettyRoute = destRoute, // optionally override the appearance of the url
   handleToggle = () => {},
@@ -22,9 +22,9 @@ const List = ({
               <Link
                 href={{
                   pathname: destRoute,
-                  query: { id: item.id, title: item.title }
+                  query: { username: userName, id: item.id, title: item.title }
                 }}
-                as={`${prettyRoute}/${item.title.toLowerCase()}/${item.id}`}
+                as={`${prettyRoute}/${userName}/${item.title.toLowerCase()}/${item.id}`}
               >
                 <a className="">
                   <span>{item.title}</span>
