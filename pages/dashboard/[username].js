@@ -4,21 +4,26 @@ import { Meta } from "../../components/index";
 import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
 import { fetchGamesByUserName } from "../../api/gamesApi";
 import GamesPanel from "../../components/gamesPanel/gamesPanel";
-import { useParams, useGameFetch, useCollectionFetch } from "../../common/hooks";
+import {
+  useParams,
+  useCollectionsFetch,
+  useGamesFetchByUserName
+} from "../../common/hooks";
 import { trigger, mutate } from "@zeit/swr";
 import { fetchCollectionsByUserName } from "../../api/collectionsApi";
 
 const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
   const { userName } = useParams();
-  const { data: games, finalUrl: gamesUrl, isLoading: isGamesLoading } = useGameFetch(
-    initialGames,
-    { userName }
-  );
+  const {
+    data: games,
+    finalUrl: gamesUrl,
+    isLoading: isGamesLoading
+  } = useGamesFetchByUserName(initialGames);
   const {
     data: collections,
     finalUrl: collectionsUrl,
     isLoading: isCollectionsLoading
-  } = useCollectionFetch(initialCollections);
+  } = useCollectionsFetch(initialCollections);
   return (
     <div className="dashboard">
       <Meta title={"Dashboard"} />

@@ -20,7 +20,7 @@ input[type="text"].search-suggestions-open {
   .search-option {
     padding: 0.5rem 0.75rem;
     &[data-highlighted] {
-      background-color: var(--main-blue);
+      background-color: $main-blue;
       color: white;
     }
     &:last-of-type {

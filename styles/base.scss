@@ -1,9 +1,9 @@
 a {
-  color: var(--text-dark);
+  color: $text-dark;
   text-decoration: none;
   @include transition(0.1s);
   &:hover {
-    color: var(--main-blue);
+    color: $main-blue;
   }
 }
 
@@ -23,9 +23,9 @@ p {
 
 body {
   box-sizing: border-box;
-  background: var(--main-background);
+  background: $main-background;
   font-family: $main-font;
-  color: var(--text-dark);
+  color: $text-dark;
 }
 
 img {

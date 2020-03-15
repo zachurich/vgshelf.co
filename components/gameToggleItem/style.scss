@@ -12,22 +12,30 @@
   @include border-radius(14px);
   @include transition;
   &.toggled {
-    border: 6px solid var(--main-blue) !important;
-  }
-
-  &:hover {
-    border: 6px solid var(--main-pink);
+    .game-toggle-item-content {
+      background-color: $main-blue;
+      color: white;
+      @include box-shadow($main-blue-darker, 4px);
+      &:hover {
+        @include apply-hover($bg: $main-blue, $hovColor: white);
+      }
+      .game-toggle-item-image {
+        @include box-shadow($main-blue-darker, 3px);
+      }
+    }
   }
 
   .game-toggle-item-content {
     display: flex;
     width: 100%;
     font-weight: $weight-bold;
-    @include box-shadow(var(--solid-drop-shadow), 4px);
     background-color: white;
+    @include box-shadow($trans-drop-shadow, 4px);
     @include border-radius;
+    &:hover {
+      @include apply-hover;
+    }
     .game-toggle-item-image-wrap {
-      flex-basis: 25%;
       @include flex-center;
       .game-toggle-item-image {
         width: 58px;
@@ -35,8 +43,8 @@
         overflow: hidden;
         border-radius: 5px;
         position: relative;
-        @include position(-10px, auto, auto, 10px);
-        @include box-shadow(var(--solid-drop-shadow), 3px);
+        @include position(-14px, auto, auto, 10px);
+        @include box-shadow($trans-drop-shadow, 3px);
         img,
         svg {
           object-fit: cover;

@@ -12,7 +12,7 @@
     text-align: center;
     position: relative;
     font-size: 48px;
-    color: var(--main-blue);
+    color: $main-blue;
     font-weight: $weight-black;
     text-transform: uppercase;
     margin-bottom: $base-spacing;
@@ -43,7 +43,7 @@
 
 .landing-features-short-section {
   padding: 40px 0 80px 0;
-  background-color: var(--main-green);
+  background-color: $main-green;
   display: flex;
   @include flex-center;
   flex-direction: column;
@@ -120,8 +120,8 @@
 }
 
 .features-indepth-heading {
-  background-color: var(--main-yellow);
-  border: 7px dashed var(--text-dark);
+  background-color: $main-yellow;
+  border: 7px dashed $text-dark;
   border-radius: 5px;
   box-sizing: padding-box;
   h3 {
@@ -194,12 +194,12 @@
   display: flex;
   @include flex-center;
   padding: 40px 0 80px 0;
-  background-color: var(--main-pink);
+  background-color: $main-pink;
 }
 
 .popular-games-heading {
-  background-color: var(--main-pink-dark);
-  border-color: var(--main-pink);
+  background-color: $main-pink-dark;
+  border-color: $main-pink;
 }
 
 /**

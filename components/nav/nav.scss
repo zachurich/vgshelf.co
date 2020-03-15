@@ -18,7 +18,7 @@
   font-weight: 800;
   a {
     display: flex;
-    color: var(--text-dark);
+    color: $text-dark;
     > * {
       max-width: 100px;
     }
@@ -41,11 +41,11 @@
   }
   &:hover {
     .logo-cartridge .logo-cartridge-art {
-      fill: var(--main-blue);
+      fill: $main-blue;
     }
 
     // .logo-cartridge {
-    //   fill: var(--main-pink);
+    //   fill: $main-pink;
     //   @include animate(logo, $delay: none) {
     //     transform: translateY(0px);
     //   }

@@ -21,7 +21,7 @@
       top: auto;
       right: auto;
     }
-    @include responsive-max($mobile) {
+    @include responsive-max($tablet) {
       display: none;
     }
     a {

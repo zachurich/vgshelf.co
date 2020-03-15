@@ -17,10 +17,10 @@
 
   .twitter-link {
     svg {
-      fill: var(--text-dark);
+      fill: $text-dark;
       @include transition;
       &:hover {
-        fill: var(--main-blue);
+        fill: $main-blue;
       }
     }
   }

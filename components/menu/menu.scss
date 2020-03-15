@@ -11,7 +11,7 @@
   right: $base-spacing;
   background: white;
   padding: $base-spacing;
-  @include box-shadow(var(--solid-drop-shadow));
+  @include box-shadow($trans-drop-shadow);
   border-radius: 5px;
   font-weight: $weight-bold;
   z-index: 3;

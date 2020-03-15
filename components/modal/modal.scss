@@ -20,7 +20,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: var(--main-background);
+    background-color: $main-background;
     background-size: cover;
     animation: growInCool 0.4s cubic-bezier(0.17, 0, 0, 1) forwards;
     @include responsive-max($mobile) {

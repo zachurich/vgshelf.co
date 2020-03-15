@@ -13,7 +13,7 @@ $mobile: 400px;
 **/
 
 @mixin subtle-border($size: 1px, $position: bottom) {
-  border-#{$position}: $size solid var(--subtle-border);
+  border-#{$position}: $size solid $subtle-border;
 }
 
 @mixin flex-center {
@@ -33,7 +33,7 @@ $mobile: 400px;
   right: $r;
 }
 
-@mixin box-shadow($color: var(--solid-drop-shadow), $drop: 4px, $blur: 0px) {
+@mixin box-shadow($color: $trans-drop-shadow, $drop: 4px, $blur: 0px) {
   box-shadow: 0px $drop $blur $color;
 }
 
@@ -54,7 +54,7 @@ $mobile: 400px;
 @mixin apply-hover(
   $bg: white,
   $hovBg: darken($bg, 8%),
-  $hovDrop: var(--gray-drop-shadow-hover),
+  $hovDrop: darken($hovBg, 8%),
   $hovColor: initial
 ) {
   background-color: $bg;

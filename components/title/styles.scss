@@ -11,7 +11,7 @@
     padding: 8px 20px;
     @include border-radius;
     @include box-shadow;
-    color: var(--main-blue);
+    color: $main-blue;
     display: inline-block;
     margin: 50px auto 40px;
     font-weight: $weight-black;
@@ -19,7 +19,7 @@
       text-transform: capitalize;
     }
     &.pink {
-      color: var(--main-pink);
+      color: $main-pink;
     }
   }
 }

@@ -8,7 +8,7 @@
     // padding: 15px;
     background-color: white;
     @include border-radius;
-    @include box-shadow(var(--solid-drop-shadow));
+    @include box-shadow($trans-drop-shadow);
     font-weight: $weight-black;
     text-align: center;
     margin-bottom: $base-spacing;
@@ -21,24 +21,24 @@
     }
 
     @include responsive-max($tablet) {
-      margin-right: $base-spacing;
       flex: 1;
       white-space: nowrap;
+      margin: $compact-spacing;
     }
   }
 }
 
 .list-item-add {
   @include border-radius;
-  border: 4px dashed var(--solid-drop-shadow);
-  color: var(--solid-drop-shadow);
+  border: 4px dashed $trans-drop-shadow;
+  color: $trans-drop-shadow;
   display: flex;
   @include flex-center;
   font-size: 40px;
   font-weight: $weight-black;
   @include transition(0.05s);
   &:hover {
-    border: 4px dashed var(--main-blue);
-    color: var(--main-blue);
+    border: 4px dashed $main-blue;
+    color: $main-blue;
   }
 }

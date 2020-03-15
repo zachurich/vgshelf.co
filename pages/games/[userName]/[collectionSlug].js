@@ -13,17 +13,16 @@ import { updateCollection } from "../../../api/collectionsApi";
 import GamesPanel from "../../../components/gamesPanel/gamesPanel";
 
 import { formatUserName, toggleItemInArray, scrollTop } from "../../../common/utils";
-import { useParams, useGameFetch } from "../../../common/hooks";
+import { useParams, useGamesFetchByUserAndCollection } from "../../../common/hooks";
 
 import "../../../styles/games.scss";
 
 const Games = ({ user, initialGames = [], initialCollection = [] }) => {
   const [showTogglePanel, setShowTogglePanel] = useState(true);
   const { userName, collectionSlug } = useParams();
-  const { data: collectionGames, finalUrl } = useGameFetch(initialCollection, {
-    userName,
-    collectionSlug
-  });
+  const { data: collectionGames, finalUrl } = useGamesFetchByUserAndCollection(
+    initialCollection
+  );
 
   const handleToggleTogglePanel = () => {
     if (collectionSlug) {

@@ -8,7 +8,7 @@
   .button-toggle {
     right: $base-spacing;
     top: 45px;
-    @include responsive-max($mobile) {
+    @include responsive-max($tablet) {
       top: auto;
     }
   }

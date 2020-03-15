@@ -27,7 +27,7 @@
     * {
       display: flex;
       @include flex-center;
-      color: var(--main-blue);
+      color: $main-blue;
     }
   }
   &-action {
@@ -38,22 +38,22 @@
     font-size: 30px;
     font-weight: 800;
     bottom: 50px;
-    background-color: var(--main-blue);
+    background-color: $main-blue;
     z-index: 2;
-    @include box-shadow(var(--blue-drop-shadow-hover), 4px);
+    @include box-shadow($main-blue-darker, 4px);
     color: white;
   }
   &-secondary {
-    @include box-shadow(var(--solid-drop-shadow), 4px);
+    @include box-shadow($trans-drop-shadow, 4px);
     @include apply-hover;
   }
   &-primary {
     color: white;
-    @include box-shadow(var(--main-blue-hover), 4px);
+    @include box-shadow($main-blue-hover, 4px);
     @include apply-hover(
-      $bg: var(--main-blue),
-      $hovBg: var(--main-blue-hover),
-      $hovDrop: var(--blue-drop-shadow-hover),
+      $bg: $main-blue,
+      $hovBg: $main-blue-hover,
+      $hovDrop: $main-blue-darker,
       $hovColor: white
     );
   }
@@ -65,38 +65,38 @@
     height: auto;
     padding: 8px 20px;
     color: white;
-    @include box-shadow(var(--main-blue-hover), 4px);
+    @include box-shadow($main-blue-hover, 4px);
     @include apply-hover(
-      $bg: var(--main-blue),
-      $hovBg: var(--main-blue-hover),
-      $hovDrop: var(--blue-drop-shadow-hover),
+      $bg: $main-blue,
+      $hovBg: $main-blue-hover,
+      $hovDrop: $main-blue-darker,
       $hovColor: white
     );
   }
 
   &.disabled {
-    background-color: var(--subtle-border);
-    @include box-shadow(var(--gray-drop-shadow-hover), 4px);
-    color: var(--gray-drop-shadow-hover);
+    background-color: $subtle-border;
+    @include box-shadow($gray-drop-shadow-hover, 4px);
+    color: $gray-drop-shadow-hover;
     pointer-events: none;
   }
 
   &.button-add {
-    @include responsive-max($mobile) {
+    @include responsive-max($tablet) {
       position: fixed;
       z-index: 4;
-      background-color: var(--main-blue);
+      background-color: $main-blue;
       @include position($b: 20px, $r: 20px);
       @include w-h(60px);
-      @include box-shadow($color: var(--blue-drop-shadow-hover));
+      @include box-shadow($color: $main-blue-darker);
       * {
         position: relative;
         bottom: 1px;
         color: white;
       }
       &-close {
-        background-color: var(--main-pink);
-        @include box-shadow($color: var(--main-pink-dark));
+        background-color: $main-pink;
+        @include box-shadow($color: $main-pink-dark);
         * {
           transform: rotate(45deg);
         }

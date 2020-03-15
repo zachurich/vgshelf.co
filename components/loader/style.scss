@@ -18,7 +18,7 @@
     content: "";
     border-radius: 50%;
     @include w-h(35%);
-    background-color: var(--main-pink);
+    background-color: $main-pink;
   }
   &:after {
     position: absolute;
@@ -28,7 +28,7 @@
     content: "";
     border-radius: 50%;
     @include w-h(35%);
-    background-color: var(--main-blue);
+    background-color: $main-blue;
   }
   @include animate(
     $name: loading,

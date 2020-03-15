@@ -21,7 +21,22 @@ export const useGameFetch = (initialData = [], params = {}) => {
   return useDataFetch(params, API_ENDPOINTS.GAME, "games", initialData);
 };
 
-export const useCollectionFetch = (initialData = []) => {
+export const useGamesFetchByUserName = (initialData = []) => {
+  const { userName } = useParams();
+  return useDataFetch({ userName }, API_ENDPOINTS.GAME, "games", initialData);
+};
+
+export const useGamesFetchByUserAndCollection = (initialData = []) => {
+  const { userName, collectionSlug } = useParams();
+  return useDataFetch(
+    { userName, collectionSlug },
+    API_ENDPOINTS.GAME,
+    "games",
+    initialData
+  );
+};
+
+export const useCollectionsFetch = (initialData = []) => {
   const { userName } = useParams();
   return useDataFetch({ userName }, API_ENDPOINTS.COLLECTION, "", initialData);
 };
