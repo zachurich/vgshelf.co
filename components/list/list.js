@@ -9,8 +9,6 @@ const List = ({
   userName = null,
   destRoute,
   prettyRoute = destRoute, // optionally override the appearance of the url
-  handleToggle = () => {},
-  handleDelete,
   canAdd = false
 }) => {
   if (data && !data.length) {
@@ -25,13 +23,13 @@ const List = ({
       {data.length > 0 &&
         sortByDate(data, "created").map((item, index) => {
           return (
-            <li key={item.id} className="list-item" onClick={() => handleToggle(item.id)}>
+            <li key={item.id} className="list-item">
               <Link
                 href={{
                   pathname: destRoute,
-                  query: { username: userName, id: item.id, title: item.title }
+                  query: { userName, collectionSlug: item.slug }
                 }}
-                as={`${prettyRoute}/${userName}/${item.title.toLowerCase()}/${item.id}`}
+                as={`${prettyRoute}/${userName}/${item.slug}`}
               >
                 <a className="">
                   <span>{item.title}</span>

@@ -3,24 +3,30 @@ import get from "lodash/get";
 import React, { useState } from "react";
 import { mutate } from "@zeit/swr";
 
-import { Meta } from "../../../../components/index";
-import { fetchGamesByCollectionId, fetchGamesByUserName } from "../../../../api/gamesApi";
-import GameTogglePanel from "../../../../components/gameTogglePanel/gameTogglePanel";
-import { updateCollection } from "../../../../api/collectionsApi";
-import GamesPanel from "../../../../components/gamesPanel/gamesPanel";
+import { Meta } from "../../../components/index";
+import {
+  fetchGamesUserNameCollectionSlug,
+  fetchGamesByUserName
+} from "../../../api/gamesApi";
+import GameTogglePanel from "../../../components/gameTogglePanel/gameTogglePanel";
+import { updateCollection } from "../../../api/collectionsApi";
+import GamesPanel from "../../../components/gamesPanel/gamesPanel";
 
-import { formatUserName, toggleItemInArray, scrollTop } from "../../../../common/utils";
-import { useParams, useGameFetch } from "../../../../common/hooks";
+import { formatUserName, toggleItemInArray, scrollTop } from "../../../common/utils";
+import { useParams, useGameFetch } from "../../../common/hooks";
 
-import "../../../../styles/games.scss";
+import "../../../styles/games.scss";
 
 const Games = ({ user, initialGames = [], initialCollection = [] }) => {
   const [showTogglePanel, setShowTogglePanel] = useState(true);
-  const { username, id: collectionId, title: collectionTitle } = useParams();
-  const { data: collectionGames, finalUrl } = useGameFetch([], { collectionId });
+  const { userName, collectionSlug } = useParams();
+  const { data: collectionGames, finalUrl } = useGameFetch(initialCollection, {
+    userName,
+    collectionSlug
+  });
 
   const handleToggleTogglePanel = () => {
-    if (collectionId) {
+    if (collectionSlug) {
       scrollTop();
       setShowTogglePanel(() => !showTogglePanel);
     }
@@ -36,18 +42,19 @@ const Games = ({ user, initialGames = [], initialCollection = [] }) => {
     // Fire and forget the server request
     try {
       await updateCollection({
-        collectionId,
+        userName,
+        collectionSlug,
         games: newItemsProps
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
   return (
     <main className="games">
       <Meta title={"Games"} />
-      {collectionId && showTogglePanel && user && (
+      {collectionSlug && showTogglePanel && user && (
         <GameTogglePanel
           user={user}
           currentCollectionGames={collectionGames}
@@ -59,10 +66,10 @@ const Games = ({ user, initialGames = [], initialCollection = [] }) => {
       <div className="games-panel-wrapper container">
         {/* This component should contain all games IN THE CURRENT COLLECTION */}
         <GamesPanel
-          title={`${collectionTitle} Shelf` || `${formatUserName(user)}'s Games`}
+          title={`${collectionSlug} Shelf` || `${formatUserName(user)}'s Games`}
           user={user}
-          userName={username}
-          collectionId={collectionId}
+          userName={userName}
+          collectionId={collectionSlug}
           parentControlled={true}
           games={collectionGames || initialCollection}
           showTogglePanel={showTogglePanel}
@@ -79,9 +86,12 @@ const Games = ({ user, initialGames = [], initialCollection = [] }) => {
  */
 Games.getInitialProps = async ({ req, query }) => {
   if (req) {
-    const { id: collectionId, username: userName } = query;
+    const { collectionSlug, userName } = query;
     try {
-      const { games: initialCollection } = await fetchGamesByCollectionId(collectionId);
+      const { games: initialCollection } = await fetchGamesUserNameCollectionSlug(
+        collectionSlug,
+        userName
+      );
       const { games: initialGames } = await fetchGamesByUserName(userName);
       return { initialGames, initialCollection };
     } catch (e) {

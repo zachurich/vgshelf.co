@@ -5,13 +5,14 @@ import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel
 import { fetchGamesByUserName } from "../../api/gamesApi";
 import GamesPanel from "../../components/gamesPanel/gamesPanel";
 import { useParams, useGameFetch, useCollectionFetch } from "../../common/hooks";
-import { trigger } from "@zeit/swr";
+import { trigger, mutate } from "@zeit/swr";
+import { fetchCollectionsByUserName } from "../../api/collectionsApi";
 
 const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
-  const { username } = useParams();
+  const { userName } = useParams();
   const { data: games, finalUrl: gamesUrl, isLoading: isGamesLoading } = useGameFetch(
     initialGames,
-    { userName: username }
+    { userName }
   );
   const {
     data: collections,
@@ -24,17 +25,19 @@ const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
       <main className="main">
         <GamesPanel
           user={user}
-          userName={username}
+          userName={userName}
           games={games}
           isLoading={isGamesLoading}
           fetchKey={gamesUrl}
-          refreshData={() => trigger(gamesUrl)}
+          refreshData={data => {
+            mutate(gamesUrl, { games: data });
+          }}
         />
       </main>
       <section className="panel-right">
         <CollectionsPanel
           user={user}
-          userName={username}
+          userName={userName}
           collections={collections}
           isLoading={isCollectionsLoading}
           fetchKey={collectionsUrl}
@@ -51,11 +54,11 @@ const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
  */
 Dashboard.getInitialProps = async ({ req, query }) => {
   if (req) {
-    let response;
-    const { username } = query;
+    const { userName } = query;
     try {
-      response = await fetchGamesByUserName(username);
-      return { initialGames: response.games };
+      const { games: initialGames } = await fetchGamesByUserName(userName);
+      const initialCollections = await fetchCollectionsByUserName(userName);
+      return { initialGames, initialCollections };
     } catch (e) {
       console.log(e);
     }

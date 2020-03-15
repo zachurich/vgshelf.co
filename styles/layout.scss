@@ -1,0 +1,50 @@
+.dashboard {
+  display: flex;
+  @include responsive-max($tablet) {
+    flex-direction: column;
+  }
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 $comfortable-spacing;
+  max-width: $tablet;
+}
+
+.main {
+  min-height: 100vh;
+  flex-basis: 70%;
+  padding: 0 $comfortable-spacing;
+  @include responsive-max($mobile) {
+    padding: 0 $base-spacing;
+  }
+}
+
+.panel-right {
+  flex-basis: 30%;
+}
+
+.action-group {
+  display: flex;
+  flex-wrap: wrap;
+  *:first-child {
+    margin-right: 18px;
+  }
+  *:last-child {
+    margin-left: 18px;
+  }
+}
+
+.offset-heading {
+  text-align: center;
+  border-width: 7px;
+  border-style: solid;
+  box-sizing: border-box;
+  border-radius: 5px;
+  position: relative;
+  bottom: 70px;
+  color: white;
+  h3 {
+    margin: 10px $base-spacing;
+  }
+}

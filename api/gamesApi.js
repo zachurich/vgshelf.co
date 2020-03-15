@@ -27,11 +27,12 @@ export const fetchGamesByUserId = async userId => {
   }
 };
 
-export const fetchGamesByCollectionId = async collectionId => {
+export const fetchGamesUserNameCollectionSlug = async (collectionSlug, userName) => {
   try {
     const { data: response } = await axios.get(API_ENDPOINTS.GAME, {
       params: {
-        collectionId
+        collectionSlug,
+        userName
       }
     });
     return escapeNull(get(response, "data"), []);

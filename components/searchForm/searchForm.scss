@@ -28,3 +28,14 @@ input[type="text"].search-suggestions-open {
     }
   }
 }
+
+.search-form-input-wrap {
+  display: flex;
+  align-items: center;
+  .search-form-input {
+    flex: 1;
+  }
+  .button-action {
+    margin-left: $base-spacing;
+  }
+}

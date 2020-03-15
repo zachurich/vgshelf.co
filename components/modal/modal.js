@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import "./modal.scss";
 
@@ -8,7 +8,7 @@ const Modal = ({
   message,
   children
 }) => {
-  const containerRef = React.useRef(null);
+  const containerRef = useRef(null);
   if (!open) return null;
   return (
     <div className="modal-wrapper">
@@ -18,6 +18,7 @@ const Modal = ({
         onClick={e => {
           const target = e.target;
           if (target === containerRef.current) {
+            console.log(containerRef.current, target);
             dismissModal();
           }
         }}

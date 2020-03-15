@@ -4,13 +4,11 @@ import { BasicForm } from "../basicForm/basicForm";
 import { APP_ROUTES } from "../../common/routes";
 import { createCollection, deleteCollection } from "../../api/collectionsApi";
 import Title from "../title/title";
-import { mutate } from "@zeit/swr";
 import List from "../list/list";
-import "./collectionsPanel.scss";
-import { useCollectionFetch } from "../../common/hooks";
 import Loader from "../loader/loader";
 import { ButtonToggle } from "../buttons/buttons";
-import { toggleItemInArray } from "../../common/utils";
+
+import "./collectionsPanel.scss";
 
 function CollectionsPanel({
   user,
@@ -33,6 +31,7 @@ function CollectionsPanel({
         collectionName: title,
         games: []
       });
+      refreshData();
     }
   };
 

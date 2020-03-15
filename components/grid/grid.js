@@ -12,7 +12,7 @@ const Grid = ({
     enabled: false,
     type: "title"
   },
-  handleToggle = () => {},
+  handleClickItem = () => {},
   gridItem = () => {}
 }) => {
   const [search, setSearch] = useState("");
@@ -56,7 +56,10 @@ const Grid = ({
           const itemAlreadyToggled = compareItems.map(item => item.id).includes(item.id);
           return (
             <React.Fragment key={item.id}>
-              {gridItem({ item, itemAlreadyToggled, handleToggle })}
+              {gridItem({
+                item,
+                itemAlreadyToggled
+              })}
             </React.Fragment>
           );
         })}

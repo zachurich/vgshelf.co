@@ -1,11 +1,11 @@
 import { API_ENDPOINTS, API_ROUTES } from "../common/routes";
 import axios from "axios";
 
-export const fetchCollectionsByUserId = async userId => {
+export const fetchCollectionsByUserName = async userName => {
   try {
     const { data: response } = await axios.get(API_ENDPOINTS.COLLECTION, {
       params: {
-        user: userId
+        userName
       }
     });
     return response.data;

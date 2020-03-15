@@ -24,20 +24,33 @@ export function SignUpButton({ user, text, classes = "button-primary" }) {
   return null;
 }
 
-export function ButtonToggle({
-  containerRef,
-  handleToggle,
-  additionalClasses = "",
-  ...props
-}) {
+export function ButtonToggle({ handleToggle, additionalClasses = "", ...props }) {
   return (
     <div
       onClick={handleToggle}
       className={`button button-toggle button-secondary ${additionalClasses}`}
-      ref={containerRef}
       {...props}
     >
       {props.children || <a>+</a>}
+    </div>
+  );
+}
+
+export function ButtonAction({
+  handleAction,
+  additionalClasses = "",
+  disabled = false,
+  ...props
+}) {
+  return (
+    <div
+      onClick={handleAction}
+      className={`button button-action ${
+        disabled ? "disabled" : ""
+      } ${additionalClasses}`}
+      {...props}
+    >
+      {props.children || "+"}
     </div>
   );
 }

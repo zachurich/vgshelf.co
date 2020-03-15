@@ -7,7 +7,6 @@ export default async function update(req, res) {
     const tokenCache = await auth0.tokenCache(req, res);
     const { accessToken } = await tokenCache.getAccessToken();
     try {
-      console.log(req.body);
       const result = await axios.put(API_ENDPOINTS.COLLECTION, req.body, {
         headers: { Authorization: `Bearer ${accessToken}` }
       });

@@ -22,8 +22,8 @@ export const useGameFetch = (initialData = [], params = {}) => {
 };
 
 export const useCollectionFetch = (initialData = []) => {
-  const { username } = useParams();
-  return useDataFetch({ userName: username }, API_ENDPOINTS.COLLECTION, "", initialData);
+  const { userName } = useParams();
+  return useDataFetch({ userName }, API_ENDPOINTS.COLLECTION, "", initialData);
 };
 
 /**
@@ -44,7 +44,7 @@ export const useDataFetch = (params, endpoint, dataKey, initialData) => {
       fetchUrl = appendParam(fetchUrl, { key, value });
     }
   });
-  const { data, error, isValidating } = useSWR(fetchUrl, fetcher);
+  const { data, error, isValidating } = useSWR(fetchUrl, fetcher, { refreshInterval: 0 });
   let returnData;
   if (dataKey) {
     returnData = _.get(data, dataKey, initialData);

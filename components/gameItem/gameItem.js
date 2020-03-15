@@ -5,7 +5,7 @@ import "./styles.scss";
 
 const GameItem = ({ item, handleAction }) => {
   return (
-    <li key={item.id} className="game-item" onClick={() => handleAction(item.id)}>
+    <li key={item.id} className="game-item" onClick={() => handleAction(item)}>
       <div className="game-item-content">
         <span className="game-item-image-wrap">
           <div className={`game-item-image`}>

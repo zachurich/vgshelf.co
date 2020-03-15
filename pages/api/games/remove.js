@@ -7,8 +7,9 @@ export default async function remove(req, res) {
     const tokenCache = await auth0.tokenCache(req, res);
     const { accessToken } = await tokenCache.getAccessToken();
     try {
-      const result = await axios.delete(API_ENDPOINTS.GAME, req.body, {
-        headers: { Authorization: `Bearer ${accessToken}` }
+      const result = await axios.delete(API_ENDPOINTS.GAME, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        data: req.body
       });
       return res.send(result.data);
     } catch (error) {

@@ -3,7 +3,6 @@ import auth0 from "../../../common/auth";
 import { API_ENDPOINTS } from "../../../common/routes";
 
 export default async function create(req, res) {
-  console.log("error");
   try {
     const tokenCache = await auth0.tokenCache(req, res);
     const { accessToken } = await tokenCache.getAccessToken();
@@ -16,7 +15,7 @@ export default async function create(req, res) {
       throw error;
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(error.status || 500).end(error.message);
   }
 }
