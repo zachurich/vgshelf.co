@@ -8,14 +8,17 @@
   padding: 0;
   z-index: 3;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   background: rgba(0, 0, 0, 0.4);
   color: black;
   animation: fadeIn 0.2s ease-in-out forwards;
+  @include responsive-max($mobile) {
+    align-items: flex-start;
+  }
   &-container {
     @include border-radius;
-    padding: 30px;
+    padding: $comfortable-spacing;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,9 +26,11 @@
     background-color: $main-background;
     background-size: cover;
     animation: growInCool 0.4s cubic-bezier(0.17, 0, 0, 1) forwards;
+    margin: ($comfortable-spacing * 6) $base-spacing 0;
     @include responsive-max($mobile) {
-      height: 100%;
       width: 100%;
+      padding: $base-spacing;
+      margin: $comfortable-spacing $base-spacing 0;
     }
   }
   &-content {
@@ -33,7 +38,10 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin: 30px 0;
+    margin: $comfortable-spacing 0;
+    @include responsive-max($mobile) {
+      margin: $compact-spacing 0;
+    }
   }
   &.closed {
     display: none;

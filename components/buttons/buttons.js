@@ -28,7 +28,7 @@ export function ButtonToggle({ handleToggle, additionalClasses = "", ...props })
   return (
     <div
       onClick={handleToggle}
-      className={`button button-toggle button-secondary ${additionalClasses}`}
+      className={`button button-toggle ${additionalClasses}`}
       {...props}
     >
       {props.children || <a>+</a>}

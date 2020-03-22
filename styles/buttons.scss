@@ -15,15 +15,16 @@
   &-toggle {
     position: absolute;
     border: none;
-    @include w-h(40px);
-    @include flex-center;
-    @include box-shadow($drop: 3px);
     border-radius: 50%;
     font-size: 40px;
     font-weight: 800;
     bottom: 50px;
     background-color: white;
     z-index: 2;
+    @include w-h(40px);
+    @include flex-center;
+    @include box-shadow($trans-drop-shadow, 4px);
+    @include apply-hover;
     * {
       display: flex;
       @include flex-center;
@@ -56,6 +57,13 @@
       $hovDrop: $main-blue-darker,
       $hovColor: white
     );
+  }
+
+  &-primary,
+  &-secondary {
+    @include responsive-max($mobile) {
+      width: 100%;
+    }
   }
 
   &-nav {

@@ -30,7 +30,7 @@ function GamesPanel({
   isLoading = false,
   refreshData = () => {}
 }) {
-  const [showModal, setShowModal] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [modalMsg, setModalMsg] = useState(null);
 
   const handleToggleModal = toggle => {

@@ -1,3 +1,10 @@
+body {
+  box-sizing: border-box;
+  background: $main-background;
+  font-family: $main-font;
+  color: $text-dark;
+}
+
 a {
   color: $text-dark;
   text-decoration: none;
@@ -19,13 +26,6 @@ h1 {
 p {
   font-size: 18px;
   font-weight: $weight-bold;
-}
-
-body {
-  box-sizing: border-box;
-  background: $main-background;
-  font-family: $main-font;
-  color: $text-dark;
 }
 
 img {

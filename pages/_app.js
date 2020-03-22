@@ -9,8 +9,10 @@ import auth0 from "../common/auth";
 
 import "normalize.css";
 import "../styles/index.scss";
+import GlobalMessageContext from "../contexts/globalMessage";
+import GlobalMessanger from "../components/globalMessenger/globalMessenger";
 
-class MyApp extends App {
+class VGShelf extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
     if (Component.getInitialProps) {
@@ -30,12 +32,14 @@ class MyApp extends App {
     const { Component, pageProps } = this.props;
     return (
       <>
-        <Nav user={this.props.user} />
-        <Component user={this.props.user} {...pageProps} />
-        <Footer />
+        <GlobalMessanger>
+          <Nav user={this.props.user} />
+          <Component user={this.props.user} {...pageProps} />
+          <Footer />
+        </GlobalMessanger>
       </>
     );
   }
 }
 
-export default MyApp;
+export default VGShelf;

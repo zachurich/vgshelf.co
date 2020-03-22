@@ -4,13 +4,10 @@ import { Meta } from "../../components/index";
 import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
 import { fetchGamesByUserName } from "../../api/gamesApi";
 import GamesPanel from "../../components/gamesPanel/gamesPanel";
-import {
-  useParams,
-  useCollectionsFetch,
-  useGamesFetchByUserName
-} from "../../common/hooks";
 import { trigger, mutate } from "@zeit/swr";
 import { fetchCollectionsByUserName } from "../../api/collectionsApi";
+import { useParams, useCollectionsFetch } from "../../common/hooks";
+import useGamesFetchByUserName from "../../common/hooks/useGameFetchByUserName";
 
 const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
   const { userName } = useParams();

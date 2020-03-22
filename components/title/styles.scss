@@ -29,6 +29,5 @@
   text-transform: capitalize;
   @include responsive-max($mobile) {
     display: inline-block;
-    margin-bottom: $compact-spacing;
   }
 }

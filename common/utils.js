@@ -41,6 +41,15 @@ export const appendParam = (url, { key, value }) => {
   return (url += `${key}=${value}`);
 };
 
+export const appendMultipleParams = (url, params) => {
+  Object.entries(params).forEach(([key, value]) => {
+    if (value) {
+      url = appendParam(url, { key, value });
+    }
+  });
+  return url;
+};
+
 export const scrollTop = () => {
   if (documentExists()) {
     window.scrollTo(0, 0);

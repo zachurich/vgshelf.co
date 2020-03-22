@@ -9,6 +9,9 @@
   margin: 0 auto;
   padding: 0 $comfortable-spacing;
   max-width: $tablet;
+  @include responsive-max($mobile) {
+    padding: 0 $base-spacing;
+  }
 }
 
 .main {
@@ -27,11 +30,24 @@
 .action-group {
   display: flex;
   flex-wrap: wrap;
-  *:first-child {
-    margin-right: 18px;
+  .button:first-child {
+    margin-right: $compact-spacing;
   }
-  *:last-child {
-    margin-left: 18px;
+  .button:last-child {
+    margin-left: $compact-spacing;
+  }
+
+  @include responsive-max($mobile) {
+    flex-direction: column;
+    width: 100%;
+    .button:last-child {
+      margin-left: 0;
+    }
+
+    .button:first-child {
+      margin-bottom: $base-spacing;
+      margin-right: 0;
+    }
   }
 }
 

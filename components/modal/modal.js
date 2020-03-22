@@ -2,12 +2,7 @@ import React, { useRef } from "react";
 
 import "./modal.scss";
 
-const Modal = ({
-  open = false,
-  dismissModal = e => e.preventDefault(),
-  message,
-  children
-}) => {
+const Modal = ({ open = false, dismissModal = () => {}, message, children }) => {
   const containerRef = useRef(null);
   if (!open) return null;
   return (

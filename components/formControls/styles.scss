@@ -6,19 +6,4 @@
   width: 100%;
   align-items: center;
   justify-content: center;
-  @include responsive-max($mobile) {
-    flex-direction: column;
-  }
-  .form-close {
-    @include responsive-max($mobile) {
-      margin: 0 0 $base-spacing;
-    }
-  }
-  input,
-  .form-submit {
-    margin: 0 0 0 $base-spacing;
-    @include responsive-max($mobile) {
-      margin: 0;
-    }
-  }
 }
