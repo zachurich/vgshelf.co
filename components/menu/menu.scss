@@ -1,0 +1,42 @@
+@import "../../styles/util.scss";
+
+.menu {
+  display: flex;
+}
+
+.menu-list {
+  text-align: center;
+  position: absolute;
+  top: $nav-height;
+  right: $base-spacing;
+  background: white;
+  padding: $base-spacing;
+  @include box-shadow($trans-drop-shadow);
+  border-radius: 5px;
+  font-weight: $weight-bold;
+  z-index: 3;
+}
+
+.menu-button {
+  @include w-h(36px);
+  padding: 0;
+  border: none;
+  &:hover,
+  &:focus {
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+  }
+}
+
+.menu-button img {
+  @include w-h(100%);
+  border-radius: 5px;
+}
+
+.menu-item {
+  margin-bottom: $compact-spacing;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}

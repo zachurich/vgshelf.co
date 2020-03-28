@@ -1,0 +1,115 @@
+@import "./vars.scss";
+
+/** 
+* Breakpoints
+**/
+
+$desktop: 1280px;
+$tablet: 1024px;
+$mobile: 414px;
+
+/**
+* Mixins
+**/
+
+@mixin subtle-border($size: 1px, $position: bottom) {
+  border-#{$position}: $size solid $subtle-border;
+}
+
+@mixin flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin w-h($h, $w: $h) {
+  height: $h;
+  width: $w;
+}
+
+@mixin position($t: auto, $r: auto, $b: auto, $l: auto) {
+  top: $t;
+  bottom: $b;
+  left: $l;
+  right: $r;
+}
+
+@mixin box-shadow($color: $trans-drop-shadow, $drop: 4px, $blur: 0px) {
+  box-shadow: 0px $drop $blur $color;
+}
+
+@mixin transition($timing: 0.05s) {
+  transition: $timing ease-in-out;
+}
+
+@mixin responsive-max($width) {
+  @media screen and (max-width: $width) {
+    @content;
+  }
+}
+
+@mixin border-radius($radius: 10px) {
+  border-radius: $radius;
+}
+
+@mixin apply-hover(
+  $bg: white,
+  $hovBg: darken($bg, 8%),
+  $hovDrop: darken($hovBg, 8%),
+  $hovColor: initial
+) {
+  background-color: $bg;
+  &:hover {
+    background-color: $hovBg;
+    transform: translateY(-2px);
+    @include box-shadow($hovDrop, 6px);
+    cursor: pointer;
+    color: $hovColor;
+    * {
+      color: $hovColor;
+    }
+  }
+}
+
+@mixin animate(
+  $name,
+  $timing: 0.4s,
+  $ease: cubic-bezier(0.59, 0.01, 0, 0.99),
+  $direction: forwards,
+  $delay: 0.5s
+) {
+  @content; // provide initial state
+  animation: $name $timing $ease $direction;
+  animation-delay: $delay;
+}
+
+// Animations
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes logo {
+  0% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(2);
+  }
+}
+
+@keyframes grow-horizontal {
+  0% {
+    opacity: 0.5;
+    transform: scaleX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}

@@ -1,0 +1,29 @@
+@import "../../styles/util.scss";
+
+.games-toggle-panel {
+  position: relative;
+  max-width: 100%;
+  width: 800px;
+  @include responsive-max($tablet) {
+    width: 500px;
+  }
+  @include responsive-max($mobile) {
+    width: 100%;
+  }
+  .button-toggle {
+    top: 46px;
+    right: -20px;
+    @include responsive-max($tablet) {
+      top: auto;
+      right: auto;
+    }
+    @include responsive-max($tablet) {
+      display: none;
+    }
+    a {
+      position: relative;
+      left: 1px;
+      transform: rotate(45deg);
+    }
+  }
+}

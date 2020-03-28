@@ -1,0 +1,31 @@
+@import "../../styles/util.scss";
+.form-selections {
+  position: relative;
+  margin-bottom: $base-spacing;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  background: $subtle-border;
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 220px;
+  .form-selection {
+    margin: $compact-spacing / 2;
+    width: 50px;
+    &.loaded {
+      overflow: hidden;
+      border: 6px solid white;
+      @include border-radius;
+      @include box-shadow;
+    }
+    img {
+      display: flex;
+      @include border-radius(5px);
+      max-width: 100%;
+    }
+    svg {
+      height: 50px;
+    }
+  }
+}

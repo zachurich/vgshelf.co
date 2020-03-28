@@ -1,0 +1,139 @@
+.button {
+  @include flex-center;
+  display: flex;
+  text-align: center;
+  font-weight: $weight-bold;
+  width: 154px;
+  height: 46px;
+  border-radius: 5px;
+  border: none;
+  @include transition;
+  &:hover {
+    transform: translateY(-2px);
+    cursor: pointer;
+  }
+  &-toggle {
+    position: absolute;
+    border: none;
+    border-radius: 50%;
+    font-size: 40px;
+    font-weight: 800;
+    bottom: 50px;
+    z-index: 2;
+    @include w-h(40px);
+    @include flex-center;
+    background-color: $main-blue;
+    @include box-shadow($main-blue-darker, 4px);
+    @include apply-hover($bg: $main-blue, $hovColor: white);
+
+    &.pink {
+      background-color: $main-pink;
+      @include box-shadow($main-pink-dark, 4px);
+      @include apply-hover($bg: $main-pink, $hovColor: white);
+    }
+    * {
+      display: flex;
+      @include flex-center;
+      color: $main-blue;
+    }
+  }
+  &-action {
+    border: none;
+    @include w-h(30px);
+    @include flex-center;
+    border-radius: 5px;
+    font-size: 30px;
+    font-weight: 800;
+    bottom: 50px;
+    background-color: $main-blue;
+    z-index: 2;
+    color: white;
+    @include box-shadow($main-blue-darker, 4px);
+    @include apply-hover($bg: $main-blue, $hovColor: white);
+  }
+  &-secondary {
+    @include box-shadow($trans-drop-shadow, 4px);
+    @include apply-hover;
+  }
+  &-primary {
+    color: white;
+    @include box-shadow($main-blue-hover, 4px);
+    @include apply-hover(
+      $bg: $main-blue,
+      $hovBg: $main-blue-hover,
+      $hovDrop: $main-blue-darker,
+      $hovColor: white
+    );
+  }
+
+  &-primary,
+  &-secondary {
+    @include responsive-max($mobile) {
+      width: 100%;
+    }
+  }
+
+  &-nav {
+    position: relative;
+    bottom: 1px;
+    width: auto;
+    height: auto;
+    padding: 8px 20px;
+    color: white;
+    @include box-shadow($main-blue-hover, 4px);
+    @include apply-hover(
+      $bg: $main-blue,
+      $hovBg: $main-blue-hover,
+      $hovDrop: $main-blue-darker,
+      $hovColor: white
+    );
+  }
+
+  &.disabled {
+    background-color: $subtle-border;
+    @include box-shadow($gray-drop-shadow-hover, 4px);
+    color: $gray-drop-shadow-hover;
+    pointer-events: none;
+  }
+
+  &-close {
+    border: none;
+    @include w-h(30px);
+    @include flex-center;
+    border-radius: 5px;
+    font-size: 30px;
+    font-weight: 800;
+    bottom: 50px;
+    background-color: $main-blue;
+    z-index: 2;
+    color: white;
+    @include box-shadow($main-pink-dark, 4px);
+    @include apply-hover($bg: $main-pink, $hovColor: white);
+  }
+
+  &.button-add {
+    @include responsive-max($tablet) {
+      position: fixed;
+      z-index: 4;
+      background-color: $main-blue;
+      @include position($b: 20px, $r: 20px);
+      @include w-h(60px);
+      @include box-shadow($color: $main-blue-darker);
+      a {
+        color: white;
+      }
+      &-close {
+        background-color: $main-pink;
+        @include box-shadow($color: $main-pink-dark);
+        a {
+          color: white;
+          transform: rotate(45deg);
+        }
+      }
+      &:hover,
+      &:focus {
+        transform: none;
+      }
+    }
+  }
+}

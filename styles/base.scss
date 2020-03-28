@@ -1,0 +1,33 @@
+body {
+  box-sizing: border-box;
+  background: $main-background;
+  font-family: $main-font;
+  color: $text-dark;
+}
+
+a {
+  color: $text-dark;
+  text-decoration: none;
+  @include transition(0.1s);
+  &:hover {
+    color: $main-blue;
+  }
+}
+
+ul,
+li {
+  padding: 0;
+  list-style-type: none;
+}
+
+h1 {
+}
+
+p {
+  font-size: 18px;
+  font-weight: $weight-bold;
+}
+
+img {
+  box-sizing: border-box;
+}

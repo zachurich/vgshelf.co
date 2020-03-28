@@ -1,0 +1,54 @@
+@import "../../styles/util.scss";
+
+.nav {
+  height: $nav-height;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 $comfortable-spacing;
+  @include subtle-border;
+  @include responsive-max($mobile) {
+    padding: 0 $base-spacing;
+  }
+}
+
+.nav-logo {
+  display: flex;
+  @include flex-center;
+  font-size: 22px;
+  font-weight: 800;
+  a {
+    display: flex;
+    color: $text-dark;
+    > * {
+      max-width: 100px;
+    }
+  }
+}
+
+.nav-links {
+  @include flex-center;
+  display: flex;
+}
+
+.site-logo {
+  * {
+    @include transition(0.3s);
+  }
+  .logo-rect {
+    @include animate(grow-horizontal, $delay: 0.2s) {
+      transform: scaleX(0);
+    }
+  }
+  &:hover {
+    .logo-cartridge .logo-cartridge-art {
+      fill: $main-blue;
+    }
+
+    // .logo-cartridge {
+    //   fill: $main-pink;
+    //   @include animate(logo, $delay: none) {
+    //     transform: translateY(0px);
+    //   }
+    // }
+  }
+}

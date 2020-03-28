@@ -1,0 +1,42 @@
+@import "../../styles/util.scss";
+
+.loading-wrapper {
+  display: flex;
+  @include flex-center;
+}
+
+.loader {
+  position: relative;
+  display: inline-block;
+  @include w-h(40px);
+  border-radius: 50%;
+  &:before {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: inline-block;
+    content: "";
+    border-radius: 50%;
+    @include w-h(35%);
+    background-color: $main-pink;
+  }
+  &:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    content: "";
+    border-radius: 50%;
+    @include w-h(35%);
+    background-color: $main-blue;
+  }
+  @include animate(
+    $name: loading,
+    $ease: linear,
+    $timing: 0.5s,
+    $direction: infinite,
+    $delay: none
+  ) {
+    transform: rotate(0deg);
+  }
+}
