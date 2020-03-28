@@ -66,9 +66,6 @@ export const SearchForm = ({
     <>
       <FormSelections selections={selections} />
       <div className="form">
-        <label className="search-label" htmlFor={`${inputName.toLowerCase()}-title`}>
-          {inputName}
-        </label>
         <div className="search-form-input-wrap">
           <Combobox
             className="search-form-input"
@@ -101,7 +98,7 @@ export const SearchForm = ({
                 width: "100%",
                 zIndex: 99999
               }}
-              portal={false}
+              // portal={false}
             >
               <ComboboxList
                 className="search-option-list"

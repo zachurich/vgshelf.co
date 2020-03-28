@@ -1,54 +1,45 @@
 import _ from "lodash";
-import get from "lodash/get";
-import React, { useState } from "react";
+import React from "react";
 
 import Title from "../title/title";
 import Grid from "../grid/grid";
-import Modal from "../modal/modal";
 import { SearchForm } from "../searchForm/searchForm";
-import { trigger } from "@zeit/swr";
 import { createGame, deleteGame } from "../../api/gamesApi";
 import { fetchCover } from "../../api/search";
 import { handleServerResponse, scrollTop } from "../../common/utils";
-import { useGameFetch, useToggle, useParams } from "../../common/hooks";
 import GameItem from "../gameItem/gameItem";
 import { decideHeader, decideBreadCrumb } from "./util";
 import { ButtonToggle } from "../buttons/buttons";
-import FormSelections from "../formSelections/formSelections";
 
 import "./styles.scss";
 import Loader from "../loader/loader";
+import { MODAL_DEFAULT } from "../../common/hooks/useModal";
 
 function GamesPanel({
   games = [],
   collectionId = null,
   user = null,
   userName = null,
+  showModal,
+  setShowModal,
+  setModalContent,
   handlePrompt = null,
   showTogglePanel = false,
   title = null,
   isLoading = false,
   refreshData = () => {}
 }) {
-  const [showModal, setShowModal] = useState(false);
-  const [modalMsg, setModalMsg] = useState(null);
-
-  const handleToggleModal = toggle => {
-    scrollTop();
-    clearModalData();
-    setShowModal(() => toggle || !showModal);
-  };
-
   const clearModalData = () => {
-    setModalMsg(() => null);
+    setModalContent(() => MODAL_DEFAULT);
   };
-
-  const toggleAction = handlePrompt || handleToggleModal; // prefer handlePrompt prop
 
   const handleError = response => {
     const message = handleServerResponse(response);
     if (message) {
-      setModalMsg(() => message);
+      setModalContent(() => ({
+        header: "Error",
+        component: <p>{message}</p>
+      }));
     }
   };
 
@@ -71,23 +62,44 @@ function GamesPanel({
       }
     }
 
-    if (message) {
-      setModalMsg(() => message);
-    } else {
-      toggleAction(false);
+    if (!message) {
+      setShowModal(false);
       refreshData();
     }
   };
 
   const handleDeleteGame = async game => {
     if (!user) {
-      setModalMsg(() => "You are not signed in!");
-      setShowModal(() => true);
+      setModalContent(() => ({
+        header: "Error",
+        component: <p>You are not signed in!</p>
+      }));
+      setShowModal(true);
     } else {
       await deleteGame({ gameId: game.id, userId: user.sub });
       refreshData(games.filter(item => item.id !== game.id));
     }
   };
+
+  const handleToggleModal = toggle => {
+    scrollTop();
+    clearModalData();
+    setModalContent(() => ({
+      header: "Search by Game Title",
+      component: (
+        <SearchForm
+          inputName="Search by Game Title"
+          placeholder="Game Title"
+          closeText="Cancel"
+          dismissModal={() => setShowModal(false)}
+          handleSubmit={handleAddGames}
+        />
+      )
+    }));
+    setShowModal(() => toggle || !showModal);
+  };
+
+  const toggleAction = handlePrompt || handleToggleModal; // prefer handlePrompt prop
 
   return (
     <div className="games-panel">
@@ -118,19 +130,6 @@ function GamesPanel({
           gridItem={props => <GameItem handleAction={handleDeleteGame} {...props} />}
         />
       )}
-      <Modal
-        open={showModal}
-        message={modalMsg}
-        dismissModal={() => handleToggleModal(false)}
-      >
-        <SearchForm
-          inputName="Search by Game Title"
-          placeholder="Game Title"
-          closeText="Cancel"
-          dismissModal={() => toggleAction(false)}
-          handleSubmit={handleAddGames}
-        />
-      </Modal>
     </div>
   );
 }

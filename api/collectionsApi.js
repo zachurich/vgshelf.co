@@ -14,19 +14,23 @@ export const fetchCollectionsByUserName = async userName => {
   }
 };
 
-export const createCollection = async data => {
+export const createCollection = async ({ userId, collectionName, games }) => {
   try {
-    const result = await axios.post(API_ROUTES.COLLECTION + "/create", data);
+    const result = await axios.post(API_ROUTES.COLLECTION + "/create", {
+      userId,
+      collectionName,
+      games
+    });
     return result;
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteCollection = async data => {
+export const deleteCollection = async ({ collectionId }) => {
   try {
     const result = await axios.delete(API_ROUTES.COLLECTION + "/remove", {
-      data
+      data: { collectionId }
     });
     return result;
   } catch (error) {

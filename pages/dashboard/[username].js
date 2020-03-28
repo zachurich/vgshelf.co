@@ -8,6 +8,8 @@ import { trigger, mutate } from "@zeit/swr";
 import { fetchCollectionsByUserName } from "../../api/collectionsApi";
 import { useParams, useCollectionsFetch } from "../../common/hooks";
 import useGamesFetchByUserName from "../../common/hooks/useGameFetchByUserName";
+import useModal from "../../common/hooks/useModal";
+import Modal from "../../components/modal/modal";
 
 const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
   const { userName } = useParams();
@@ -21,6 +23,7 @@ const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
     finalUrl: collectionsUrl,
     isLoading: isCollectionsLoading
   } = useCollectionsFetch(initialCollections);
+  const { showModal, setShowModal, modalContent, setModalContent } = useModal();
   return (
     <div className="dashboard">
       <Meta title={"Dashboard"} />
@@ -31,6 +34,9 @@ const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
           games={games}
           isLoading={isGamesLoading}
           fetchKey={gamesUrl}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          setModalContent={setModalContent}
           refreshData={data => {
             mutate(gamesUrl, { games: data });
           }}
@@ -43,9 +49,20 @@ const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
           collections={collections}
           isLoading={isCollectionsLoading}
           fetchKey={collectionsUrl}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          setModalContent={setModalContent}
           refreshData={() => trigger(collectionsUrl)}
         />
       </section>
+
+      <Modal
+        open={showModal}
+        dismissModal={() => setShowModal(false)}
+        header={modalContent.header}
+      >
+        {modalContent.component}
+      </Modal>
     </div>
   );
 };

@@ -18,29 +18,51 @@
   }
   &-container {
     @include border-radius;
-    padding: $comfortable-spacing;
+    max-height: 75vh;
+    overflow: scroll;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: $main-background;
     background-size: cover;
     animation: growInCool 0.4s cubic-bezier(0.17, 0, 0, 1) forwards;
-    margin: ($comfortable-spacing * 6) $base-spacing 0;
+    margin: 15vh $base-spacing 0;
     @include responsive-max($mobile) {
+      max-height: 100vh;
       width: 100%;
-      padding: $base-spacing;
       margin: $comfortable-spacing $base-spacing 0;
     }
   }
+  &-header {
+    position: relative;
+    padding: 0 $base-spacing 0;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: white;
+    @include subtle-border;
+    @include responsive-max($mobile) {
+      padding: 0 $base-spacing 0;
+    }
+    h3 {
+      margin: ($compact-spacing * 1.5) 0;
+    }
+
+    &-close {
+      position: absolute;
+      top: $compact-spacing;
+      right: $compact-spacing;
+    }
+  }
   &-content {
+    padding: $base-spacing;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    margin: $comfortable-spacing 0;
+    max-width: 100%;
+    margin: 0 0 $base-spacing;
     @include responsive-max($mobile) {
-      margin: $compact-spacing 0;
+      margin: 0 0 $compact-spacing;
     }
   }
   &.closed {

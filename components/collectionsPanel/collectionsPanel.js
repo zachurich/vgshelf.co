@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Modal from "../modal/modal";
 import { BasicForm } from "../basicForm/basicForm";
 import { APP_ROUTES } from "../../common/routes";
 import { createCollection, deleteCollection } from "../../api/collectionsApi";
@@ -14,13 +13,28 @@ function CollectionsPanel({
   user,
   collections,
   userName,
+  showModal,
+  setShowModal,
+  setModalContent,
   isLoading,
   fetchKey,
   refreshData = () => {}
 }) {
-  const [showModal, setShowModal] = useState(false);
   const handleToggleModal = toggle => {
-    setShowModal(() => toggle || !showModal);
+    setModalContent(() => ({
+      header: "Create a Shelf",
+      component: (
+        <BasicForm
+          inputName="Create a Shelf"
+          placeholder="Shelf Name"
+          handleSubmit={handleCreateCollection}
+          handleDismiss={() => setShowModal(false)}
+          closeText="Cancel"
+          submitText="Add Shelf"
+        />
+      )
+    }));
+    setShowModal(toggle || !showModal);
   };
 
   const handleCreateCollection = async title => {
@@ -31,19 +45,25 @@ function CollectionsPanel({
         collectionName: title,
         games: []
       });
+      setShowModal(false);
       refreshData();
     }
   };
 
-  const handleDeleteCollection = async id => {
-    await deleteCollection({ id });
+  const handleDeleteCollection = async collectionId => {
+    await deleteCollection({ collectionId });
     refreshData();
   };
 
   return (
     <section className="collections-panel">
       <Title header={user ? "Shelves" : `${userName} Shelves`} color="pink">
-        {!!user && <ButtonToggle handleToggle={() => handleToggleModal(true)} />}
+        {!!user && (
+          <ButtonToggle
+            additionalClasses="pink"
+            handleToggle={() => handleToggleModal(true)}
+          />
+        )}
       </Title>
       {isLoading ? (
         <Loader />
@@ -57,16 +77,6 @@ function CollectionsPanel({
           canAdd={!!user}
         />
       )}
-      <Modal open={showModal} dismissModal={() => handleToggleModal(false)}>
-        <BasicForm
-          inputName="Create a Shelf"
-          placeholder="Shelf Name"
-          handleSubmit={handleCreateCollection}
-          handleDismiss={() => handleToggleModal(false)}
-          closeText="Cancel"
-          submitText="Add Shelf"
-        />
-      </Modal>
     </section>
   );
 }

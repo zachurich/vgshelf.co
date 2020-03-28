@@ -54,19 +54,25 @@ export const fetchGamesByUserName = async userName => {
   }
 };
 
-export const createGame = async data => {
+export const createGame = async ({ userId, title, igdbId, slug, imageUrl }) => {
   try {
-    const result = await axios.post(API_ROUTES.GAME + "/create", data);
+    const result = await axios.post(API_ROUTES.GAME + "/create", {
+      userId,
+      title,
+      igdbId,
+      slug,
+      imageUrl
+    });
     return result;
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteGame = async data => {
+export const deleteGame = async ({ gameId, userId }) => {
   try {
     const result = await axios.delete(API_ROUTES.GAME + "/remove", {
-      data
+      data: { gameId, userId }
     });
     return result;
   } catch (error) {

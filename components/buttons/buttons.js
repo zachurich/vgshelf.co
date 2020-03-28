@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { APP_ROUTES } from "../../common/routes";
+import AddSVG from "../../assets/add.svg";
 
 export function LoginButton({ user, classes = "button-secondary" }) {
   return (
@@ -31,7 +32,11 @@ export function ButtonToggle({ handleToggle, additionalClasses = "", ...props })
       className={`button button-toggle ${additionalClasses}`}
       {...props}
     >
-      {props.children || <a>+</a>}
+      {props.children || (
+        <a>
+          <AddSVG />
+        </a>
+      )}
     </div>
   );
 }
@@ -50,7 +55,7 @@ export function ButtonAction({
       } ${additionalClasses}`}
       {...props}
     >
-      {props.children || "+"}
+      {props.children || <AddSVG size={14} />}
     </div>
   );
 }

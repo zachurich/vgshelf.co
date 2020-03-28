@@ -28,13 +28,17 @@ class VGShelf extends App {
     return { pageProps };
   }
 
+  state = {
+    user: this.props.user
+  };
+
   render() {
     const { Component, pageProps } = this.props;
     return (
       <>
         <GlobalMessanger>
-          <Nav user={this.props.user} />
-          <Component user={this.props.user} {...pageProps} />
+          <Nav user={this.state.user} />
+          <Component user={this.state.user} {...pageProps} />
           <Footer />
         </GlobalMessanger>
       </>

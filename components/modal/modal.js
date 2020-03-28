@@ -1,8 +1,16 @@
 import React, { useRef } from "react";
 
 import "./modal.scss";
+import { ButtonToggle, ButtonAction } from "../buttons/buttons";
+import CloseSVG from "../../assets/close.svg";
 
-const Modal = ({ open = false, dismissModal = () => {}, message, children }) => {
+const Modal = ({
+  open = false,
+  dismissModal = () => {},
+  header = null,
+  message = null,
+  children
+}) => {
   const containerRef = useRef(null);
   if (!open) return null;
   return (
@@ -13,12 +21,20 @@ const Modal = ({ open = false, dismissModal = () => {}, message, children }) => 
         onClick={e => {
           const target = e.target;
           if (target === containerRef.current) {
-            console.log(containerRef.current, target);
             dismissModal();
           }
         }}
       >
         <div className="modal-container">
+          <div className="modal-header">
+            <h3>{header}</h3>
+            <ButtonAction
+              additionalClasses={"modal-header-close button-close"}
+              handleAction={() => dismissModal()}
+            >
+              <CloseSVG />
+            </ButtonAction>
+          </div>
           <div className="modal-content">
             {message ? <p className="modal-error-message">{message}</p> : children}
           </div>

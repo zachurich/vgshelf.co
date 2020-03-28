@@ -15,18 +15,20 @@ import { formatUserName, toggleItemInArray, scrollTop } from "../../../common/ut
 import { useParams, useGamesFetchByUserAndCollection } from "../../../common/hooks";
 
 import "../../../styles/games.scss";
+import Modal from "../../../components/modal/modal";
+import Title from "../../../components/title/title";
 
 const Games = ({ user, initialGames = [], initialCollection = [] }) => {
-  const [showTogglePanel, setShowTogglePanel] = useState(false);
   const { userName, collectionSlug } = useParams();
   const { data: collectionGames, finalUrl } = useGamesFetchByUserAndCollection(
     initialCollection
   );
+  const [showModal, setShowModal] = useState(false);
 
-  const handleToggleTogglePanel = () => {
+  const handleToggleModal = toggle => {
     if (collectionSlug) {
       scrollTop();
-      setShowTogglePanel(() => !showTogglePanel);
+      setShowModal(() => toggle || !showModal);
     }
   };
 
@@ -52,15 +54,6 @@ const Games = ({ user, initialGames = [], initialCollection = [] }) => {
   return (
     <main className="games">
       <Meta title={"Games"} />
-      {collectionSlug && showTogglePanel && user && (
-        <GameTogglePanel
-          user={user}
-          currentCollectionGames={collectionGames}
-          initialGames={initialGames}
-          handleClosePanel={() => handleToggleTogglePanel(false)}
-          handleToggleGame={handleToggleGame}
-        />
-      )}
       <div className="games-panel-wrapper container">
         {/* This component should contain all games IN THE CURRENT COLLECTION */}
         <GamesPanel
@@ -70,10 +63,23 @@ const Games = ({ user, initialGames = [], initialCollection = [] }) => {
           collectionId={collectionSlug}
           parentControlled={true}
           games={collectionGames || initialCollection}
-          showTogglePanel={showTogglePanel}
-          handlePrompt={handleToggleTogglePanel}
+          showTogglePanel={showModal}
+          handlePrompt={handleToggleModal}
         />
       </div>
+      <Modal
+        open={collectionSlug && showModal && user}
+        dismissModal={() => handleToggleModal(false)}
+        header={"Add to Shelf"}
+      >
+        <GameTogglePanel
+          user={user}
+          currentCollectionGames={collectionGames}
+          initialGames={initialGames}
+          handleClosePanel={() => handleToggleModal(false)}
+          handleToggleGame={handleToggleGame}
+        />
+      </Modal>
     </main>
   );
 };

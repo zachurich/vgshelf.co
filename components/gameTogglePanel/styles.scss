@@ -1,18 +1,14 @@
 @import "../../styles/util.scss";
 
 .games-toggle-panel {
-  --games-toggle-padding: 60px;
   position: relative;
-  max-width: 400px;
-  min-height: calc(100vh - 94px);
-  flex-basis: calc(100% / 3 - var(--games-toggle-padding));
-  padding: 0 30px 30px;
-  @include subtle-border(1px, right);
+  max-width: 100%;
+  width: 800px;
   @include responsive-max($tablet) {
-    flex-basis: 100%;
-    min-width: calc(100vw - var(--games-toggle-padding));
-    max-width: none;
-    @include subtle-border(1px, bottom);
+    width: 500px;
+  }
+  @include responsive-max($mobile) {
+    width: 100%;
   }
   .button-toggle {
     top: 46px;

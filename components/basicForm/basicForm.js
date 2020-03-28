@@ -22,9 +22,6 @@ export const BasicForm = ({
       onChange={handleChange}
       onSubmit={() => handleSubmit(displayValue)}
     >
-      <label className="basic-form-label" htmlFor={`${inputName.toLowerCase()}-title`}>
-        {inputName}
-      </label>
       <input
         className="basic-form-input"
         name={`${inputName.toLowerCase()}-title`}

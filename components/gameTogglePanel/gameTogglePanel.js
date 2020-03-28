@@ -18,8 +18,6 @@ function GameTogglePanel({
   const { data: games, error } = useGameFetch(initialGames, { userId: user.sub });
   return (
     <section className="games-toggle-panel">
-      <ButtonToggle handleToggle={handleClosePanel} />
-      <Title header={"Add to Shelf"} borderColor="blue" />
       {/* This component should contain all games - Search/Toggle in collection*/}
       {!currentCollectionGames ? (
         <Loader />

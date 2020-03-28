@@ -19,9 +19,9 @@
 }
 
 .grid-small {
-  grid-template-columns: 100%;
-  @include responsive-max($tablet) {
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  @include responsive-max($mobile) {
+    grid-template-columns: 100%;
   }
 }
 

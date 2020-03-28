@@ -19,12 +19,18 @@
     font-size: 40px;
     font-weight: 800;
     bottom: 50px;
-    background-color: white;
     z-index: 2;
     @include w-h(40px);
     @include flex-center;
-    @include box-shadow($trans-drop-shadow, 4px);
-    @include apply-hover;
+    background-color: $main-blue;
+    @include box-shadow($main-blue-darker, 4px);
+    @include apply-hover($bg: $main-blue, $hovColor: white);
+
+    &.pink {
+      background-color: $main-pink;
+      @include box-shadow($main-pink-dark, 4px);
+      @include apply-hover($bg: $main-pink, $hovColor: white);
+    }
     * {
       display: flex;
       @include flex-center;
@@ -41,8 +47,9 @@
     bottom: 50px;
     background-color: $main-blue;
     z-index: 2;
-    @include box-shadow($main-blue-darker, 4px);
     color: white;
+    @include box-shadow($main-blue-darker, 4px);
+    @include apply-hover($bg: $main-blue, $hovColor: white);
   }
   &-secondary {
     @include box-shadow($trans-drop-shadow, 4px);
@@ -89,6 +96,21 @@
     pointer-events: none;
   }
 
+  &-close {
+    border: none;
+    @include w-h(30px);
+    @include flex-center;
+    border-radius: 5px;
+    font-size: 30px;
+    font-weight: 800;
+    bottom: 50px;
+    background-color: $main-blue;
+    z-index: 2;
+    color: white;
+    @include box-shadow($main-pink-dark, 4px);
+    @include apply-hover($bg: $main-pink, $hovColor: white);
+  }
+
   &.button-add {
     @include responsive-max($tablet) {
       position: fixed;
@@ -97,15 +119,14 @@
       @include position($b: 20px, $r: 20px);
       @include w-h(60px);
       @include box-shadow($color: $main-blue-darker);
-      * {
-        position: relative;
-        bottom: 1px;
+      a {
         color: white;
       }
       &-close {
         background-color: $main-pink;
         @include box-shadow($color: $main-pink-dark);
-        * {
+        a {
+          color: white;
           transform: rotate(45deg);
         }
       }
