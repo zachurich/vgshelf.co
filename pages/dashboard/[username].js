@@ -74,12 +74,13 @@ const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
 Dashboard.getInitialProps = async ({ req, query }) => {
   if (req) {
     const { userName } = query;
+    console.log(query);
     try {
       const { games: initialGames } = await fetchGamesByUserName(userName);
       const initialCollections = await fetchCollectionsByUserName(userName);
       return { initialGames, initialCollections };
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
   return {};
