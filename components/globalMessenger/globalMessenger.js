@@ -1,32 +1,45 @@
+import _ from "lodash";
 import React, { useState } from "react";
 import GlobalMessageContext from "../../contexts/globalMessage";
 import Modal from "../modal/modal";
+import useModal from "../../common/hooks/useModal";
+import Router from "next/router";
 
 function GlobalMessanger({ children }) {
-  const [message, setMessage] = useState("Hello");
-  const [visible, setVisible] = useState(false);
+  const [shouldReload, setShouldReload] = useState(false);
+  const { showModal, setShowModal, modalContent, setModalContent } = useModal();
 
-  const promptMessage = message => {
-    setMessage(message);
-    setVisible(true);
+  const promptMessage = ({ header, message }, reloadOnDismiss = false) => {
+    if (reloadOnDismiss) {
+      setShouldReload(reloadOnDismiss);
+    }
+    setModalContent({
+      header,
+      component: <p>{message}</p>
+    });
+    setShowModal(true);
   };
 
   const dismissMessage = () => {
-    setVisible(false);
-    setMessage("");
+    setShowModal(false);
+    setModalContent({
+      header: "",
+      component: ""
+    });
+    if (shouldReload) {
+      window.location.reload();
+    }
   };
 
   return (
-    <GlobalMessageContext.Provider
-      value={{
-        message,
-        setMessage,
-        promptMessage,
-        dismissMessage
-      }}
-    >
+    <GlobalMessageContext.Provider value={{ promptMessage }}>
       {children}
-      <Modal open={visible} message={message} dismissModal={dismissMessage} />
+      <Modal
+        open={showModal}
+        header={modalContent.header}
+        message={modalContent.component}
+        dismissModal={dismissMessage}
+      />
     </GlobalMessageContext.Provider>
   );
 }

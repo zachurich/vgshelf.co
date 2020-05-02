@@ -11,7 +11,8 @@ export const API_ENDPOINTS = {
 // Nextjs API routes
 export const API_ROUTES = {
   COLLECTION: createUrl(process.env.HOST, "/api/collections"),
-  GAME: createUrl(process.env.HOST, "/api/games")
+  GAME: createUrl(process.env.HOST, "/api/games"),
+  AUTH: createUrl(process.env.HOST, "/api/check-auth")
 };
 
 // Application routes

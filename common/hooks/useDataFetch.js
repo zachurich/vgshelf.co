@@ -28,9 +28,15 @@ const useDataFetch = (params, endpoint, dataKey, initialData) => {
     ...swrOptions,
     onError: error => {
       if (error.message) {
-        promptMessage(error.message);
+        promptMessage({
+          header: "Error",
+          message: error.message
+        });
       } else {
-        promptMessage(JSON.stringify(error));
+        promptMessage({
+          header: "Error",
+          message: JSON.stringify(error)
+        });
       }
     }
   });

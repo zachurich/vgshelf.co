@@ -14,6 +14,20 @@ export const fetchCollectionsByUserName = async userName => {
   }
 };
 
+export const fetchSingleCollection = async ({ userName, collectionSlug }) => {
+  try {
+    const { data: response } = await axios.get(API_ENDPOINTS.COLLECTION, {
+      params: {
+        userName,
+        collectionSlug
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const createCollection = async ({ userId, collectionName, games }) => {
   try {
     const result = await axios.post(API_ROUTES.COLLECTION + "/create", {

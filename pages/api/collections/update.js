@@ -1,6 +1,7 @@
 import axios from "axios";
 import auth0 from "../../../common/auth";
 import { API_ENDPOINTS } from "../../../common/routes";
+import { ERROR_CODES } from "../../../common/constants";
 
 export default async function update(req, res) {
   try {
@@ -15,6 +16,10 @@ export default async function update(req, res) {
       throw error;
     }
   } catch (error) {
-    res.status(error.status || 500).end(error.message);
+    if (error.code === ERROR_CODES.NOT_AUTHED) {
+      res.status(401).end(error.message);
+    } else {
+      res.status(error.status || 500).end(error.message);
+    }
   }
 }

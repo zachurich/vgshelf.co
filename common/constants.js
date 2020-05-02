@@ -17,3 +17,7 @@ export const COMPLETENESS = {
 export const IMAGES = {
   MISSING: "/static/missing-thumb.png"
 };
+
+export const ERROR_CODES = {
+  NOT_AUTHED: "invalid_session"
+};

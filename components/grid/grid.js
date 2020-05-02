@@ -32,12 +32,14 @@ const Grid = ({
     if (!filtering.enabled) {
       return data;
     }
-    return data.filter(item => {
-      return (
-        item[filtering.type].includes(search) ||
-        item[filtering.type].toLowerCase().includes(search.toLowerCase())
-      );
-    });
+    return data
+      .filter(item => {
+        return (
+          item[filtering.type].includes(search) ||
+          item[filtering.type].toLowerCase().includes(search.toLowerCase())
+        );
+      })
+      .slice(0, filtering.limit || data.length);
   };
 
   return (
@@ -47,7 +49,7 @@ const Grid = ({
           className="grid-filter"
           type="text"
           value={search}
-          placeholder="Filter by Title..."
+          placeholder="Search by Title..."
           onChange={e => setSearch(e.target.value)}
         />
       )}

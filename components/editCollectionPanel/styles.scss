@@ -1,6 +1,13 @@
 @import "../../styles/util.scss";
 
-.games-toggle-panel {
+.collection-edit {
+  width: 100%;
+  section {
+    margin-bottom: $comfortable-spacing;
+  }
+}
+
+.collection-edit-toggle-panel {
   position: relative;
   max-width: 100%;
   width: 800px;

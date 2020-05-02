@@ -55,13 +55,15 @@
     }
   }
   &-content {
-    padding: $base-spacing;
+    box-sizing: border-box;
+    padding: $base-spacing $comfortable-spacing;
     display: flex;
     flex-direction: column;
     align-items: center;
     max-width: 100%;
     margin: 0 0 $base-spacing;
     @include responsive-max($mobile) {
+      padding: $base-spacing;
       margin: 0 0 $compact-spacing;
     }
   }
