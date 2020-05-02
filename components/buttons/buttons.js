@@ -2,12 +2,15 @@ import React from "react";
 import Link from "next/link";
 import { APP_ROUTES } from "../../common/routes";
 import AddSVG from "../../assets/add.svg";
+import { useRouter } from "next/router";
 
 export function LoginButton({ user, classes = "button-secondary" }) {
+  const router = useRouter();
+  const loginPath = APP_ROUTES.LOGIN + `?pathOnLogin=${router.asPath}`;
   return (
     <Link
-      href={{ pathname: user ? "/dashboard/[user]" : APP_ROUTES.LOGIN }}
-      as={user ? `/dashboard/${user.nickname}` : APP_ROUTES.LOGIN}
+      href={{ pathname: user ? "/dashboard/[user]" : loginPath }}
+      as={user ? `/dashboard/${user.nickname}` : loginPath}
     >
       <a className={`button ${classes}`}>{user ? "Continue" : "Log In"}</a>
     </Link>

@@ -1,5 +1,6 @@
 import isNull from "lodash/isNull";
 import get from "lodash/get";
+import { APP_ROUTES } from "./routes";
 
 export const sortByDate = (arr, sortKey) => {
   return arr.sort((prior, next) => new Date(next[sortKey]) - new Date(prior[sortKey]));
@@ -102,4 +103,11 @@ export const toggleItemInArray = (array, item, property = null) => {
     newItems,
     newItemsProps: property ? newItems.map(item => item[property]) : null
   };
+};
+
+export const createBufferFromQuery = (params = {}) => {
+  const keys = Object.keys(params);
+  return Buffer.from(
+    keys.map(param => params[param]).join("|") || [APP_ROUTES.APP].join("")
+  );
 };
