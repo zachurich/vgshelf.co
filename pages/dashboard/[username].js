@@ -1,4 +1,4 @@
-import get from "lodash/get";
+import _ from "lodash";
 import React from "react";
 import { Meta } from "../../components/index";
 import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
@@ -10,6 +10,9 @@ import { useParams, useCollectionsFetch } from "../../common/hooks";
 import useGamesFetchByUserName from "../../common/hooks/useGameFetchByUserName";
 import useModal from "../../common/hooks/useModal";
 import Modal from "../../components/modal/modal";
+import { ERROR_CODES } from "../../common/constants";
+import { APP_ROUTES } from "../../common/routes";
+import { redirect } from "../../common/utils";
 
 const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
   const { userName } = useParams();
@@ -71,7 +74,7 @@ const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
  * THIS RUNS ONCE ON THE SERVER, ON REFRESH
  * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
  */
-Dashboard.getInitialProps = async ({ req, query }) => {
+Dashboard.getInitialProps = async ({ req, res, query }) => {
   if (req) {
     const { userName } = query;
     try {
@@ -79,7 +82,7 @@ Dashboard.getInitialProps = async ({ req, query }) => {
       const initialCollections = await fetchCollectionsByUserName(userName);
       return { initialGames, initialCollections };
     } catch (e) {
-      console.log(e);
+      return handleServerError(e, res);
     }
   }
   return {};

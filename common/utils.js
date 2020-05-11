@@ -1,5 +1,4 @@
-import isNull from "lodash/isNull";
-import get from "lodash/get";
+import _ from "lodash";
 import { APP_ROUTES } from "./routes";
 
 export const sortByDate = (arr, sortKey) => {
@@ -58,7 +57,7 @@ export const scrollTop = () => {
 };
 
 export const escapeNull = (value, fallback) => {
-  if (!isNull(value)) {
+  if (!_.isNull(value)) {
     return value;
   }
   return fallback;
@@ -75,7 +74,7 @@ export const getColor = color => {
 
 export const handleServerResponse = (response = {}) => {
   const errorCodes = new Set([400, 500]);
-  if (errorCodes.has(+get(response, "code"))) {
+  if (errorCodes.has(+_.get(response, "code"))) {
     return response.msg;
   }
   return null;
@@ -110,4 +109,19 @@ export const createBufferFromQuery = (params = {}) => {
   return Buffer.from(
     keys.map(param => params[param]).join("|") || [APP_ROUTES.APP].join("")
   );
+};
+
+export const redirect = (res, location) => {
+  res.writeHead(302, {
+    Location: location
+  });
+  res.end();
+};
+
+export const handleServerError = (e, res) => {
+  const data = _.get(e, "response.data.data", {});
+  if (data && data.includes(ERROR_CODES.NO_USER)) {
+    return redirect(res, APP_ROUTES.MISSING);
+  }
+  return redirect(res, APP_ROUTES.ERROR);
 };

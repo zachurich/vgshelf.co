@@ -1,14 +1,19 @@
 import { useState, useEffect, useContext } from "react";
 import GlobalMessageContext from "../../contexts/globalMessage";
-import { fetchCheckAuth } from "../../api/checkAuth";
+import { fetchCheckSession } from "../../api/checkAuth";
 import { APP_ROUTES } from "../routes";
+import useParams from "./useParams";
 
 const useCheckAuth = () => {
   const { promptMessage } = useContext(GlobalMessageContext);
+  const { userName } = useParams();
   const performAuthCheck = async () => {
     try {
-      await fetchCheckAuth();
-      return true;
+      const data = await fetchCheckSession();
+      if (data.userName === userName) {
+        return true;
+      }
+      throw Error("Not authorized!");
     } catch (error) {
       promptMessage(
         {

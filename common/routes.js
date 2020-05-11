@@ -23,5 +23,6 @@ export const APP_ROUTES = {
   GAMES: "/games",
   LOGIN: "/api/login",
   LOGOUT: "/api/logout",
-  ERROR: "/error"
+  ERROR: "/error",
+  MISSING: "/404"
 };

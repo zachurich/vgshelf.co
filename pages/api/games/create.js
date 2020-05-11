@@ -6,7 +6,6 @@ export default async function create(req, res) {
   try {
     const tokenCache = await auth0.tokenCache(req, res);
     const { accessToken } = await tokenCache.getAccessToken();
-    console.log(accessToken);
     try {
       const result = await axios.post(API_ENDPOINTS.GAME, req.body, {
         headers: { Authorization: `Bearer ${accessToken}` }

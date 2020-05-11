@@ -10,10 +10,10 @@ import { handleServerResponse, scrollTop } from "../../common/utils";
 import GameItem from "../gameItem/gameItem";
 import { decideHeader, decideBreadCrumb } from "./util";
 import { ButtonToggle } from "../buttons/buttons";
-
-import "./styles.scss";
 import Loader from "../loader/loader";
 import { MODAL_DEFAULT } from "../../common/hooks/useModal";
+import useCheckAuth from "../../common/hooks/useCheckAuth";
+import "./styles.scss";
 
 function GamesPanel({
   games = [],
@@ -29,6 +29,7 @@ function GamesPanel({
   isLoading = false,
   refreshData = () => {}
 }) {
+  const { performAuthCheck } = useCheckAuth();
   const clearModalData = () => {
     setModalContent(() => MODAL_DEFAULT);
   };
@@ -81,7 +82,9 @@ function GamesPanel({
     }
   };
 
-  const handleToggleModal = toggle => {
+  const handleToggleModal = async toggle => {
+    const authed = await performAuthCheck();
+    if (!authed) return;
     scrollTop();
     clearModalData();
     setModalContent(() => ({

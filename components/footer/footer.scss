@@ -1,6 +1,8 @@
 @import "../../styles/util.scss";
 
 .footer {
+  box-sizing: border-box;
+  min-height: $footer-height;
   padding: 40px 0;
   display: flex;
   flex-direction: column;

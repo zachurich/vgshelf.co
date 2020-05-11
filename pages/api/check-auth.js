@@ -4,9 +4,14 @@ import { ERROR_CODES } from "../../common/constants";
 export default async (req, res) => {
   try {
     // Just try and see if we can get an access token
+    const { user } = await auth0.getSession(req);
     const tokenCache = await auth0.tokenCache(req, res);
     await tokenCache.getAccessToken();
-    return res.send({ status: 200, msg: "Authorized!" });
+    return res.send({
+      status: 200,
+      msg: "Authorized!",
+      data: { userName: user.nickname }
+    });
   } catch (error) {
     // if not, we aren't authed
     if (error.code === ERROR_CODES.NOT_AUTHED) {

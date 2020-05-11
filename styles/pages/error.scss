@@ -1,0 +1,10 @@
+.error-page {
+  text-align: center;
+  // margin: $comfortable-spacing 0;
+
+  &-content {
+    display: flex;
+    @include flex-center;
+    @include fill-height;
+  }
+}

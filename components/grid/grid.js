@@ -22,7 +22,7 @@ const Grid = ({
   if (data && !data.length) {
     return (
       <div className="grid-empty">
-        <p>This shelf is empty.</p>
+        <p>No games found.</p>
       </div>
     );
   }

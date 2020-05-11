@@ -21,6 +21,10 @@ $mobile: 414px;
   align-items: center;
 }
 
+@mixin fill-height {
+  min-height: calc(100vh - #{$nav-height} - #{$footer-height});
+}
+
 @mixin w-h($h, $w: $h) {
   height: $h;
   width: $w;

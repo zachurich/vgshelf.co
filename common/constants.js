@@ -19,5 +19,6 @@ export const IMAGES = {
 };
 
 export const ERROR_CODES = {
-  NOT_AUTHED: "invalid_session"
+  NOT_AUTHED: "invalid_session",
+  NO_USER: "User does not exist!"
 };

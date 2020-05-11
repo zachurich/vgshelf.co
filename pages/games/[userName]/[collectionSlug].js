@@ -1,21 +1,24 @@
-import get from "lodash/get";
-
+import _ from "lodash";
 import React, { useState, useEffect, useContext } from "react";
 import { mutate } from "@zeit/swr";
-
 import { Meta } from "../../../components/index";
 import { fetchGamesByUserName } from "../../../api/gamesApi";
 import EditCollectionPanel from "../../../components/editCollectionPanel/editCollectionPanel";
 import { updateCollection, fetchSingleCollection } from "../../../api/collectionsApi";
 import GamesPanel from "../../../components/gamesPanel/gamesPanel";
-import { formatUserName, toggleItemInArray, scrollTop } from "../../../common/utils";
+import {
+  formatUserName,
+  toggleItemInArray,
+  scrollTop,
+  redirect,
+  handleServerError
+} from "../../../common/utils";
 import { useParams, useFetchCollection } from "../../../common/hooks";
 import Modal from "../../../components/modal/modal";
+import useCheckAuth from "../../../common/hooks/useCheckAuth";
 
 import "../../../styles/games.scss";
-import { fetchCheckAuth } from "../../../api/checkAuth";
-import GlobalMessageContext from "../../../contexts/globalMessage";
-import useCheckAuth from "../../../common/hooks/useCheckAuth";
+import { APP_ROUTES } from "../../../common/routes";
 
 const Games = ({ user, initialGames = [], initialCollection = {} }) => {
   const { userName, collectionSlug } = useParams();
@@ -46,7 +49,7 @@ const Games = ({ user, initialGames = [], initialCollection = {} }) => {
         games
       });
     } catch (error) {
-      console.log(error);
+      console.log(_.get(e, "response.data"));
     }
 
     handleToggleModal(false);
@@ -89,7 +92,7 @@ const Games = ({ user, initialGames = [], initialCollection = {} }) => {
  * THIS RUNS ONCE ON THE SERVER, ON REFRESH
  * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
  */
-Games.getInitialProps = async ({ req, query }) => {
+Games.getInitialProps = async ({ req, res, query }) => {
   if (req) {
     const { collectionSlug, userName } = query;
     try {
@@ -103,7 +106,7 @@ Games.getInitialProps = async ({ req, query }) => {
         initialCollection
       };
     } catch (e) {
-      console.log(e);
+      return handleServerError(e, res);
     }
   }
   return {};

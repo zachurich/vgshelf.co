@@ -15,7 +15,7 @@
 }
 
 .main {
-  min-height: 100vh;
+  @include fill-height;
   flex-basis: 70%;
   padding: 0 $comfortable-spacing;
   @include responsive-max($mobile) {
