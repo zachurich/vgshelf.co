@@ -6,8 +6,6 @@ import GameToggleItem from "../gameToggleItem/gameToggleItem";
 import Title from "../title/title";
 import Loader from "../loader/loader";
 import { ButtonToggle } from "../buttons/buttons";
-
-import "./styles.scss";
 import { toggleItemInArray } from "../../common/utils";
 import FormControls from "../formControls/formControls";
 
@@ -16,20 +14,20 @@ function EditCollectionPanel({
   collection,
   initialGames,
   handleSubmitChanges, // add/remove game from collection
-  handleClosePanel // close this panel
+  handleClosePanel, // close this panel
 }) {
   const { data: games, error } = useGameFetch(initialGames, { userId: user.sub });
   const [collectionTitle, setCollectionTitle] = useState(collection.title);
   const [gamesToggled, setGamesToggled] = useState(collection.games);
 
-  const handleToggleGame = game => {
+  const handleToggleGame = (game) => {
     const { newItems, newItemsProps } = toggleItemInArray(gamesToggled, game, "id");
     setGamesToggled(newItems);
   };
 
   return (
     <div className="collection-edit">
-      <form onSubmit={e => handleSubmitChanges(e, collectionTitle, gamesToggled)}>
+      <form onSubmit={(e) => handleSubmitChanges(e, collectionTitle, gamesToggled)}>
         <section className="collection-edit-title">
           <label htmlFor="collection-title">Shelf Title</label>
           <input
@@ -37,7 +35,7 @@ function EditCollectionPanel({
             placeholder="Shelf Title"
             type="text"
             value={collectionTitle}
-            onChange={e => setCollectionTitle(e.target.value)}
+            onChange={(e) => setCollectionTitle(e.target.value)}
           />
         </section>
         <section className="collection-edit-toggle-panel">
@@ -53,7 +51,7 @@ function EditCollectionPanel({
               filtering={{ limit: 6, enabled: true, type: "title" }}
               canAdd={!!user}
               handleToggle={handleToggleGame}
-              gridItem={props => (
+              gridItem={(props) => (
                 <GameToggleItem handleToggle={handleToggleGame} {...props} />
               )}
             />
@@ -66,7 +64,7 @@ function EditCollectionPanel({
             collection.games === gamesToggled && collection.title === collectionTitle
           }
           submitText={"Submit"}
-          handleSubmit={e => handleSubmitChanges(e, collectionTitle, gamesToggled)}
+          handleSubmit={(e) => handleSubmitChanges(e, collectionTitle, gamesToggled)}
         />
       </form>
     </div>

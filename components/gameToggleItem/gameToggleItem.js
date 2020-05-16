@@ -1,6 +1,4 @@
 import react from "react";
-
-import "./style.scss";
 import MissingCover from "../../assets/missingCover.svg";
 
 const GameToggleItem = ({ item, itemAlreadyToggled, handleToggle }) => {

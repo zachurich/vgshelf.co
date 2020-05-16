@@ -2,14 +2,12 @@ import React from "react";
 import Link from "next/link";
 import { sortByDate } from "../../common/utils";
 
-import "./styles.scss";
-
 const List = ({
   data = [],
   userName = null,
   destRoute,
   prettyRoute = destRoute, // optionally override the appearance of the url
-  canAdd = false
+  canAdd = false,
 }) => {
   if (data && !data.length) {
     return (
@@ -27,7 +25,7 @@ const List = ({
               <Link
                 href={{
                   pathname: destRoute,
-                  query: { userName, collectionSlug: item.slug }
+                  query: { userName, collectionSlug: item.slug },
                 }}
                 as={`${prettyRoute}/${userName}/${item.slug}`}
               >

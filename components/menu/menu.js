@@ -1,7 +1,5 @@
 import React from "react";
 import Link from "next/link";
-
-import "./menu.scss";
 import { APP_ROUTES } from "../../common/routes";
 import { useToggle } from "../../common/hooks";
 
@@ -23,7 +21,7 @@ const Menu = ({ user }) => {
     toggleState: showMenu,
     handleToggle: toggleMenu,
     toggledElement: menuRef,
-    triggerElement: menuButtonRef
+    triggerElement: menuButtonRef,
   } = useToggle();
   function renderLoggedInMenu() {
     return (

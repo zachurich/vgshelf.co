@@ -6,8 +6,8 @@ import Title from "../title/title";
 import List from "../list/list";
 import Loader from "../loader/loader";
 import { ButtonToggle } from "../buttons/buttons";
-
-import "./collectionsPanel.scss";
+import { userCanEdit } from "../../common/utils";
+import useCheckAuth from "../../common/hooks/useCheckAuth";
 
 function CollectionsPanel({
   user,
@@ -18,9 +18,12 @@ function CollectionsPanel({
   setModalContent,
   isLoading,
   fetchKey,
-  refreshData = () => {}
+  refreshData = () => {},
 }) {
-  const handleToggleModal = toggle => {
+  const { performAuthCheck } = useCheckAuth();
+  const handleToggleModal = async (toggle) => {
+    const authed = await performAuthCheck();
+    if (!authed) return;
     setModalContent(() => ({
       header: "Create a Shelf",
       component: (
@@ -32,25 +35,25 @@ function CollectionsPanel({
           closeText="Cancel"
           submitText="Add Shelf"
         />
-      )
+      ),
     }));
     setShowModal(toggle || !showModal);
   };
 
-  const handleCreateCollection = async title => {
+  const handleCreateCollection = async (title) => {
     if (title.length > 0) {
       handleToggleModal(false);
       await createCollection({
         userId: user.sub,
         collectionName: title,
-        games: []
+        games: [],
       });
       setShowModal(false);
       refreshData();
     }
   };
 
-  const handleDeleteCollection = async collectionId => {
+  const handleDeleteCollection = async (collectionId) => {
     await deleteCollection({ collectionId });
     refreshData();
   };
@@ -58,7 +61,7 @@ function CollectionsPanel({
   return (
     <section className="collections-panel">
       <Title header={user ? "Shelves" : `${userName} Shelves`} color="pink">
-        {!!user && (
+        {userCanEdit(user, userName) && (
           <ButtonToggle
             additionalClasses="pink"
             handleToggle={() => handleToggleModal(true)}

@@ -12,19 +12,19 @@ import useModal from "../../common/hooks/useModal";
 import Modal from "../../components/modal/modal";
 import { ERROR_CODES } from "../../common/constants";
 import { APP_ROUTES } from "../../common/routes";
-import { redirect } from "../../common/utils";
+import { redirect, handleServerError } from "../../common/utils";
 
 const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
   const { userName } = useParams();
   const {
     data: games,
     finalUrl: gamesUrl,
-    isLoading: isGamesLoading
+    isLoading: isGamesLoading,
   } = useGamesFetchByUserName(initialGames);
   const {
     data: collections,
     finalUrl: collectionsUrl,
-    isLoading: isCollectionsLoading
+    isLoading: isCollectionsLoading,
   } = useCollectionsFetch(initialCollections);
   const { showModal, setShowModal, modalContent, setModalContent } = useModal();
   return (
@@ -35,12 +35,12 @@ const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
           user={user}
           userName={userName}
           games={games}
-          isLoading={isGamesLoading}
+          isLoading={isGamesLoading && !games.length}
           fetchKey={gamesUrl}
           showModal={showModal}
           setShowModal={setShowModal}
           setModalContent={setModalContent}
-          refreshData={data => {
+          refreshData={(data) => {
             mutate(gamesUrl, { games: data });
           }}
         />
@@ -50,7 +50,7 @@ const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
           user={user}
           userName={userName}
           collections={collections}
-          isLoading={isCollectionsLoading}
+          isLoading={isCollectionsLoading && !collections.length}
           fetchKey={collectionsUrl}
           showModal={showModal}
           setShowModal={setShowModal}

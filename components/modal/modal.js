@@ -1,6 +1,4 @@
 import React, { useRef } from "react";
-
-import "./modal.scss";
 import { ButtonToggle, ButtonAction } from "../buttons/buttons";
 import CloseSVG from "../../assets/close.svg";
 
@@ -9,7 +7,7 @@ const Modal = ({
   dismissModal = () => {},
   header = null,
   message = null,
-  children
+  children,
 }) => {
   const containerRef = useRef(null);
   if (!open) return null;
@@ -18,7 +16,7 @@ const Modal = ({
       <section
         ref={containerRef}
         className="modal"
-        onClick={e => {
+        onClick={(e) => {
           const target = e.target;
           if (target === containerRef.current) {
             dismissModal();

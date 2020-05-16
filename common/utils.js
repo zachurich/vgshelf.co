@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { APP_ROUTES } from "./routes";
+import { ERROR_CODES } from "./constants";
 
 export const sortByDate = (arr, sortKey) => {
   return arr.sort((prior, next) => new Date(next[sortKey]) - new Date(prior[sortKey]));
@@ -18,7 +19,7 @@ export const genTestObj = (length, obj = { name: "test" }) => Array(length).fill
 
 export const createUrl = (base, endpoint) => `${base}${endpoint}`;
 
-export const formatUserName = user => {
+export const formatUserName = (user) => {
   if (user && user.displayName) {
     return user.displayName.split("@")[0];
   }
@@ -65,7 +66,7 @@ export const escapeNull = (value, fallback) => {
 
 export const documentExists = () => typeof document !== "undefined";
 
-export const getColor = color => {
+export const getColor = (color) => {
   if (documentExists()) {
     return getComputedStyle(document.body).getPropertyValue(color);
   }
@@ -94,34 +95,38 @@ export const toggleItemInArray = (array, item, property = null) => {
   const itemOrObj = property ? item[property] : item;
   let newItems = [];
   if (_.some(currentItems, property ? [property, itemOrObj] : itemOrObj)) {
-    newItems = currentItems.filter(currentItem => currentItem[property] !== itemOrObj);
+    newItems = currentItems.filter((currentItem) => currentItem[property] !== itemOrObj);
   } else {
     newItems = currentItems.concat(item);
   }
   return {
     newItems,
-    newItemsProps: property ? newItems.map(item => item[property]) : null
+    newItemsProps: property ? newItems.map((item) => item[property]) : null,
   };
 };
 
 export const createBufferFromQuery = (params = {}) => {
   const keys = Object.keys(params);
   return Buffer.from(
-    keys.map(param => params[param]).join("|") || [APP_ROUTES.APP].join("")
+    keys.map((param) => params[param]).join("|") || [APP_ROUTES.APP].join("")
   );
 };
 
 export const redirect = (res, location) => {
   res.writeHead(302, {
-    Location: location
+    Location: location,
   });
   res.end();
 };
 
 export const handleServerError = (e, res) => {
-  const data = _.get(e, "response.data.data", {});
+  const data = _.get(e, "response.data.data", []);
   if (data && data.includes(ERROR_CODES.NO_USER)) {
     return redirect(res, APP_ROUTES.MISSING);
   }
   return redirect(res, APP_ROUTES.ERROR);
+};
+
+export const userCanEdit = (authedUser, accessedUserName) => {
+  return !!authedUser && authedUser.nickname === accessedUserName;
 };

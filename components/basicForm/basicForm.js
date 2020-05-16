@@ -1,6 +1,4 @@
 import React from "react";
-
-import "./styles.scss";
 import FormControls from "../formControls/formControls";
 
 export const BasicForm = ({
@@ -9,10 +7,10 @@ export const BasicForm = ({
   handleSubmit,
   handleDismiss,
   closeText,
-  submitText
+  submitText,
 }) => {
   const [displayValue, setDisplayValue] = React.useState("");
-  const handleChange = e => {
+  const handleChange = (e) => {
     let value = e.target.value;
     setDisplayValue(() => value);
   };

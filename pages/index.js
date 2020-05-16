@@ -3,7 +3,7 @@ import React from "react";
 import { Meta } from "../components/index";
 import { fetchGamesByUserId } from "../api/gamesApi";
 import Landing from "../components/landing/landing";
-React.useLayoutEffect = React.useEffect; // supress useLayoutEffect warning?!
+// React.useLayoutEffect = React.useEffect; // supress useLayoutEffect warning?!
 
 const Home = ({ user }) => {
   return (

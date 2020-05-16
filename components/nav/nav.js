@@ -1,11 +1,8 @@
 import React from "react";
 import Link from "next/link";
-
 import { Menu } from "../index";
 import { LoginButton } from "../buttons/buttons";
 import Logo from "../../assets/logo.svg";
-
-import "./nav.scss";
 
 const Nav = ({ user }) => {
   return (

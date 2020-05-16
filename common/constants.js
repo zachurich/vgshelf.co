@@ -5,20 +5,26 @@ export const PACKAGING = {
   GAME_ONLY: "Game Only",
   BOX: "Box",
   MANUAL: "Manual",
-  SEALED: "Sealed"
+  SEALED: "Sealed",
 };
 
 export const COMPLETENESS = {
   STARTED: "Started",
   BEATEN: "Beaten",
-  COMPLETED: "Completed"
+  COMPLETED: "Completed",
 };
 
 export const IMAGES = {
-  MISSING: "/static/missing-thumb.png"
+  MISSING: "/static/missing-thumb.png",
 };
 
 export const ERROR_CODES = {
   NOT_AUTHED: "invalid_session",
-  NO_USER: "User does not exist!"
+  NO_USER: "User does not exist!",
+};
+
+export const HTTP_STATUS = {
+  DUPLICATE: 409,
+  OK: 200,
+  ERROR: 500,
 };

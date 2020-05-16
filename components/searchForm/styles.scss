@@ -1,7 +1,9 @@
-@import "../../styles/util.scss";
-
 $border-radius-top: 5px 5px 0 0;
 $border-radius-bottom: 0 0 5px 5px;
+
+.search-form {
+  min-width: 25vw;
+}
 
 .search-label {
   text-align: center;
@@ -12,13 +14,17 @@ input[type="text"].search-suggestions-open {
   border-radius: $border-radius-top;
 }
 
-.search-option-list-container {
+[data-reach-combobox-popover].search-option-list-container {
   border-radius: $border-radius-bottom;
   border: none;
+  font-size: 1rem;
   @include box-shadow;
-  font-size: 95%;
   .search-option {
+    text-overflow: ellipsis;
+    white-space: pre;
+    overflow: hidden;
     padding: 0.5rem 0.75rem;
+    @include subtle-border($position: bottom);
     &[data-highlighted] {
       background-color: $main-blue;
       color: white;

@@ -1,10 +1,8 @@
 import React from "react";
 import Link from "next/link";
-
-import "./footer.scss";
 import TwitterSVG from "../../assets/twitter.svg";
 
-const Footer = props => {
+const Footer = (props) => {
   return (
     <footer className="footer">
       <div className="row row-1">

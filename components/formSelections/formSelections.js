@@ -1,16 +1,29 @@
-import React, { useState } from "react";
-import "./styles.scss";
+import React, { useState, useRef, useEffect } from "react";
 import { IMAGES } from "../../common/constants";
 import Loader from "../loader/loader";
 
-function ImageLoader({ src, className }) {
+export function ImageLoader({ src, className = "", fallback = <Loader /> }) {
   const [loading, setLoading] = useState(true);
+  const image = useRef(null);
+  useEffect(() => {
+    if (image.current && image.current.complete) {
+      if (loading) {
+        setLoading(false);
+      }
+    }
+  }, [image.current]);
   return (
-    <div className={`${className} ${loading ? "loading" : "loaded"}`}>
-      {loading && <Loader />}
+    <div
+      className={`${className} ${loading ? "loading" : "loaded"}`}
+      style={{ display: "inline" }}
+    >
+      {loading && fallback}
       <img
+        ref={image}
         src={src}
-        onLoad={() => setLoading(() => false)}
+        onLoad={() => {
+          setLoading(() => false);
+        }}
         onError={() => setLoading(() => false)}
       />
     </div>

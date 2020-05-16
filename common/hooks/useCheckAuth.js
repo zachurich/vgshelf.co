@@ -23,7 +23,7 @@ const useCheckAuth = () => {
               You are not signed in. Please <a href={APP_ROUTES.LOGIN}>sign in</a> to
               perform this action!
             </>
-          )
+          ),
         },
         true
       );

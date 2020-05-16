@@ -3,13 +3,10 @@ import Link from "next/link";
 import { APP_ROUTES } from "../../common/routes";
 import AddSVG from "../../assets/add.svg";
 import { useRouter } from "next/router";
-import { route } from "next/dist/next-server/server/router";
 
 export function LoginButton({ user, classes = "button-secondary" }) {
   const router = useRouter();
-  const loginPath =
-    APP_ROUTES.LOGIN +
-    `?pathOnLogin=${router.asPath === "/" ? APP_ROUTES.APP : route.asPath}`;
+  const loginPath = APP_ROUTES.LOGIN;
   return (
     <Link
       href={{ pathname: user ? "/dashboard/[user]" : loginPath }}
@@ -23,7 +20,7 @@ export function LoginButton({ user, classes = "button-secondary" }) {
 export function SignUpButton({ user, text, classes = "button-primary" }) {
   if (!user) {
     return (
-      <Link href={{ pathname: "/signup" }}>
+      <Link href={{ pathname: APP_ROUTES.LOGIN }}>
         <a className={`button ${classes}`}>{text}</a>
       </Link>
     );

@@ -6,11 +6,9 @@ import {
   ComboboxInput,
   ComboboxPopover,
   ComboboxList,
-  ComboboxOption
+  ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-
-import "./searchForm.scss";
 import { useDebounce } from "../../common/hooks";
 import FormControls from "../formControls/formControls";
 import { ButtonAction } from "../buttons/buttons";
@@ -21,7 +19,7 @@ export const SearchForm = ({
   placeholder,
   handleSubmit,
   dismissModal,
-  closeText
+  closeText,
 }) => {
   const [focused, setFocused] = useState(false);
   const [displayValue, setDisplayValue] = useState("");
@@ -31,7 +29,7 @@ export const SearchForm = ({
   const [selection, setSelection] = useState(null);
   const [selections, setSelections] = useState([]);
 
-  const handleSelectValue = game => {
+  const handleSelectValue = (game) => {
     setSelection(game);
     setDisplayValue(() => game.name);
   };
@@ -39,7 +37,7 @@ export const SearchForm = ({
   const handleSelection = async () => {
     const coverData = await fetchCover(selection.id);
     selection.cover = _.get(coverData[0], "url");
-    setSelections(prevSelections => [...prevSelections, selection]);
+    setSelections((prevSelections) => [...prevSelections, selection]);
     handleClearValues();
   };
 
@@ -54,25 +52,25 @@ export const SearchForm = ({
     dismissModal();
   };
 
-  const getResults = async value => {
+  const getResults = async (value) => {
     const results = await fetchResults(value);
     setSuggestions(() => results);
   };
 
-  const pluckSuggestion = item =>
-    suggestions.filter(suggestion => suggestion.name === item)[0];
+  const pluckSuggestion = (item) =>
+    suggestions.filter((suggestion) => suggestion.name === item)[0];
 
   return (
     <>
       <FormSelections selections={selections} />
-      <div className="form">
+      <div className="form search-form">
         <div className="search-form-input-wrap">
           <Combobox
             className="search-form-input"
             style={{
-              position: "relative"
+              position: "relative",
             }}
-            onSelect={item => {
+            onSelect={(item) => {
               setFocused(() => false);
               handleSelectValue(pluckSuggestion(item));
             }}
@@ -85,40 +83,40 @@ export const SearchForm = ({
               onBlur={() => setFocused(() => false)}
               onFocus={() => setFocused(() => true)}
               value={displayValue}
-              onChange={e => {
+              onChange={(e) => {
                 let valueOnInput = e.target.value;
                 setDisplayValue(() => valueOnInput);
                 debounce(getResults, valueOnInput);
               }}
             />
-            <ComboboxPopover
-              className="search-option-list-container"
-              style={{
-                position: "absolute",
-                width: "100%",
-                zIndex: 99999
-              }}
-              // portal={false}
-            >
-              <ComboboxList
-                className="search-option-list"
-                aria-labelledby="Select an Option"
+            {suggestions.length > 0 && (
+              <ComboboxPopover
+                className="search-option-list-container"
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  zIndex: 99999,
+                }}
+                // portal={false}
               >
-                {suggestions.length > 0 &&
-                  suggestions.map(item => (
+                <ComboboxList
+                  className="search-option-list"
+                  aria-labelledby="Select an Option"
+                >
+                  {suggestions.map((item) => (
                     <ComboboxOption
                       className="search-option"
                       key={item.id}
                       value={item.name}
                     />
                   ))}
-              </ComboboxList>
-            </ComboboxPopover>
+                </ComboboxList>
+              </ComboboxPopover>
+            )}
           </Combobox>
           <ButtonAction disabled={!selection} handleAction={() => handleSelection()} />
         </div>
         <FormControls
-          handleDismiss={handleDismiss}
           closeText={closeText}
           disabled={!selection && !selections.length}
           submitText={`Add ${selections.length !== 0 ? selections.length : ""} Game${

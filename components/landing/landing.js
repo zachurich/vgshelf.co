@@ -5,10 +5,8 @@ import {
   longFeatures,
   hero,
   popularGames,
-  callToAction
+  callToAction,
 } from "../../common/copy";
-
-import "./landing.scss";
 
 function CallToAction(props) {
   return (
