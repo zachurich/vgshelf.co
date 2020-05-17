@@ -1,14 +1,18 @@
 import React from "react";
 import Link from "next/link";
 import { sortByDate } from "../../common/utils";
+import { useFilterData } from "../../common/hooks/useFilterData";
 
 const List = ({
   data = [],
-  userName = null,
-  destRoute,
-  prettyRoute = destRoute, // optionally override the appearance of the url
-  canAdd = false,
+  filtering = {
+    enabled: true,
+    type: "title",
+    inputText: "Search...",
+  },
+  listItem = (props) => <div {...props} />,
 }) => {
+  const { search, setSearch, filterData } = useFilterData(data, filtering);
   if (data && !data.length) {
     return (
       <div className="grid-empty">
@@ -17,26 +21,23 @@ const List = ({
     );
   }
   return (
-    <ul className="list list-row">
-      {data.length > 0 &&
-        sortByDate(data, "created").map((item, index) => {
-          return (
-            <li key={item.id} className="list-item">
-              <Link
-                href={{
-                  pathname: destRoute,
-                  query: { userName, collectionSlug: item.slug },
-                }}
-                as={`${prettyRoute}/${userName}/${item.slug}`}
-              >
-                <a className="">
-                  <span>{item.title}</span>
-                </a>
-              </Link>
-            </li>
-          );
-        })}
-    </ul>
+    <>
+      {filtering.enabled && (
+        <input
+          className="list-filter"
+          type="text"
+          value={search}
+          placeholder={filtering.inputText}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      )}
+      <ul className="list list-row">
+        {data.length > 0 &&
+          filterData(sortByDate(data, "created")).map((item, index) =>
+            listItem({ item, index })
+          )}
+      </ul>
+    </>
   );
 };
 

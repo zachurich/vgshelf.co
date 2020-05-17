@@ -8,6 +8,7 @@ import Loader from "../loader/loader";
 import { ButtonToggle } from "../buttons/buttons";
 import { toggleItemInArray } from "../../common/utils";
 import FormControls from "../formControls/formControls";
+import List from "../list/list";
 
 function EditCollectionPanel({
   user, // available when logged in
@@ -24,7 +25,7 @@ function EditCollectionPanel({
     const { newItems, newItemsProps } = toggleItemInArray(gamesToggled, game, "id");
     setGamesToggled(newItems);
   };
-
+  console.log(games, gamesToggled);
   return (
     <div className="collection-edit">
       <form onSubmit={(e) => handleSubmitChanges(e, collectionTitle, gamesToggled)}>
@@ -44,15 +45,19 @@ function EditCollectionPanel({
           {!collection.games ? (
             <Loader />
           ) : (
-            <Grid
+            <List
               data={games}
-              compareItems={gamesToggled}
-              size="small"
-              filtering={{ limit: 6, enabled: true, type: "title" }}
-              canAdd={!!user}
-              handleToggle={handleToggleGame}
-              gridItem={(props) => (
-                <GameToggleItem handleToggle={handleToggleGame} {...props} />
+              filtering={{
+                enabled: true,
+                type: "title",
+                inputText: "Search games...",
+              }}
+              listItem={({ item }) => (
+                <GameToggleItem
+                  item={item}
+                  itemAlreadyToggled={_.find(gamesToggled, ["id", item.id])}
+                  handleToggle={handleToggleGame}
+                />
               )}
             />
           )}

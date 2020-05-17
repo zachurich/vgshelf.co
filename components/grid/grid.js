@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { sortByDate } from "../../common/utils";
+import { useFilterData } from "../../common/hooks/useFilterData";
 
 const Grid = ({
   data = [],
@@ -10,11 +11,11 @@ const Grid = ({
   filtering = {
     enabled: false,
     type: "title",
+    inputText: "Search...",
   },
-  handleClickItem = () => {},
-  gridItem = () => {},
+  gridItem = () => <div />,
 }) => {
-  const [search, setSearch] = useState("");
+  const { search, setSearch, filterData } = useFilterData(data, filtering);
 
   if (!data) return null;
 
@@ -26,21 +27,6 @@ const Grid = ({
     );
   }
 
-  // Data passes thru as is if filtering is not enabled
-  const filterData = (data) => {
-    if (!filtering.enabled) {
-      return data;
-    }
-    return data
-      .filter((item) => {
-        return (
-          item[filtering.type].includes(search) ||
-          item[filtering.type].toLowerCase().includes(search.toLowerCase())
-        );
-      })
-      .slice(0, filtering.limit || data.length);
-  };
-
   return (
     <>
       {filtering.enabled && (
@@ -48,7 +34,7 @@ const Grid = ({
           className="grid-filter"
           type="text"
           value={search}
-          placeholder="Search by Title..."
+          placeholder={filtering.inputText}
           onChange={(e) => setSearch(e.target.value)}
         />
       )}

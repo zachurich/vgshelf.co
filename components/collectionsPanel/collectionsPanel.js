@@ -8,6 +8,7 @@ import Loader from "../loader/loader";
 import { ButtonToggle } from "../buttons/buttons";
 import { userCanEdit } from "../../common/utils";
 import useCheckAuth from "../../common/hooks/useCheckAuth";
+import Link from "next/link";
 
 function CollectionsPanel({
   user,
@@ -73,11 +74,26 @@ function CollectionsPanel({
       ) : (
         <List
           data={collections}
-          destRoute={APP_ROUTES.GAMES}
-          userName={userName}
-          handleDelete={handleDeleteCollection}
-          handlePrompt={() => handleToggleModal(true)}
-          canAdd={!!user}
+          filtering={{
+            enabled: true,
+            type: "title",
+            inputText: "Search shelves...",
+          }}
+          listItem={({ item }) => (
+            <li key={item.id} className="list-item">
+              <Link
+                href={{
+                  pathname: APP_ROUTES.GAMES,
+                  query: { userName, collectionSlug: item.slug },
+                }}
+                as={`${APP_ROUTES.GAMES}/${userName}/${item.slug}`}
+              >
+                <a className="">
+                  <span>{item.title}</span>
+                </a>
+              </Link>
+            </li>
+          )}
         />
       )}
     </section>

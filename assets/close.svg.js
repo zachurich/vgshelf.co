@@ -1,6 +1,6 @@
 import React from "react";
 
-function CloseSVG({ size = 16 }) {
+function CloseSVG({ size = 16, fill = "#ffffff" }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,7 +14,7 @@ function CloseSVG({ size = 16 }) {
         height="50"
         x="37.728"
         y="2.373"
-        fill="#ffffff"
+        fill={fill}
         rx="7"
         transform="rotate(45 37.728 2.373)"
       ></rect>
@@ -23,7 +23,7 @@ function CloseSVG({ size = 16 }) {
         height="50"
         x="47.627"
         y="37.728"
-        fill="#ffffff"
+        fill={fill}
         rx="7"
         transform="rotate(135 47.627 37.728)"
       ></rect>

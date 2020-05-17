@@ -1,8 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { IMAGES } from "../../common/constants";
 import Loader from "../loader/loader";
+import CloseSVG from "../../assets/close.svg";
 
-export function ImageLoader({ src, className = "", fallback = <Loader /> }) {
+export function ImageLoader({
+  src,
+  className = "",
+  fallback = <Loader />,
+  children,
+  ...props
+}) {
   const [loading, setLoading] = useState(true);
   const image = useRef(null);
   useEffect(() => {
@@ -13,10 +20,7 @@ export function ImageLoader({ src, className = "", fallback = <Loader /> }) {
     }
   }, [image.current]);
   return (
-    <div
-      className={`${className} ${loading ? "loading" : "loaded"}`}
-      style={{ display: "inline" }}
-    >
+    <div className={`${className} ${loading ? "loading" : "loaded"}`} {...props}>
       {loading && fallback}
       <img
         ref={image}
@@ -26,11 +30,12 @@ export function ImageLoader({ src, className = "", fallback = <Loader /> }) {
         }}
         onError={() => setLoading(() => false)}
       />
+      {!loading && children}
     </div>
   );
 }
 
-function FormSelections({ selections = [] }) {
+function FormSelections({ selections = [], handleRemoveSelection }) {
   if (selections.length < 1) return null;
 
   return (
@@ -40,7 +45,12 @@ function FormSelections({ selections = [] }) {
           key={selection + "-" + index}
           className="form-selection"
           src={selection.cover ? selection.cover : IMAGES.MISSING}
-        />
+          onClick={() => handleRemoveSelection(selection)}
+        >
+          <div className="form-selection-remove">
+            <CloseSVG size={12} />
+          </div>
+        </ImageLoader>
       ))}
     </div>
   );

@@ -4,7 +4,7 @@ import { HTTP_STATUS } from "../../common/constants";
 import { APP_ROUTES } from "../../common/routes";
 import { redirect } from "../../common/utils";
 
-export default async function register(req, res) {
+export default async function user(req, res) {
   try {
     const session = await auth0.getSession(req);
     if (session && session.user) {

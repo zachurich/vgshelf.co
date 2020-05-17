@@ -3,6 +3,9 @@ $border-radius-bottom: 0 0 5px 5px;
 
 .search-form {
   min-width: 25vw;
+  @include responsive-max($tablet) {
+    min-width: 50vw;
+  }
 }
 
 .search-label {

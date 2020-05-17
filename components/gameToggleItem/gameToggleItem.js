@@ -10,18 +10,13 @@ const GameToggleItem = ({ item, itemAlreadyToggled, handleToggle }) => {
       onClick={() => handleToggle(item)}
     >
       <div className="game-toggle-item-content">
-        <span className="game-toggle-item-image-wrap">
-          <div className={`game-toggle-item-image`}>
-            {item.imageUrl ? (
-              <img
-                className=""
-                src={`${item.imageUrl.replace("thumb", "cover_small")}`}
-              />
-            ) : (
-              <MissingCover />
-            )}
-          </div>
-        </span>
+        <div className="game-toggle-item-image">
+          {item.imageUrl ? (
+            <img className="" src={`${item.imageUrl.replace("thumb", "cover_small")}`} />
+          ) : (
+            <MissingCover />
+          )}
+        </div>
         <span className="game-toggle-item-text">{item.title}</span>
       </div>
     </li>

@@ -124,7 +124,7 @@ function GamesPanel({
         <Grid
           data={games}
           size="large"
-          filtering={{ enabled: true, type: "title" }}
+          filtering={{ enabled: true, type: "title", inputText: "Search games..." }}
           handlePrompt={() => toggleAction(true)}
           canAdd={!!user}
           sortKey={"added"}

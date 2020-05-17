@@ -46,6 +46,12 @@ export const SearchForm = ({
     setDisplayValue(() => "");
   };
 
+  const handleRemoveSelection = (selectionToRemove) => {
+    setSelections(
+      selections.filter((selection) => selection.id !== selectionToRemove.id)
+    );
+  };
+
   const handleDismiss = () => {
     handleClearValues();
     setSelections([]);
@@ -62,7 +68,10 @@ export const SearchForm = ({
 
   return (
     <>
-      <FormSelections selections={selections} />
+      <FormSelections
+        selections={selections}
+        handleRemoveSelection={handleRemoveSelection}
+      />
       <div className="form search-form">
         <div className="search-form-input-wrap">
           <Combobox
