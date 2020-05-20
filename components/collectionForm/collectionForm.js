@@ -4,7 +4,7 @@ import { createCollection } from "../../api/collectionsApi";
 import FormControls from "../formControls/formControls";
 import Modal from "../modal/modal";
 
-export const BasicForm = ({
+export const CollectionForm = ({
   user,
   isOpen,
   handleToggleModal,

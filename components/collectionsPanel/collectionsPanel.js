@@ -6,7 +6,7 @@ import { useParams } from "../../common/hooks";
 import useCheckAuth from "../../common/hooks/useCheckAuth";
 import useModal from "../../common/hooks/useModal";
 import { scrollTop } from "../../common/utils";
-import { BasicForm } from "../basicForm/basicForm";
+import { CollectionForm } from "../collectionForm/collectionForm";
 import CollectionsList from "../collectionsList/collectionsList";
 
 const CollectionsPanel = ({
@@ -37,7 +37,7 @@ const CollectionsPanel = ({
         handlePrompt={handleToggleModal}
         refreshData={() => trigger(collectionsCacheKey)}
       />
-      <BasicForm
+      <CollectionForm
         user={user}
         isOpen={showModal}
         inputName="Create a Shelf"
