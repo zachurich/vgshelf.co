@@ -12,6 +12,14 @@ $mobile: 414px;
 * Mixins
 **/
 
+@mixin hide-scroll-bar() {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  &:-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+}
+
 @mixin subtle-border($size: 1px, $position: bottom) {
   border-#{$position}: $size solid $subtle-border;
 }

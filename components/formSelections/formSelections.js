@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
+import CloseSVG from "../../assets/close.svg";
 import { IMAGES } from "../../common/constants";
 import Loader from "../loader/loader";
-import CloseSVG from "../../assets/close.svg";
 
 export function ImageLoader({
   src,
@@ -20,7 +21,10 @@ export function ImageLoader({
     }
   }, [image.current]);
   return (
-    <div className={`${className} ${loading ? "loading" : "loaded"}`} {...props}>
+    <div
+      className={`image-loader ${className} ${loading ? "loading" : "loaded"}`}
+      {...props}
+    >
       {loading && fallback}
       <img
         ref={image}

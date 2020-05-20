@@ -1,16 +1,18 @@
+import "normalize.css";
+
+import "../styles/index.scss";
+
 import _ from "lodash";
-import React from "react";
 import App from "next/app";
+import Router from "next/router";
+import React from "react";
+
+import auth0 from "../common/auth";
+import { APP_ROUTES } from "../common/routes";
 import { Nav } from "../components";
 import Footer from "../components/footer/footer";
-import Router from "next/router";
-import { APP_ROUTES } from "../common/routes";
-import auth0 from "../common/auth";
-
-import "normalize.css";
-import "../styles/index.scss";
-import GlobalMessageContext from "../contexts/globalMessage";
 import GlobalMessanger from "../components/globalMessenger/globalMessenger";
+import GlobalMessageContext from "../contexts/globalMessage";
 
 class VGShelf extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -29,7 +31,7 @@ class VGShelf extends App {
   }
 
   state = {
-    user: this.props.user
+    user: this.props.user,
   };
 
   render() {

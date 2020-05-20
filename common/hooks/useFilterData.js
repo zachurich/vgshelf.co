@@ -17,7 +17,6 @@ export const useFilterData = (
     return data
       .filter((item) => {
         if (item) {
-          console.log(item);
           return (
             item[filtering.type].includes(search) ||
             item[filtering.type].toLowerCase().includes(search.toLowerCase())

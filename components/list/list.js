@@ -1,7 +1,8 @@
-import React from "react";
 import Link from "next/link";
-import { sortByDate } from "../../common/utils";
+import React from "react";
+
 import { useFilterData } from "../../common/hooks/useFilterData";
+import { sortByDate } from "../../common/utils";
 
 const List = ({
   data = [],
@@ -10,6 +11,7 @@ const List = ({
     type: "title",
     inputText: "Search...",
   },
+  filterClass = "",
   listItem = (props) => <div {...props} />,
 }) => {
   const { search, setSearch, filterData } = useFilterData(data, filtering);
@@ -24,7 +26,7 @@ const List = ({
     <>
       {filtering.enabled && (
         <input
-          className="list-filter"
+          className={`list-filter ${filterClass}`}
           type="text"
           value={search}
           placeholder={filtering.inputText}

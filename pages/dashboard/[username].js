@@ -1,71 +1,56 @@
+import { mutate, trigger } from "@zeit/swr";
 import _ from "lodash";
 import React from "react";
-import { Meta } from "../../components/index";
-import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
-import { fetchGamesByUserName } from "../../api/gamesApi";
-import GamesPanel from "../../components/gamesPanel/gamesPanel";
-import { trigger, mutate } from "@zeit/swr";
+
 import { fetchCollectionsByUserName } from "../../api/collectionsApi";
-import { useParams, useCollectionsFetch } from "../../common/hooks";
+import { fetchGamesByUserName } from "../../api/gamesApi";
+import { useCollectionsFetch, useParams } from "../../common/hooks";
+import useCheckAuth from "../../common/hooks/useCheckAuth";
 import useGamesFetchByUserName from "../../common/hooks/useGameFetchByUserName";
 import useModal from "../../common/hooks/useModal";
-import Modal from "../../components/modal/modal";
-import { ERROR_CODES } from "../../common/constants";
-import { APP_ROUTES } from "../../common/routes";
-import { redirect, handleServerError } from "../../common/utils";
+import { handleServerError, scrollTop } from "../../common/utils";
+import { BasicForm } from "../../components/basicForm/basicForm";
+import CollectionsList from "../../components/collectionsList/collectionsList";
+import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
+import GamesPanel from "../../components/gamesPanel/gamesPanel";
+import { Meta } from "../../components/index";
 
 const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
   const { userName } = useParams();
   const {
     data: games,
-    finalUrl: gamesUrl,
+    finalUrl: gamesCacheKey,
     isLoading: isGamesLoading,
   } = useGamesFetchByUserName(initialGames);
   const {
     data: collections,
-    finalUrl: collectionsUrl,
+    finalUrl: collectionsCacheKey,
     isLoading: isCollectionsLoading,
   } = useCollectionsFetch(initialCollections);
-  const { showModal, setShowModal, modalContent, setModalContent } = useModal();
+  const { showModal, setShowModal } = useModal();
+  const { performAuthCheck } = useCheckAuth();
+
+  const handleToggleModal = async (toggle) => {
+    const authed = await performAuthCheck();
+    if (!authed) return;
+    scrollTop();
+    setShowModal(() => toggle || !showModal);
+  };
   return (
     <div className="dashboard">
       <Meta title={"Dashboard"} />
-      <main className="main">
-        <GamesPanel
-          user={user}
-          userName={userName}
-          games={games}
-          isLoading={isGamesLoading && !games.length}
-          fetchKey={gamesUrl}
-          showModal={showModal}
-          setShowModal={setShowModal}
-          setModalContent={setModalContent}
-          refreshData={(data) => {
-            mutate(gamesUrl, { games: data });
-          }}
-        />
-      </main>
-      <section className="panel-right">
-        <CollectionsPanel
-          user={user}
-          userName={userName}
-          collections={collections}
-          isLoading={isCollectionsLoading && !collections.length}
-          fetchKey={collectionsUrl}
-          showModal={showModal}
-          setShowModal={setShowModal}
-          setModalContent={setModalContent}
-          refreshData={() => trigger(collectionsUrl)}
-        />
-      </section>
-
-      <Modal
-        open={showModal}
-        dismissModal={() => setShowModal(false)}
-        header={modalContent.header}
-      >
-        {modalContent.component}
-      </Modal>
+      <GamesPanel
+        user={user}
+        games={games}
+        gamesCacheKey={gamesCacheKey}
+        isGamesLoading={isGamesLoading}
+      />
+      <CollectionsPanel
+        user={user}
+        collections={collections}
+        collectionsCacheKey={collectionsCacheKey}
+        isCollectionsLoading={isCollectionsLoading}
+      />
     </div>
   );
 };

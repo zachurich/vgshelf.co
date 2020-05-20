@@ -6,6 +6,7 @@ body {
 }
 
 a {
+  box-sizing: border-box;
   color: $text-dark;
   text-decoration: none;
   @include transition(0.1s);

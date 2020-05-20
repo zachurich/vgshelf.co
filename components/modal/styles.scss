@@ -29,7 +29,7 @@
     animation: growInCool 0.4s cubic-bezier(0.17, 0, 0, 1) forwards;
     margin: 15vh $base-spacing 0;
     @include responsive-max($mobile) {
-      max-height: 100vh;
+      max-height: 85vh;
       width: 100%;
       margin: $comfortable-spacing $base-spacing 0;
     }
@@ -55,17 +55,28 @@
     }
   }
   &-content {
+    overflow: scroll;
+    @include hide-scroll-bar;
     box-sizing: border-box;
     padding: $base-spacing $comfortable-spacing;
     display: flex;
     flex-direction: column;
     align-items: center;
     max-width: 100%;
-    margin: 0 0 $base-spacing;
+    width: 100%;
+    // margin: 0 0 $base-spacing;
     @include responsive-max($mobile) {
       padding: $base-spacing;
       margin: 0 0 $compact-spacing;
     }
+  }
+
+  &-footer {
+    background-color: white;
+    @include subtle-border($position: top);
+    box-sizing: border-box;
+    padding: $base-spacing;
+    width: 100%;
   }
   &.closed {
     display: none;

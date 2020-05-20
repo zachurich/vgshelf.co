@@ -1,9 +1,12 @@
 @import "../../styles/util.scss";
 
 .form-controls {
-  margin-top: $base-spacing;
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: center;
+}
+
+.form-close {
+  border: 1px solid $subtle-border;
 }

@@ -1,34 +1,35 @@
 import _ from "lodash";
 import React, { useState } from "react";
-import Grid from "../grid/grid";
+
 import { useGameFetch } from "../../common/hooks";
-import GameToggleItem from "../gameToggleItem/gameToggleItem";
-import Title from "../title/title";
-import Loader from "../loader/loader";
-import { ButtonToggle } from "../buttons/buttons";
 import { toggleItemInArray } from "../../common/utils";
+import { ButtonToggle } from "../buttons/buttons";
 import FormControls from "../formControls/formControls";
+import GameToggleItem from "../gameToggleItem/gameToggleItem";
+import Grid from "../grid/grid";
 import List from "../list/list";
+import Loader from "../loader/loader";
+import Title from "../title/title";
 
 function EditCollectionPanel({
   user, // available when logged in
   collection,
   initialGames,
-  handleSubmitChanges, // add/remove game from collection
-  handleClosePanel, // close this panel
+  title,
+  toggled,
 }) {
   const { data: games, error } = useGameFetch(initialGames, { userId: user.sub });
-  const [collectionTitle, setCollectionTitle] = useState(collection.title);
-  const [gamesToggled, setGamesToggled] = useState(collection.games);
+  const [collectionTitle, setCollectionTitle] = title;
+  const [gamesToggled, setGamesToggled] = toggled;
 
   const handleToggleGame = (game) => {
     const { newItems, newItemsProps } = toggleItemInArray(gamesToggled, game, "id");
     setGamesToggled(newItems);
   };
-  console.log(games, gamesToggled);
+
   return (
     <div className="collection-edit">
-      <form onSubmit={(e) => handleSubmitChanges(e, collectionTitle, gamesToggled)}>
+      <form>
         <section className="collection-edit-title">
           <label htmlFor="collection-title">Shelf Title</label>
           <input
@@ -40,7 +41,7 @@ function EditCollectionPanel({
           />
         </section>
         <section className="collection-edit-toggle-panel">
-          <label>All Games</label>
+          <label>All My Games</label>
           {/* This component should contain all games - Search/Toggle in collection*/}
           {!collection.games ? (
             <Loader />
@@ -62,15 +63,6 @@ function EditCollectionPanel({
             />
           )}
         </section>
-        <FormControls
-          handleDismiss={handleClosePanel}
-          closeText={"Cancel"}
-          disabled={
-            collection.games === gamesToggled && collection.title === collectionTitle
-          }
-          submitText={"Submit"}
-          handleSubmit={(e) => handleSubmitChanges(e, collectionTitle, gamesToggled)}
-        />
       </form>
     </div>
   );

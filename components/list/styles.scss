@@ -1,4 +1,3 @@
-@import "../../styles/util.scss";
 .list {
   @include responsive-max($tablet) {
     display: flex;

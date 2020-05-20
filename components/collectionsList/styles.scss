@@ -1,4 +1,6 @@
-@import "../../styles/util.scss";
+.collections-filter {
+  margin-bottom: $base-spacing;
+}
 
 .collections-panel {
   min-height: calc(100% - 40px);

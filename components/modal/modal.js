@@ -1,13 +1,16 @@
 import React, { useRef } from "react";
-import { ButtonToggle, ButtonAction } from "../buttons/buttons";
+
 import CloseSVG from "../../assets/close.svg";
+import { ButtonAction, ButtonToggle } from "../buttons/buttons";
 
 const Modal = ({
   open = false,
   dismissModal = () => {},
+  submitModal = () => {},
   header = null,
   message = null,
-  children,
+  content = () => <div />,
+  footer = () => <div />,
 }) => {
   const containerRef = useRef(null);
   if (!open) return null;
@@ -34,8 +37,9 @@ const Modal = ({
             </ButtonAction>
           </div>
           <div className="modal-content">
-            {message ? <p className="modal-error-message">{message}</p> : children}
+            {message ? <p className="modal-error-message">{message}</p> : content()}
           </div>
+          <div className="modal-footer">{footer()}</div>
         </div>
       </section>
     </div>

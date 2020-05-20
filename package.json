@@ -32,5 +32,11 @@
     "eslint-plugin-react-hooks": "^2.2.0",
     "lodash": "^4.17.15",
     "uid-safe": "^2.1.5"
+  },
+  "importSort": {
+    ".js, .jsx, .es6, .es, .mjs, .ts, .tsx": {
+      "parser": "babylon",
+      "style": "import-sort-style-module"
+    }
   }
 }

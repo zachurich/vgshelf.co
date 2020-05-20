@@ -1,32 +1,29 @@
-import _ from "lodash";
-import React, { useState, useEffect, useContext } from "react";
-import { mutate } from "@zeit/swr";
-import { Meta } from "../../../components/index";
-import { fetchGamesByUserName } from "../../../api/gamesApi";
-import EditCollectionPanel from "../../../components/editCollectionPanel/editCollectionPanel";
-import { updateCollection, fetchSingleCollection } from "../../../api/collectionsApi";
-import GamesPanel from "../../../components/gamesPanel/gamesPanel";
-import {
-  formatUserName,
-  toggleItemInArray,
-  scrollTop,
-  redirect,
-  handleServerError
-} from "../../../common/utils";
-import { useParams, useFetchCollection } from "../../../common/hooks";
-import Modal from "../../../components/modal/modal";
-import useCheckAuth from "../../../common/hooks/useCheckAuth";
-
 import "../../../styles/games.scss";
-import { APP_ROUTES } from "../../../common/routes";
+
+import { mutate } from "@zeit/swr";
+import _ from "lodash";
+import React, { useState } from "react";
+
+import { fetchSingleCollection, updateCollection } from "../../../api/collectionsApi";
+import { fetchGamesByUserName } from "../../../api/gamesApi";
+import { useFetchCollection, useParams } from "../../../common/hooks";
+import useCheckAuth from "../../../common/hooks/useCheckAuth";
+import { formatUserName, handleServerError, scrollTop } from "../../../common/utils";
+import EditCollectionPanel from "../../../components/editCollectionPanel/editCollectionPanel";
+import FormControls from "../../../components/formControls/formControls";
+import GamesGrid from "../../../components/gamesGrid/gamesGrid";
+import { Meta } from "../../../components/index";
+import Modal from "../../../components/modal/modal";
 
 const Games = ({ user, initialGames = [], initialCollection = {} }) => {
   const { userName, collectionSlug } = useParams();
   const { data: collection, finalUrl } = useFetchCollection(initialCollection);
   const [showModal, setShowModal] = useState(false);
   const { performAuthCheck } = useCheckAuth();
+  const [collectionTitle, setCollectionTitle] = useState(collection.title);
+  const [gamesToggled, setGamesToggled] = useState(collection.games);
 
-  const handleToggleModal = async toggle => {
+  const handleToggleModal = async (toggle) => {
     const authed = await performAuthCheck();
     if (!authed) return;
     if (collectionSlug) {
@@ -46,7 +43,7 @@ const Games = ({ user, initialGames = [], initialCollection = {} }) => {
         newName: title,
         userName,
         collectionSlug,
-        games
+        games,
       });
     } catch (error) {
       console.log(_.get(e, "response.data"));
@@ -60,7 +57,7 @@ const Games = ({ user, initialGames = [], initialCollection = {} }) => {
       <Meta title={"Games"} />
       <div className="games-panel-wrapper container">
         {/* This component should contain all games IN THE CURRENT COLLECTION */}
-        <GamesPanel
+        <GamesGrid
           title={`${collection.title} Shelf` || `${formatUserName(user)}'s Games`}
           user={user}
           userName={userName}
@@ -75,15 +72,27 @@ const Games = ({ user, initialGames = [], initialCollection = {} }) => {
         open={collectionSlug && showModal && user}
         dismissModal={() => handleToggleModal(false)}
         header={"Edit Shelf"}
-      >
-        <EditCollectionPanel
-          user={user}
-          collection={collection}
-          initialGames={initialGames}
-          handleClosePanel={() => handleToggleModal(false)}
-          handleSubmitChanges={handleSubmitChanges}
-        />
-      </Modal>
+        content={() => (
+          <EditCollectionPanel
+            user={user}
+            collection={collection}
+            initialGames={initialGames}
+            title={[collectionTitle, setCollectionTitle]}
+            toggled={[gamesToggled, setGamesToggled]}
+          />
+        )}
+        footer={() => (
+          <FormControls
+            handleDismiss={() => handleToggleModal(false)}
+            closeText={"Cancel"}
+            disabled={
+              collection.games === gamesToggled && collection.title === collectionTitle
+            }
+            submitText={"Submit"}
+            handleSubmit={(e) => handleSubmitChanges(e, collectionTitle, gamesToggled)}
+          />
+        )}
+      />
     </main>
   );
 };
@@ -98,12 +107,12 @@ Games.getInitialProps = async ({ req, res, query }) => {
     try {
       const initialCollection = await fetchSingleCollection({
         collectionSlug,
-        userName
+        userName,
       });
       const { games: initialGames } = await fetchGamesByUserName(userName);
       return {
         initialGames,
-        initialCollection
+        initialCollection,
       };
     } catch (e) {
       return handleServerError(e, res);

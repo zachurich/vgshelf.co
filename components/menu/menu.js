@@ -1,7 +1,8 @@
-import React from "react";
 import Link from "next/link";
-import { APP_ROUTES } from "../../common/routes";
+import React from "react";
+
 import { useToggle } from "../../common/hooks";
+import { APP_ROUTES } from "../../common/routes";
 
 const MenuItem = ({ route, text, children }) => {
   if (children) {
@@ -33,7 +34,12 @@ const Menu = ({ user }) => {
   }
   return (
     <div className="menu">
-      <button ref={menuButtonRef} className="menu-button" onClick={() => toggleMenu()}>
+      <button
+        ref={menuButtonRef}
+        className={`menu-button ${showMenu ? "open" : "closed"}`}
+        onClick={() => toggleMenu()}
+      >
+        {user.nickname}
         <img className="menu-toggle" {...(user && { src: user.picture })} />
       </button>
       {showMenu && user && renderLoggedInMenu()}

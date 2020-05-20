@@ -2,17 +2,18 @@ import { useState } from "react";
 
 export const MODAL_DEFAULT = {
   header: "Default",
-  component: <p>Content</p>
+  component: <p>Content</p>,
 };
 
 const useModal = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(MODAL_DEFAULT);
 
-  const createModalContent = (header, component) => {
+  const createModalContent = (header, component, footer) => {
     setModalContent(() => ({
       header,
-      component
+      component,
+      footer,
     }));
   };
 
@@ -20,7 +21,7 @@ const useModal = () => {
     showModal,
     setShowModal,
     modalContent,
-    setModalContent
+    setModalContent,
   };
 };
 
