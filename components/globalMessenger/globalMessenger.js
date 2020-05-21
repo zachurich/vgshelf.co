@@ -1,9 +1,11 @@
 import _ from "lodash";
 import React, { useState } from "react";
+
+import useModal from "../../common/hooks/useModal";
 import GlobalMessageContext from "../../contexts/globalMessage";
 import Modal from "../modal/modal";
-import useModal from "../../common/hooks/useModal";
-import Router from "next/router";
+
+React.useLayoutEffect = React.useEffect; // idk, im not calling useLayout effect but SSR keeps warning me
 
 function GlobalMessanger({ children }) {
   const [shouldReload, setShouldReload] = useState(false);
@@ -15,7 +17,7 @@ function GlobalMessanger({ children }) {
     }
     setModalContent({
       header,
-      component: <p>{message}</p>
+      component: <p>{message}</p>,
     });
     setShowModal(true);
   };
@@ -24,7 +26,7 @@ function GlobalMessanger({ children }) {
     setShowModal(false);
     setModalContent({
       header: "",
-      component: ""
+      component: "",
     });
     if (shouldReload) {
       window.location.reload();

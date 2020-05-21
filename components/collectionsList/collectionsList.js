@@ -1,11 +1,8 @@
 import Link from "next/link";
 import React, { useState } from "react";
 
-import { createCollection, deleteCollection } from "../../api/collectionsApi";
-import useCheckAuth from "../../common/hooks/useCheckAuth";
 import { APP_ROUTES } from "../../common/routes";
 import { userCanEdit } from "../../common/utils";
-import { BasicForm } from "../basicForm/basicForm";
 import { ButtonToggle } from "../buttons/buttons";
 import List from "../list/list";
 import Loader from "../loader/loader";

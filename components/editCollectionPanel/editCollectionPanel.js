@@ -55,6 +55,7 @@ function EditCollectionPanel({
               }}
               listItem={({ item }) => (
                 <GameToggleItem
+                  key={item.id}
                   item={item}
                   itemAlreadyToggled={_.find(gamesToggled, ["id", item.id])}
                   handleToggle={handleToggleGame}

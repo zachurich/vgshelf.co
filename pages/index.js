@@ -1,8 +1,9 @@
-import get from "lodash/get";
+import Axios from "axios";
 import React from "react";
+
 import { Meta } from "../components/index";
-import { fetchGamesByUserId } from "../api/gamesApi";
 import Landing from "../components/landing/landing";
+
 // React.useLayoutEffect = React.useEffect; // supress useLayoutEffect warning?!
 
 const Home = ({ user }) => {
@@ -19,7 +20,7 @@ const Home = ({ user }) => {
  * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
  */
 Home.getInitialProps = async ({ req, res, query }) => {
-  return {};
+  return { data: {} };
 };
 
 export default Home;

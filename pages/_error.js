@@ -1,8 +1,9 @@
 import React from "react";
-import { Meta } from "../components/index";
-import { APP_ROUTES } from "../common/routes";
+
 import auth0 from "../common/auth";
+import { APP_ROUTES } from "../common/routes";
 import { redirect } from "../common/utils";
+import { Meta } from "../components/index";
 
 const Error = ({ user }) => {
   return (
@@ -28,7 +29,7 @@ Error.getInitialProps = async ({ req, res, query }) => {
       return redirect(res, APP_ROUTES.APP + "/" + user.nickname);
     }
   }
-  return {};
+  return { error: {} };
 };
 
 export default Error;

@@ -9,8 +9,6 @@ import useCheckAuth from "../../common/hooks/useCheckAuth";
 import useGamesFetchByUserName from "../../common/hooks/useGameFetchByUserName";
 import useModal from "../../common/hooks/useModal";
 import { handleServerError, scrollTop } from "../../common/utils";
-import { BasicForm } from "../../components/basicForm/basicForm";
-import CollectionsList from "../../components/collectionsList/collectionsList";
 import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
 import GamesPanel from "../../components/gamesPanel/gamesPanel";
 import { Meta } from "../../components/index";

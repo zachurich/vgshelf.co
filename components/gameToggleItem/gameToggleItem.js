@@ -1,11 +1,11 @@
-import react from "react";
+import React from "react";
+
 import MissingCover from "../../assets/missingCover.svg";
 
 const GameToggleItem = ({ item, itemAlreadyToggled, handleToggle }) => {
   if (!item) return null;
   return (
     <li
-      key={item.id}
       className={`game-toggle-item ${itemAlreadyToggled ? "toggled" : ""}`}
       onClick={() => handleToggle(item)}
     >
