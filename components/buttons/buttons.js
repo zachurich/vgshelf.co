@@ -1,26 +1,30 @@
-import React from "react";
 import Link from "next/link";
-import { APP_ROUTES } from "../../common/routes";
-import AddSVG from "../../assets/add.svg";
 import { useRouter } from "next/router";
+import React from "react";
 
-export function LoginButton({ user, classes = "button-secondary" }) {
+import AddSVG from "../../assets/add.svg";
+import useAuth from "../../common/hooks/useAuth";
+import { APP_ROUTES } from "../../common/routes";
+
+export function LoginButton({ classes = "button-secondary" }) {
+  const user = useAuth();
   const router = useRouter();
   const loginPath = APP_ROUTES.LOGIN;
   return (
     <Link
-      href={{ pathname: user ? "/dashboard/[user]" : loginPath }}
-      as={user ? `/dashboard/${user.nickname}` : loginPath}
+      href={user ? `${APP_ROUTES.APP}/[userName]` : loginPath}
+      as={user ? `${APP_ROUTES.APP}/${user.nickname}` : loginPath}
     >
       <a className={`button ${classes}`}>{user ? "Continue" : "Log In"}</a>
     </Link>
   );
 }
 
-export function SignUpButton({ user, text, classes = "button-primary" }) {
+export function SignUpButton({ text, classes = "button-primary" }) {
+  const user = useAuth();
   if (!user) {
     return (
-      <Link href={{ pathname: APP_ROUTES.LOGIN }}>
+      <Link href={APP_ROUTES.LOGIN}>
         <a className={`button ${classes}`}>{text}</a>
       </Link>
     );

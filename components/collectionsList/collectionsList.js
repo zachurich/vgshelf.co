@@ -46,10 +46,7 @@ function CollectionsList({
           listItem={({ item }) => (
             <li key={item.id} className="list-item">
               <Link
-                href={{
-                  pathname: APP_ROUTES.GAMES,
-                  query: { userName, collectionSlug: item.slug },
-                }}
+                href={`${APP_ROUTES.GAMES}/[userName]/[collectionSlug]`}
                 as={`${APP_ROUTES.GAMES}/${userName}/${item.slug}`}
               >
                 <a className="">

@@ -13,8 +13,9 @@ export const decideHeader = (title, user, userName) => {
 export const decideBreadCrumb = (collection, loggedIn, userName) => {
   if (collection) {
     return {
-      route: `${APP_ROUTES.APP}/${userName}`,
-      text: loggedIn ? "My Dashboard" : `${userName}'s Dashboard`
+      route: `${APP_ROUTES.APP}/[userName]`,
+      as: `${APP_ROUTES.APP}/${userName}`,
+      text: loggedIn ? "My Dashboard" : `${userName}'s Dashboard`,
     };
   }
   return null;

@@ -1,12 +1,13 @@
-import { API_ENDPOINTS, API_ROUTES } from "../common/routes";
 import axios from "axios";
 
-export const fetchCollectionsByUserName = async userName => {
+import { API_ENDPOINTS, API_ROUTES } from "../common/routes";
+
+export const fetchCollectionsByUserName = async (userName) => {
   try {
     const { data: response } = await axios.get(API_ENDPOINTS.COLLECTION, {
       params: {
-        userName
-      }
+        userName,
+      },
     });
     return response.data;
   } catch (error) {
@@ -19,8 +20,8 @@ export const fetchSingleCollection = async ({ userName, collectionSlug }) => {
     const { data: response } = await axios.get(API_ENDPOINTS.COLLECTION, {
       params: {
         userName,
-        collectionSlug
-      }
+        collectionSlug,
+      },
     });
     return response.data;
   } catch (error) {
@@ -30,10 +31,10 @@ export const fetchSingleCollection = async ({ userName, collectionSlug }) => {
 
 export const createCollection = async ({ userId, collectionName, games }) => {
   try {
-    const result = await axios.post(API_ROUTES.COLLECTION + "/create", {
+    const result = await axios.post(API_ROUTES.COLLECTION, {
       userId,
       collectionName,
-      games
+      games,
     });
     return result;
   } catch (error) {
@@ -43,8 +44,8 @@ export const createCollection = async ({ userId, collectionName, games }) => {
 
 export const deleteCollection = async ({ collectionId }) => {
   try {
-    const result = await axios.delete(API_ROUTES.COLLECTION + "/remove", {
-      data: { collectionId }
+    const result = await axios.delete(API_ROUTES.COLLECTION, {
+      data: { collectionId },
     });
     return result;
   } catch (error) {
@@ -54,7 +55,7 @@ export const deleteCollection = async ({ collectionId }) => {
 
 export const updateCollection = async (data, headers = {}) => {
   try {
-    const result = await axios.put(API_ROUTES.COLLECTION + "/update", data, headers);
+    const result = await axios.put(API_ROUTES.COLLECTION, data, headers);
     return result;
   } catch (error) {
     throw error;

@@ -5,9 +5,9 @@ import useModal from "../../common/hooks/useModal";
 import GlobalMessageContext from "../../contexts/globalMessage";
 import Modal from "../modal/modal";
 
-React.useLayoutEffect = React.useEffect; // idk, im not calling useLayout effect but SSR keeps warning me
+// React.useLayoutEffect = React.useEffect; // idk, im not calling useLayout effect but SSR keeps warning me
 
-function GlobalMessanger({ children }) {
+function GlobalMessenger({ children }) {
   const [shouldReload, setShouldReload] = useState(false);
   const { showModal, setShowModal, modalContent, setModalContent } = useModal();
 
@@ -46,4 +46,4 @@ function GlobalMessanger({ children }) {
   );
 }
 
-export default GlobalMessanger;
+export default GlobalMessenger;

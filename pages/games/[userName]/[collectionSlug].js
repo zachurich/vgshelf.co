@@ -1,5 +1,3 @@
-import "../../../styles/games.scss";
-
 import { mutate } from "@zeit/swr";
 import _ from "lodash";
 import React, { useState } from "react";
@@ -7,6 +5,7 @@ import React, { useState } from "react";
 import { fetchSingleCollection, updateCollection } from "../../../api/collectionsApi";
 import { fetchGamesByUserName } from "../../../api/gamesApi";
 import { useFetchCollection, useParams } from "../../../common/hooks";
+import useAuth from "../../../common/hooks/useAuth";
 import useCheckAuth from "../../../common/hooks/useCheckAuth";
 import { formatUserName, handleServerError, scrollTop } from "../../../common/utils";
 import EditCollectionPanel from "../../../components/editCollectionPanel/editCollectionPanel";
@@ -15,7 +14,8 @@ import GamesGrid from "../../../components/gamesGrid/gamesGrid";
 import { Meta } from "../../../components/index";
 import Modal from "../../../components/modal/modal";
 
-const Games = ({ user, initialGames = [], initialCollection = {} }) => {
+const Games = ({ initialGames = [], initialCollection = {} }) => {
+  const user = useAuth();
   const { userName, collectionSlug } = useParams();
   const { data: collection, finalUrl } = useFetchCollection(initialCollection);
   const [showModal, setShowModal] = useState(false);

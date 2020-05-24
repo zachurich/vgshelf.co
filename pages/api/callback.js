@@ -1,7 +1,7 @@
 import auth0 from "../../common/auth";
 import { APP_ROUTES } from "../../common/routes";
 
-export default async function callback(req, res) {
+export default async (req, res) => {
   const { state } = req.query;
   const [redirect] = state.toString().split("|");
   try {
@@ -10,4 +10,4 @@ export default async function callback(req, res) {
     console.error(error);
     res.status(error.status || 400).end(error.message);
   }
-}
+};

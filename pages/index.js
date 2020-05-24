@@ -1,10 +1,7 @@
-import Axios from "axios";
 import React from "react";
 
 import { Meta } from "../components/index";
 import Landing from "../components/landing/landing";
-
-// React.useLayoutEffect = React.useEffect; // supress useLayoutEffect warning?!
 
 const Home = ({ user }) => {
   return (

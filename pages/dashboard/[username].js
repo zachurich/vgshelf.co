@@ -1,10 +1,10 @@
-import { mutate, trigger } from "@zeit/swr";
 import _ from "lodash";
 import React from "react";
 
 import { fetchCollectionsByUserName } from "../../api/collectionsApi";
 import { fetchGamesByUserName } from "../../api/gamesApi";
 import { useCollectionsFetch, useParams } from "../../common/hooks";
+import useAuth from "../../common/hooks/useAuth";
 import useCheckAuth from "../../common/hooks/useCheckAuth";
 import useGamesFetchByUserName from "../../common/hooks/useGameFetchByUserName";
 import useModal from "../../common/hooks/useModal";
@@ -13,8 +13,8 @@ import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel
 import GamesPanel from "../../components/gamesPanel/gamesPanel";
 import { Meta } from "../../components/index";
 
-const Dashboard = ({ user, initialGames = [], initialCollections = [] }) => {
-  const { userName } = useParams();
+const Dashboard = ({ initialGames = [], initialCollections = [] }) => {
+  const user = useAuth();
   const {
     data: games,
     finalUrl: gamesCacheKey,

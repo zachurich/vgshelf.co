@@ -1,7 +1,8 @@
-import get from "lodash/get";
-import { escapeNull } from "../common/utils";
-import { API_ENDPOINTS, API_ROUTES } from "../common/routes";
 import axios from "axios";
+import get from "lodash/get";
+
+import { API_ENDPOINTS, API_ROUTES } from "../common/routes";
+import { escapeNull } from "../common/utils";
 
 // fetcher to use for any client-side GETs using useSWR
 export const fetcher = async (url, headers = {}) => {
@@ -14,12 +15,12 @@ export const fetcher = async (url, headers = {}) => {
 };
 
 // calls for server-side fetching
-export const fetchGamesByUserId = async userId => {
+export const fetchGamesByUserId = async (userId) => {
   try {
     const { data: response } = await axios.get(API_ENDPOINTS.GAME, {
       params: {
-        userId
-      }
+        userId,
+      },
     });
     return escapeNull(get(response, "data"), []);
   } catch (error) {
@@ -32,8 +33,8 @@ export const fetchGamesUserNameCollectionSlug = async (collectionSlug, userName)
     const { data: response } = await axios.get(API_ENDPOINTS.GAME, {
       params: {
         collectionSlug,
-        userName
-      }
+        userName,
+      },
     });
     return escapeNull(get(response, "data"), []);
   } catch (error) {
@@ -41,12 +42,12 @@ export const fetchGamesUserNameCollectionSlug = async (collectionSlug, userName)
   }
 };
 
-export const fetchGamesByUserName = async userName => {
+export const fetchGamesByUserName = async (userName) => {
   try {
     const { data: response } = await axios.get(API_ENDPOINTS.GAME, {
       params: {
-        userName
-      }
+        userName,
+      },
     });
     return escapeNull(get(response, "data"), []);
   } catch (error) {
@@ -56,12 +57,12 @@ export const fetchGamesByUserName = async userName => {
 
 export const createGame = async ({ userId, title, igdbId, slug, imageUrl }) => {
   try {
-    const result = await axios.post(API_ROUTES.GAME + "/create", {
+    const result = await axios.post(API_ROUTES.GAME, {
       userId,
       title,
       igdbId,
       slug,
-      imageUrl
+      imageUrl,
     });
     return result;
   } catch (error) {
@@ -71,8 +72,8 @@ export const createGame = async ({ userId, title, igdbId, slug, imageUrl }) => {
 
 export const deleteGame = async ({ gameId, userId }) => {
   try {
-    const result = await axios.delete(API_ROUTES.GAME + "/remove", {
-      data: { gameId, userId }
+    const result = await axios.delete(API_ROUTES.GAME, {
+      data: { gameId, userId },
     });
     return result;
   } catch (error) {

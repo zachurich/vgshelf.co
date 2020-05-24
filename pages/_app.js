@@ -1,6 +1,6 @@
 import "normalize.css";
 
-import "../styles/index.scss";
+import "../styles/styles.scss";
 
 import _ from "lodash";
 import App from "next/app";
@@ -10,18 +10,19 @@ import React, { useState } from "react";
 import auth0 from "../common/auth";
 import { Nav } from "../components";
 import Footer from "../components/footer/footer";
-import GlobalMessanger from "../components/globalMessenger/globalMessenger";
+import GlobalMessenger from "../components/globalMessenger/globalMessenger";
+import AuthContext from "../contexts/authContext";
 
 function VGShelf({ Component, pageProps, auth = {} }) {
-  const [user, setUser] = useState(auth.user);
+  const [user] = useState(auth.user);
   return (
-    <>
-      <GlobalMessanger>
-        <Nav user={user} />
-        <Component user={user} {...pageProps} />
+    <AuthContext.Provider value={{ user }}>
+      <GlobalMessenger>
+        <Nav />
+        <Component {...pageProps} />
         <Footer />
-      </GlobalMessanger>
-    </>
+      </GlobalMessenger>
+    </AuthContext.Provider>
   );
 }
 
