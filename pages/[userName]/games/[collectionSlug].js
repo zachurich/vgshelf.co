@@ -8,13 +8,18 @@ import { useFetchCollection, useParams } from "../../../common/hooks";
 import useAuth from "../../../common/hooks/useAuth";
 import useCheckAuth from "../../../common/hooks/useCheckAuth";
 import { formatUserName, handleServerError, scrollTop } from "../../../common/utils";
+import CollectionsPanel from "../../../components/collectionsPanel/collectionsPanel";
 import EditCollectionPanel from "../../../components/editCollectionPanel/editCollectionPanel";
 import FormControls from "../../../components/formControls/formControls";
 import GamesGrid from "../../../components/gamesGrid/gamesGrid";
 import { Meta } from "../../../components/index";
 import Modal from "../../../components/modal/modal";
 
-const Games = ({ initialGames = [], initialCollection = {} }) => {
+const Games = ({
+  initialGames = [],
+  initialCollection = {},
+  initialCollections = [],
+}) => {
   const user = useAuth();
   const { userName, collectionSlug } = useParams();
   const { data: collection, finalUrl } = useFetchCollection(initialCollection);
@@ -35,7 +40,8 @@ const Games = ({ initialGames = [], initialCollection = {} }) => {
   const handleSubmitChanges = async (e, title, games) => {
     e.preventDefault();
 
-    // Compose array with added/removed game
+    // Compose array with added/removed game'
+    console.log(finalUrl);
     mutate(finalUrl, { ...collection, title, games }, false);
     // Fire and forget the server request
     try {
@@ -53,9 +59,9 @@ const Games = ({ initialGames = [], initialCollection = {} }) => {
   };
 
   return (
-    <main className="games">
-      <Meta title={"Games"} />
-      <div className="games-panel-wrapper container">
+    <>
+      <main className="main games with-sidebar">
+        <Meta title={"Games"} />
         {/* This component should contain all games IN THE CURRENT COLLECTION */}
         <GamesGrid
           title={`${collection.title} Shelf` || `${formatUserName(user)}'s Games`}
@@ -67,33 +73,34 @@ const Games = ({ initialGames = [], initialCollection = {} }) => {
           showTogglePanel={showModal}
           handlePrompt={handleToggleModal}
         />
-      </div>
-      <Modal
-        open={collectionSlug && showModal && user}
-        dismissModal={() => handleToggleModal(false)}
-        header={"Edit Shelf"}
-        content={() => (
-          <EditCollectionPanel
-            user={user}
-            collection={collection}
-            initialGames={initialGames}
-            title={[collectionTitle, setCollectionTitle]}
-            toggled={[gamesToggled, setGamesToggled]}
-          />
-        )}
-        footer={() => (
-          <FormControls
-            handleDismiss={() => handleToggleModal(false)}
-            closeText={"Cancel"}
-            disabled={
-              collection.games === gamesToggled && collection.title === collectionTitle
-            }
-            submitText={"Submit"}
-            handleSubmit={(e) => handleSubmitChanges(e, collectionTitle, gamesToggled)}
-          />
-        )}
-      />
-    </main>
+        <Modal
+          open={collectionSlug && showModal && user}
+          dismissModal={() => handleToggleModal(false)}
+          header={"Edit Shelf"}
+          content={() => (
+            <EditCollectionPanel
+              user={user}
+              collection={collection}
+              initialGames={initialGames}
+              title={[collectionTitle, setCollectionTitle]}
+              toggled={[gamesToggled, setGamesToggled]}
+            />
+          )}
+          footer={() => (
+            <FormControls
+              handleDismiss={() => handleToggleModal(false)}
+              closeText={"Cancel"}
+              disabled={
+                collection.games === gamesToggled && collection.title === collectionTitle
+              }
+              submitText={"Submit"}
+              handleSubmit={(e) => handleSubmitChanges(e, collectionTitle, gamesToggled)}
+            />
+          )}
+        />
+      </main>
+      <CollectionsPanel user={user} initialCollections={initialCollections} />
+    </>
   );
 };
 

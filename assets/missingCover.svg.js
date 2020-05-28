@@ -1,7 +1,4 @@
-import random from "lodash/random";
-import React, { useState, useEffect } from "react";
-import { getColor, documentExists } from "../common/utils";
-import { siteColors } from "../common/constants";
+import React from "react";
 
 function MissingCover() {
   const color = "#017bfd";

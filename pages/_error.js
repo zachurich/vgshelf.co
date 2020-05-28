@@ -22,11 +22,14 @@ const Error = ({ user }) => {
  * THIS RUNS ONCE ON THE SERVER, ON REFRESH
  * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
  */
-Error.getInitialProps = async ({ req, res, query }) => {
+Error.getInitialProps = async ({ req, res, query, err }) => {
+  // if (res && res.statusCode === 404) {
+  //   return redirect(res, APP_ROUTES.MISSING);
+  // }
   if (req.url === APP_ROUTES.APP) {
     const { user } = await auth0.getSession(req);
     if (user) {
-      return redirect(res, APP_ROUTES.APP + "/" + user.nickname);
+      return redirect(res, APP_ROUTES.APP.replace("[userName]", user.nickname));
     }
   }
   return { error: {} };

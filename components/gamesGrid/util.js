@@ -4,17 +4,17 @@ export const decideHeader = (title, user, userName) => {
   if (title) {
     return title;
   } else if (user) {
-    return "All My Games";
+    return "My Games";
   } else {
     return `${userName}'s Games`;
   }
 };
 
-export const decideBreadCrumb = (collection, loggedIn, userName) => {
-  if (collection) {
+export const decideBreadCrumb = (subpage, loggedIn, userName) => {
+  if (subpage) {
     return {
-      route: `${APP_ROUTES.APP}/[userName]`,
-      as: `${APP_ROUTES.APP}/${userName}`,
+      route: APP_ROUTES.APP,
+      as: APP_ROUTES.APP.replace("[userName]", userName),
       text: loggedIn ? "My Dashboard" : `${userName}'s Dashboard`,
     };
   }

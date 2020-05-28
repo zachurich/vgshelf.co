@@ -17,13 +17,12 @@ export default async (req, res) => {
       // if(response === NEWLY_CREATED_USER) {
       //   return redirect(res, APP_ROUTES.APP);
       // }
-      return redirect(res, APP_ROUTES.APP);
+      return redirect(res, APP_ROUTES.APP.replace("[userName]", user.nickname));
     } else {
       await auth0.handleLogout(req, res);
       return redirect(res, APP_ROUTES.ERROR);
     }
   } catch (error) {
-    console.log(error);
     await auth0.handleLogout(req, res);
     return redirect(res, APP_ROUTES.ERROR);
   }

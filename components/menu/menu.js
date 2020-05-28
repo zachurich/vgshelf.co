@@ -27,7 +27,10 @@ const Menu = ({ user }) => {
   function renderLoggedInMenu() {
     return (
       <ul ref={menuRef} className="menu-list">
-        <MenuItem route={APP_ROUTES.APP} text="Dashboard" />
+        <MenuItem
+          route={APP_ROUTES.APP.replace("[userName]", user.nickname)}
+          text="Dashboard"
+        />
         <MenuItem route={APP_ROUTES.LOGOUT} text="Logout" />
       </ul>
     );

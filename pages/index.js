@@ -5,10 +5,10 @@ import Landing from "../components/landing/landing";
 
 const Home = ({ user }) => {
   return (
-    <div className="home">
+    <main className="main home page-root">
       <Meta title={"Home"} />
       <Landing user={user} />
-    </div>
+    </main>
   );
 };
 

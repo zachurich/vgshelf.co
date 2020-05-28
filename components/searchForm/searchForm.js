@@ -13,7 +13,11 @@ import React, { useState } from "react";
 import { createGame } from "../../api/gamesApi";
 import { fetchCover, fetchResults } from "../../api/search";
 import { useDebounce } from "../../common/hooks";
-import { handleServerError, handleServerResponse } from "../../common/utils";
+import {
+  handleServerError,
+  handleServerResponse,
+  isClientSide,
+} from "../../common/utils";
 import { ButtonAction } from "../buttons/buttons";
 import FormControls from "../formControls/formControls";
 import FormSelections from "../formSelections/formSelections";
@@ -99,7 +103,10 @@ export const SearchForm = ({
 
   const pluckSuggestion = (item) =>
     suggestions.filter((suggestion) => suggestion.name === item)[0];
-
+  if (!isClientSide()) {
+    console.log(true);
+    return null;
+  }
   return (
     <Modal
       open={isOpen}

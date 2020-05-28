@@ -13,6 +13,9 @@
     margin-bottom: $base-spacing;
     @include transition;
     @include apply-hover;
+    &.current-page {
+      background-color: $white-hover;
+    }
     & > * {
       display: inline-block;
       padding: 15px;

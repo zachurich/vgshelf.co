@@ -1,0 +1,32 @@
+.game-details {
+  display: flex;
+  @include border-radius;
+  @include box-shadow;
+  margin: 0 $comfortable-spacing $comfortable-spacing;
+  padding: $base-spacing;
+  background-color: white;
+  &-image {
+    .image-loader {
+      border: 10px solid #ddd;
+      @include border-radius;
+      @include box-shadow;
+      max-width: 220px;
+      margin-right: $base-spacing;
+      overflow: hidden;
+      height: fit-content;
+      display: flex;
+    }
+    img,
+    svg {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      object-fit: cover;
+    }
+  }
+  &-content {
+    h2 {
+      margin-top: 0;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 
+import { useParams } from "../../common/hooks";
 import { APP_ROUTES } from "../../common/routes";
 import { userCanEdit } from "../../common/utils";
 import { ButtonToggle } from "../buttons/buttons";
@@ -17,11 +18,7 @@ function CollectionsList({
   isLoading,
   fetchKey,
 }) {
-  // const handleDeleteCollection = async (collectionId) => {
-  //   await deleteCollection({ collectionId });
-  //   refreshData();
-  // };
-
+  const { collectionSlug } = useParams();
   return (
     <section className="collections-panel">
       <Title header={user ? "Shelves" : `${userName} Shelves`} color="pink">
@@ -44,10 +41,18 @@ function CollectionsList({
             inputText: "Search shelves...",
           }}
           listItem={({ item }) => (
-            <li key={item.id} className="list-item">
+            <li
+              key={item.id}
+              className={`list-item ${
+                collectionSlug === item.slug ? "current-page" : ""
+              }`}
+            >
               <Link
-                href={`${APP_ROUTES.GAMES}/[userName]/[collectionSlug]`}
-                as={`${APP_ROUTES.GAMES}/${userName}/${item.slug}`}
+                href={APP_ROUTES.GAMES}
+                as={`${APP_ROUTES.GAMES.replace("[userName]", userName).replace(
+                  "[collectionSlug]",
+                  item.slug
+                )}`}
               >
                 <a className="">
                   <span>{item.title}</span>

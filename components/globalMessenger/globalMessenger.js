@@ -2,6 +2,7 @@ import _ from "lodash";
 import React, { useState } from "react";
 
 import useModal from "../../common/hooks/useModal";
+import { isClientSide } from "../../common/utils";
 import GlobalMessageContext from "../../contexts/globalMessage";
 import Modal from "../modal/modal";
 
@@ -17,7 +18,7 @@ function GlobalMessenger({ children }) {
     }
     setModalContent({
       header,
-      component: <p>{message}</p>,
+      component: message,
     });
     setShowModal(true);
   };
@@ -32,7 +33,9 @@ function GlobalMessenger({ children }) {
       window.location.reload();
     }
   };
-
+  if (!isClientSide()) {
+    return null;
+  }
   return (
     <GlobalMessageContext.Provider value={{ promptMessage }}>
       {children}

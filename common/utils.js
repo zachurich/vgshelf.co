@@ -53,7 +53,7 @@ export const appendMultipleParams = (url, params) => {
 };
 
 export const scrollTop = () => {
-  if (documentExists()) {
+  if (isClientSide()) {
     window.scrollTo(0, 0);
   }
 };
@@ -65,10 +65,10 @@ export const escapeNull = (value, fallback) => {
   return fallback;
 };
 
-export const documentExists = () => typeof document !== "undefined";
+export const isClientSide = () => typeof window !== "undefined";
 
 export const getColor = (color) => {
-  if (documentExists()) {
+  if (isClientSide()) {
     return getComputedStyle(document.body).getPropertyValue(color);
   }
   return null;
@@ -92,7 +92,7 @@ export const handleServerResponse = (response = {}) => {
  * - newItemsProps (array of only the properties of the updates items)
  */
 export const toggleItemInArray = (array, item, property = null) => {
-  const currentItems = _.cloneDeep(array);
+  const currentItems = array.length ? _.cloneDeep(array) : [];
   const itemOrObj = property ? item[property] : item;
   let newItems = [];
   if (_.some(currentItems, property ? [property, itemOrObj] : itemOrObj)) {
@@ -123,7 +123,6 @@ export const redirect = (res, location) => {
 export const handleServerError = (e, res) => {
   const data = _.get(e, "response.data.data", []);
   if (data && data.includes(ERROR_CODES.NO_USER)) {
-    console.log(e);
     return redirect(res, APP_ROUTES.MISSING);
   }
   return redirect(res, APP_ROUTES.ERROR);

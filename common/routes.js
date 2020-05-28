@@ -19,9 +19,9 @@ export const API_ROUTES = {
 // Application routes
 export const APP_ROUTES = {
   HOME: "/",
-  APP: "/dashboard",
-  COLLECTIONS: "/collections",
-  GAMES: "/games",
+  APP: "/[userName]/dashboard",
+  GAMES: "/[userName]/games/[collectionSlug]",
+  GAME: "/[userName]/[gameSlug]",
   LOGIN: "/api/login",
   USER: "/api/user",
   LOGOUT: "/api/logout",

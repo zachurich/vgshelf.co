@@ -45,4 +45,11 @@
 
 .image-loader {
   display: inline;
+  @include transition(0.5s);
+  &.loading {
+    opacity: 0;
+  }
+  &.loaded {
+    opacity: 1;
+  }
 }

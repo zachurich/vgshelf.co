@@ -20,36 +20,20 @@ const Dashboard = ({ initialGames = [], initialCollections = [] }) => {
     finalUrl: gamesCacheKey,
     isLoading: isGamesLoading,
   } = useGamesFetchByUserName(initialGames);
-  const {
-    data: collections,
-    finalUrl: collectionsCacheKey,
-    isLoading: isCollectionsLoading,
-  } = useCollectionsFetch(initialCollections);
-  const { showModal, setShowModal } = useModal();
-  const { performAuthCheck } = useCheckAuth();
 
-  const handleToggleModal = async (toggle) => {
-    const authed = await performAuthCheck();
-    if (!authed) return;
-    scrollTop();
-    setShowModal(() => toggle || !showModal);
-  };
   return (
-    <div className="dashboard">
-      <Meta title={"Dashboard"} />
-      <GamesPanel
-        user={user}
-        games={games}
-        gamesCacheKey={gamesCacheKey}
-        isGamesLoading={isGamesLoading}
-      />
-      <CollectionsPanel
-        user={user}
-        collections={collections}
-        collectionsCacheKey={collectionsCacheKey}
-        isCollectionsLoading={isCollectionsLoading}
-      />
-    </div>
+    <>
+      <main className="main dashboard with-sidebar">
+        <Meta title={"Dashboard"} />
+        <GamesPanel
+          user={user}
+          games={games}
+          gamesCacheKey={gamesCacheKey}
+          isGamesLoading={isGamesLoading}
+        />
+      </main>
+      <CollectionsPanel user={user} initialCollections={initialCollections} />
+    </>
   );
 };
 
@@ -62,8 +46,7 @@ Dashboard.getInitialProps = async ({ req, res, query }) => {
     const { userName } = query;
     try {
       const { games: initialGames } = await fetchGamesByUserName(userName);
-      const initialCollections = await fetchCollectionsByUserName(userName);
-      return { initialGames, initialCollections };
+      return { initialGames };
     } catch (e) {
       return handleServerError(e, res);
     }

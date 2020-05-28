@@ -2,7 +2,7 @@ import { mutate } from "@zeit/swr";
 import _ from "lodash";
 import React from "react";
 
-import { useParams } from "../../common/hooks";
+import { useCollectionsFetch, useParams } from "../../common/hooks";
 import useCheckAuth from "../../common/hooks/useCheckAuth";
 import useModal from "../../common/hooks/useModal";
 import { scrollTop } from "../../common/utils";
@@ -11,10 +11,16 @@ import CollectionsList from "../collectionsList/collectionsList";
 
 const CollectionsPanel = ({
   user,
-  collections = [],
-  collectionsCacheKey,
-  isCollectionsLoading,
+  initialCollections = [],
+  // collections = [],
+  // collectionsCacheKey,
+  // isCollectionsLoading,
 }) => {
+  const {
+    data: collections,
+    finalUrl: collectionsCacheKey,
+    isLoading: isCollectionsLoading,
+  } = useCollectionsFetch(initialCollections);
   const { userName } = useParams();
   const { showModal, setShowModal } = useModal();
   const { performAuthCheck } = useCheckAuth();

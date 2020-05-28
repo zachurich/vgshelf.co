@@ -7,6 +7,9 @@
   justify-self: center;
   width: 100%;
   min-height: $game-item-base-height;
+  a {
+    width: 100%;
+  }
   .game-item-content {
     display: flex;
     width: 100%;

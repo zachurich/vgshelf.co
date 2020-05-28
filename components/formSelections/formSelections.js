@@ -25,7 +25,7 @@ export function ImageLoader({
       className={`image-loader ${className} ${loading ? "loading" : "loaded"}`}
       {...props}
     >
-      {loading && fallback}
+      {/* {loading && fallback} */}
       <img
         ref={image}
         src={src}

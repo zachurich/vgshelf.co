@@ -18,7 +18,11 @@ function EditCollectionPanel({
   title,
   toggled,
 }) {
-  const { data: games, error } = useGameFetch(initialGames, { userId: user.sub });
+  const { data: games, error } = useGameFetch(
+    initialGames,
+    { userId: user.sub },
+    "games"
+  );
   const [collectionTitle, setCollectionTitle] = title;
   const [gamesToggled, setGamesToggled] = toggled;
 
@@ -41,7 +45,7 @@ function EditCollectionPanel({
           />
         </section>
         <section className="collection-edit-toggle-panel">
-          <label>All My Games</label>
+          <label>My Games</label>
           {/* This component should contain all games - Search/Toggle in collection*/}
           {!collection.games ? (
             <Loader />

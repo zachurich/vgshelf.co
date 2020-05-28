@@ -21,7 +21,7 @@ const GamesPanel = ({ user, games = [], gamesCacheKey, isGamesLoading }) => {
     setShowModal(() => toggle || !showModal);
   };
   return (
-    <main className="main">
+    <>
       <GamesGrid
         user={user}
         userName={userName}
@@ -42,7 +42,7 @@ const GamesPanel = ({ user, games = [], gamesCacheKey, isGamesLoading }) => {
           mutate(gamesCacheKey, { games: data });
         }}
       />
-    </main>
+    </>
   );
 };
 
