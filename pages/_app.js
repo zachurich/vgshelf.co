@@ -1,4 +1,5 @@
 import "normalize.css";
+import "@reach/combobox/styles.css";
 
 import "../styles/styles.scss";
 

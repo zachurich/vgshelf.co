@@ -11,16 +11,10 @@ import CollectionsList from "../collectionsList/collectionsList";
 
 const CollectionsPanel = ({
   user,
-  initialCollections = [],
-  // collections = [],
-  // collectionsCacheKey,
-  // isCollectionsLoading,
+  collections = [],
+  collectionsCacheKey,
+  isCollectionsLoading,
 }) => {
-  const {
-    data: collections,
-    finalUrl: collectionsCacheKey,
-    isLoading: isCollectionsLoading,
-  } = useCollectionsFetch(initialCollections);
   const { userName } = useParams();
   const { showModal, setShowModal } = useModal();
   const { performAuthCheck } = useCheckAuth();

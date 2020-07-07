@@ -1,10 +1,14 @@
 import { mutate } from "@zeit/swr";
 import _ from "lodash";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { fetchSingleCollection, updateCollection } from "../../../api/collectionsApi";
 import { fetchGamesByUserName } from "../../../api/gamesApi";
-import { useFetchCollection, useParams } from "../../../common/hooks";
+import {
+  useCollectionsFetch,
+  useFetchCollection,
+  useParams,
+} from "../../../common/hooks";
 import useAuth from "../../../common/hooks/useAuth";
 import useCheckAuth from "../../../common/hooks/useCheckAuth";
 import { formatUserName, handleServerError, scrollTop } from "../../../common/utils";
@@ -22,7 +26,14 @@ const Games = ({
 }) => {
   const user = useAuth();
   const { userName, collectionSlug } = useParams();
-  const { data: collection, finalUrl } = useFetchCollection(initialCollection);
+  const {
+    data: collections,
+    finalUrl: collectionsCacheKey,
+    isLoading: isCollectionsLoading,
+  } = useCollectionsFetch(initialCollections);
+  const { data: collection, finalUrl: collectionContextCacheKey } = useFetchCollection(
+    initialCollection
+  );
   const [showModal, setShowModal] = useState(false);
   const { performAuthCheck } = useCheckAuth();
   const [collectionTitle, setCollectionTitle] = useState(collection.title);
@@ -41,8 +52,7 @@ const Games = ({
     e.preventDefault();
 
     // Compose array with added/removed game'
-    console.log(finalUrl);
-    mutate(finalUrl, { ...collection, title, games }, false);
+    mutate(collectionContextCacheKey, { ...collection, title, games }, false);
     // Fire and forget the server request
     try {
       await updateCollection({
@@ -51,12 +61,22 @@ const Games = ({
         collectionSlug,
         games,
       });
+
+      mutate(collectionsCacheKey);
     } catch (error) {
+      mutate(collectionContextCacheKey, { ...collection }, false);
       console.log(_.get(e, "response.data"));
     }
 
     handleToggleModal(false);
   };
+
+  useEffect(() => {
+    if (collection.title !== collectionTitle) {
+      setCollectionTitle(collection.title);
+      setGamesToggled(collection.games);
+    }
+  }, [collection.title]);
 
   return (
     <>
@@ -99,7 +119,12 @@ const Games = ({
           )}
         />
       </main>
-      <CollectionsPanel user={user} initialCollections={initialCollections} />
+      <CollectionsPanel
+        user={user}
+        collections={collections}
+        collectionsCacheKey={collectionsCacheKey}
+        isCollectionsLoading={isCollectionsLoading}
+      />
     </>
   );
 };

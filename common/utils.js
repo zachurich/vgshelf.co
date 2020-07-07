@@ -92,7 +92,7 @@ export const handleServerResponse = (response = {}) => {
  * - newItemsProps (array of only the properties of the updates items)
  */
 export const toggleItemInArray = (array, item, property = null) => {
-  const currentItems = array.length ? _.cloneDeep(array) : [];
+  const currentItems = array && array.length ? _.cloneDeep(array) : [];
   const itemOrObj = property ? item[property] : item;
   let newItems = [];
   if (_.some(currentItems, property ? [property, itemOrObj] : itemOrObj)) {

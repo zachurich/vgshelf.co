@@ -3,13 +3,9 @@ import React, { useState } from "react";
 
 import { useGameFetch } from "../../common/hooks";
 import { toggleItemInArray } from "../../common/utils";
-import { ButtonToggle } from "../buttons/buttons";
-import FormControls from "../formControls/formControls";
 import GameToggleItem from "../gameToggleItem/gameToggleItem";
-import Grid from "../grid/grid";
 import List from "../list/list";
 import Loader from "../loader/loader";
-import Title from "../title/title";
 
 function EditCollectionPanel({
   user, // available when logged in
@@ -18,6 +14,7 @@ function EditCollectionPanel({
   title,
   toggled,
 }) {
+  console.log(collection);
   const { data: games, error } = useGameFetch(
     initialGames,
     { userId: user.sub },

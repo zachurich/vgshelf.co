@@ -1,17 +1,6 @@
 require("dotenv").config();
-const withCss = require("@zeit/next-css");
-const withSass = require("@zeit/next-sass");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const nextConfig = {
-  webpack: (config) => {
-    config.plugins.push(
-      new MiniCssExtractPlugin({
-        ignoreOrder: true, // Enable to remove warnings about conflicting order
-      })
-    );
-    return config;
-  },
+module.exports = {
   env: {
     HOST: process.env.HOST,
     API_BASE: process.env.API_BASE,
@@ -22,5 +11,3 @@ const nextConfig = {
     AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
   },
 };
-
-module.exports = withCss(withSass(nextConfig));
