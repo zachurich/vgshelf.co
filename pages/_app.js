@@ -9,9 +9,13 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 import { fetchCollectionsByUserName } from "../api/collectionsApi";
+import { checkDBUser } from "../api/usersApi";
 import auth0 from "../common/auth";
+import { HTTP_STATUS } from "../common/constants";
 import { useCollectionsFetch } from "../common/hooks";
 import usePage from "../common/hooks/usePage";
+import { APP_ROUTES } from "../common/routes";
+import { redirect } from "../common/utils";
 import { Nav } from "../components";
 import CollectionsPanel from "../components/collectionsPanel/collectionsPanel";
 import Footer from "../components/footer/footer";
@@ -35,7 +39,8 @@ function VGShelf({ Component, pageProps, auth = {}, initialCollections = [] }) {
 }
 
 VGShelf.getInitialProps = async (context) => {
-  const { userName } = context.ctx.query;
+  const { ctx } = context;
+  const { userName } = ctx.query;
   let initialCollections;
   let componentInitialProps = {};
   if (App.getInitialProps) {
@@ -43,11 +48,15 @@ VGShelf.getInitialProps = async (context) => {
   }
 
   if (userName) {
-    initialCollections = await fetchCollectionsByUserName(userName);
+    try {
+      initialCollections = await fetchCollectionsByUserName(userName);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  if (context.ctx.req) {
-    const auth = await auth0.getSession(context.ctx.req);
+  if (ctx.req) {
+    const auth = await auth0.getSession(ctx.req);
     if (auth) {
       return { pageProps: componentInitialProps.pageProps, auth, initialCollections };
     }

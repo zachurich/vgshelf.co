@@ -4,12 +4,12 @@ import React from "react";
 
 import AddSVG from "../../assets/add.svg";
 import useAuth from "../../common/hooks/useAuth";
-import { APP_ROUTES } from "../../common/routes";
+import { API_ROUTES, APP_ROUTES } from "../../common/routes";
 
 export function LoginButton({ classes = "button-secondary" }) {
   const user = useAuth();
   const router = useRouter();
-  const loginPath = APP_ROUTES.LOGIN;
+  const loginPath = API_ROUTES.LOGIN;
   return (
     <Link
       href={user ? `${APP_ROUTES.APP}` : loginPath}
@@ -24,7 +24,7 @@ export function SignUpButton({ text, classes = "button-primary" }) {
   const user = useAuth();
   if (!user) {
     return (
-      <Link href={APP_ROUTES.LOGIN}>
+      <Link href={API_ROUTES.LOGIN}>
         <a className={`button ${classes}`}>{text}</a>
       </Link>
     );

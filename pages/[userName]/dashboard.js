@@ -1,17 +1,23 @@
 import _ from "lodash";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 
 import { fetchCollectionsByUserName } from "../../api/collectionsApi";
 import { fetchGamesByUserName } from "../../api/gamesApi";
+import { checkDBUser } from "../../api/usersApi";
+import { HTTP_STATUS } from "../../common/constants";
 import { useCollectionsFetch, useParams } from "../../common/hooks";
 import useAuth from "../../common/hooks/useAuth";
 import useCheckAuth from "../../common/hooks/useCheckAuth";
+import { useCheckRegisteredUser } from "../../common/hooks/useCheckRegisteredUser";
 import useGamesFetchByUserName from "../../common/hooks/useGameFetchByUserName";
 import useModal from "../../common/hooks/useModal";
+import { APP_ROUTES } from "../../common/routes";
 import { handleServerError, scrollTop } from "../../common/utils";
 import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
 import GamesPanel from "../../components/gamesPanel/gamesPanel";
 import { Meta } from "../../components/index";
+import checkAuth from "../api/check-auth";
 
 const Dashboard = ({ initialGames = [], initialCollections = [] }) => {
   const user = useAuth();
@@ -20,6 +26,14 @@ const Dashboard = ({ initialGames = [], initialCollections = [] }) => {
     finalUrl: gamesCacheKey,
     isLoading: isGamesLoading,
   } = useGamesFetchByUserName(initialGames);
+
+  const {
+    data: collections,
+    finalUrl: collectionsCacheKey,
+    isLoading: isCollectionsLoading,
+  } = useCollectionsFetch(initialCollections);
+
+  useCheckRegisteredUser();
 
   return (
     <>
@@ -32,7 +46,12 @@ const Dashboard = ({ initialGames = [], initialCollections = [] }) => {
           isGamesLoading={isGamesLoading}
         />
       </main>
-      <CollectionsPanel user={user} initialCollections={initialCollections} />
+      <CollectionsPanel
+        user={user}
+        collections={collections}
+        collectionsCacheKey={collectionsCacheKey}
+        isCollectionsLoading={isCollectionsLoading}
+      />
     </>
   );
 };

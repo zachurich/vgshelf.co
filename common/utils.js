@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { ERROR_CODES } from "./constants";
+import { ERROR_CODES, HTTP_STATUS } from "./constants";
 import { APP_ROUTES } from "./routes";
 
 export const sortByDate = (arr, sortKey) => {
@@ -121,9 +121,12 @@ export const redirect = (res, location) => {
 };
 
 export const handleServerError = (e, res) => {
-  const data = _.get(e, "response.data.data", []);
-  if (data && data.includes(ERROR_CODES.NO_USER)) {
-    return redirect(res, APP_ROUTES.MISSING);
+  const response = _.get(e, "response.data", {});
+  if (
+    (response.data && response.data.includes(ERROR_CODES.NO_USER)) ||
+    response.code === HTTP_STATUS.MISSING
+  ) {
+    return redirect(res, APP_ROUTES.REGISTER);
   }
   return redirect(res, APP_ROUTES.ERROR);
 };

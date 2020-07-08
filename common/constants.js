@@ -26,5 +26,6 @@ export const ERROR_CODES = {
 export const HTTP_STATUS = {
   DUPLICATE: 409,
   OK: 200,
+  MISSING: 404,
   ERROR: 500,
 };

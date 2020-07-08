@@ -2,7 +2,7 @@ import _ from "lodash";
 import React from "react";
 
 import { fetchGameBySlug } from "../../api/gamesApi";
-import { useGameFetch, useParams } from "../../common/hooks";
+import { useCollectionsFetch, useGameFetch, useParams } from "../../common/hooks";
 import useAuth from "../../common/hooks/useAuth";
 import { handleServerError } from "../../common/utils";
 import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
@@ -15,6 +15,11 @@ const Game = ({ initialGame = {}, initialCollections = [] }) => {
   const { userName, gameSlug } = useParams();
   const user = useAuth();
   const { data: game, finalUrl: gameCacheKey } = useGameFetch(initialGame, { gameSlug });
+  const {
+    data: collections,
+    finalUrl: collectionsCacheKey,
+    isLoading: isCollectionsLoading,
+  } = useCollectionsFetch(initialCollections);
   return (
     <>
       <main className="main game with-sidebar">
@@ -26,7 +31,12 @@ const Game = ({ initialGame = {}, initialCollections = [] }) => {
         />
         <GameDetails game={game} />
       </main>
-      <CollectionsPanel user={user} initialCollections={initialCollections} />
+      <CollectionsPanel
+        user={user}
+        collections={collections}
+        collectionsCacheKey={collectionsCacheKey}
+        isCollectionsLoading={isCollectionsLoading}
+      />
     </>
   );
 };

@@ -1,7 +1,7 @@
 import auth0 from "../../common/auth";
 import { ERROR_CODES } from "../../common/constants";
 
-export default async (req, res) => {
+export default async function checkAuth(req, res) {
   try {
     // Just try and see if we can get an access token
     const { user } = await auth0.getSession(req);
@@ -10,7 +10,7 @@ export default async (req, res) => {
     return res.send({
       status: 200,
       msg: "Authorized!",
-      data: { userName: user.nickname }
+      data: { userName: user.nickname },
     });
   } catch (error) {
     // if not, we aren't authed
@@ -19,15 +19,15 @@ export default async (req, res) => {
       res.status(code);
       res.send({
         status: code,
-        msg: error.message
+        msg: error.message,
       });
     } else {
       const code = error.status || 500;
       res.status(code);
       res.send({
         status: code,
-        msg: error.message
+        msg: error.message,
       });
     }
   }
-};
+}

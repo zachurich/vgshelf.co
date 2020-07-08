@@ -8,7 +8,7 @@ const Missing404 = ({ user }) => {
       <Meta title={"Page Not Found"} />
       <div className="container">
         <div className="error-page-content">
-          <h1>Sorry, that page doesn't exist...</h1>
+          <h1>Something went wrong...</h1>
         </div>
       </div>
     </div>

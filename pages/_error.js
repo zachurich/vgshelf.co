@@ -23,15 +23,12 @@ const Error = ({ user }) => {
  * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
  */
 Error.getInitialProps = async ({ req, res, query, err }) => {
-  // if (res && res.statusCode === 404) {
-  //   return redirect(res, APP_ROUTES.MISSING);
+  // if (req && req.url === APP_ROUTES.APP) {
+  //   const { user } = await auth0.getSession(req);
+  //   if (user) {
+  //     return redirect(res, APP_ROUTES.APP.replace("[userName]", user.nickname));
+  //   }
   // }
-  if (req.url === APP_ROUTES.APP) {
-    const { user } = await auth0.getSession(req);
-    if (user) {
-      return redirect(res, APP_ROUTES.APP.replace("[userName]", user.nickname));
-    }
-  }
   return { error: {} };
 };
 

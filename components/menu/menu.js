@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 import { useToggle } from "../../common/hooks";
-import { APP_ROUTES } from "../../common/routes";
+import { API_ROUTES, APP_ROUTES } from "../../common/routes";
 
 const MenuItem = ({ route, text, children }) => {
   if (children) {
@@ -31,7 +31,7 @@ const Menu = ({ user }) => {
           route={APP_ROUTES.APP.replace("[userName]", user.nickname)}
           text="Dashboard"
         />
-        <MenuItem route={APP_ROUTES.LOGOUT} text="Logout" />
+        <MenuItem route={"/api/logout"} text="Logout" />
       </ul>
     );
   }

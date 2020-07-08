@@ -1,12 +1,14 @@
 import auth0 from "../../common/auth";
-import { createBufferFromQuery } from "../../common/utils";
+import { APP_ROUTES } from "../../common/routes";
+import { createBufferFromQuery, redirect } from "../../common/utils";
 
-export default async (req, res) => {
+export default async function login(req, res) {
   const params = createBufferFromQuery(req.query);
   try {
     await auth0.handleLogin(req, res, { authParams: { state: params } });
   } catch (error) {
-    console.error(error);
-    res.status(error.status || 400).end(error.message);
+    // res.status(error.status || 400).end(error.message);
+    console.log(error.message);
+    return redirect(res, APP_ROUTES.ERROR);
   }
-};
+}

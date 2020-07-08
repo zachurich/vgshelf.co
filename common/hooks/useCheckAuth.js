@@ -1,7 +1,8 @@
-import { useState, useEffect, useContext } from "react";
-import GlobalMessageContext from "../../contexts/globalMessage";
+import { useContext, useEffect, useState } from "react";
+
 import { fetchCheckSession } from "../../api/checkAuth";
-import { APP_ROUTES } from "../routes";
+import GlobalMessageContext from "../../contexts/globalMessage";
+import { API_ROUTES } from "../routes";
 import useParams from "./useParams";
 
 const useCheckAuth = () => {
@@ -20,8 +21,8 @@ const useCheckAuth = () => {
           header: "Error",
           message: (
             <>
-              You are not signed in. Please <a href={APP_ROUTES.LOGIN}>sign in</a> to
-              perform this action!
+              You are not signed in. Please <a href={API_ROUTES}>sign in</a> to perform
+              this action!
             </>
           ),
         },
