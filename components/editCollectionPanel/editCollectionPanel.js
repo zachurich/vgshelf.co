@@ -14,7 +14,6 @@ function EditCollectionPanel({
   title,
   toggled,
 }) {
-  console.log(collection);
   const { data: games, error } = useGameFetch(
     initialGames,
     { userId: user.sub },

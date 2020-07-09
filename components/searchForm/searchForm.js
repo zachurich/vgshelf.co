@@ -6,11 +6,12 @@ import {
   ComboboxPopover,
 } from "@reach/combobox";
 import _ from "lodash";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { createGame } from "../../api/gamesApi";
 import { fetchCover, fetchResults } from "../../api/search";
 import { useDebounce } from "../../common/hooks";
+import { useSetFocus } from "../../common/hooks/useSetFocus";
 import {
   handleServerError,
   handleServerResponse,
@@ -37,6 +38,8 @@ export const SearchForm = ({
 
   const [selection, setSelection] = useState(null);
   const [selections, setSelections] = useState([]);
+
+  const inputRef = useSetFocus(isOpen);
 
   const handleSubmit = async (games) => {
     let message;
@@ -105,6 +108,7 @@ export const SearchForm = ({
     console.log(true);
     return null;
   }
+
   return (
     <Modal
       open={isOpen}
@@ -136,6 +140,7 @@ export const SearchForm = ({
                   onBlur={() => setFocused(() => false)}
                   onFocus={() => setFocused(() => true)}
                   value={displayValue}
+                  ref={inputRef}
                   onChange={(e) => {
                     let valueOnInput = e.target.value;
                     setDisplayValue(() => valueOnInput);

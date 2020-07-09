@@ -1,6 +1,7 @@
 import React from "react";
 
 import { createCollection } from "../../api/collectionsApi";
+import { useSetFocus } from "../../common/hooks/useSetFocus";
 import FormControls from "../formControls/formControls";
 import Modal from "../modal/modal";
 
@@ -15,6 +16,9 @@ export const CollectionForm = ({
   refreshData,
 }) => {
   const [displayValue, setDisplayValue] = React.useState("");
+
+  const inputRef = useSetFocus(isOpen);
+
   const handleChange = (e) => {
     let value = e.target.value;
     setDisplayValue(value);
@@ -31,10 +35,15 @@ export const CollectionForm = ({
       refreshData();
     }
   };
+
+  const handleDismissModal = () => {
+    handleToggleModal(false);
+    setDisplayValue("");
+  };
   return (
     <Modal
       open={isOpen}
-      dismissModal={() => handleToggleModal(false)}
+      dismissModal={handleDismissModal}
       header={"Create a Shelf"}
       content={() => (
         <form
@@ -46,6 +55,7 @@ export const CollectionForm = ({
             className="basic-form-input"
             name={`${inputName.toLowerCase()}-title`}
             placeholder={placeholder}
+            ref={inputRef}
             type="text"
             value={displayValue}
             onChange={handleChange}

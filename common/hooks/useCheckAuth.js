@@ -11,7 +11,6 @@ const useCheckAuth = () => {
   const performAuthCheck = async () => {
     try {
       const data = await fetchCheckSession();
-      console.log(userName, data);
       if (data.userName === userName) {
         return true;
       }
