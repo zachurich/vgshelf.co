@@ -13,7 +13,7 @@ export function LoginButton({ classes = "button-secondary" }) {
   return (
     <Link
       href={user ? `${APP_ROUTES.APP}` : loginPath}
-      as={user ? `${APP_ROUTES.APP.replace("[userName]", user.nickname)}` : loginPath}
+      as={user ? `${APP_ROUTES.APP.replace("[userName]", user.userName)}` : loginPath}
     >
       <a className={`button ${classes}`}>{user ? "Continue" : "Log In"}</a>
     </Link>

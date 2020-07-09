@@ -28,7 +28,7 @@ const Menu = ({ user }) => {
     return (
       <ul ref={menuRef} className="menu-list">
         <MenuItem
-          route={APP_ROUTES.APP.replace("[userName]", user.nickname)}
+          route={APP_ROUTES.APP.replace("[userName]", user.userName)}
           text="Dashboard"
         />
         <MenuItem route={"/api/logout"} text="Logout" />
@@ -42,7 +42,7 @@ const Menu = ({ user }) => {
         className={`menu-button ${showMenu ? "open" : "closed"}`}
         onClick={() => toggleMenu()}
       >
-        {user.nickname}
+        {user.userName}
         <img className="menu-toggle" {...(user && { src: user.picture })} />
       </button>
       {showMenu && user && renderLoggedInMenu()}

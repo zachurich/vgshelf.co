@@ -22,9 +22,8 @@ import Footer from "../components/footer/footer";
 import GlobalMessenger from "../components/globalMessenger/globalMessenger";
 import AuthContext from "../contexts/authContext";
 
-function VGShelf({ Component, pageProps, auth = {}, initialCollections = [] }) {
-  const [user] = useState(auth.user);
-  const { isIndex } = usePage();
+function VGShelf({ Component, pageProps, auth = null, initialCollections = [] }) {
+  const [user] = useState(auth);
   return (
     <AuthContext.Provider value={{ user }}>
       <GlobalMessenger>
@@ -58,7 +57,12 @@ VGShelf.getInitialProps = async (context) => {
   if (ctx.req) {
     const auth = await auth0.getSession(ctx.req);
     if (auth) {
-      return { pageProps: componentInitialProps.pageProps, auth, initialCollections };
+      const dbUser = await checkDBUser({ userId: auth.user.sub });
+      return {
+        pageProps: componentInitialProps.pageProps,
+        auth: { ...auth.user, userName: dbUser.data.userName },
+        initialCollections,
+      };
     }
   }
   return { pageProps: componentInitialProps.pageProps };

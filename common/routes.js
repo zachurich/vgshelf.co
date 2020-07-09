@@ -15,7 +15,7 @@ export const API_ROUTES = {
   COLLECTION: createUrl(process.env.HOST, "/api/collections"),
   GAME: createUrl(process.env.HOST, "/api/games"),
   AUTH: createUrl(process.env.HOST, "/api/check-auth"),
-  REGISTER: createUrl(process.env.HOST, "/api/register"),
+  REGISTER: "/api/register",
   LOGIN: "/api/login",
   LOGOUT: "/api/logout",
   USER: createUrl(process.env.HOST, "/api/user"),

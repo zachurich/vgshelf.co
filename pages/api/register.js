@@ -1,8 +1,8 @@
-import { registerUser } from "../../api/usersApi";
+import { registerDBUser } from "../../api/usersApi";
 import auth0 from "../../common/auth";
 import { HTTP_STATUS } from "../../common/constants";
 import { APP_ROUTES } from "../../common/routes";
-import { redirect } from "../../common/utils";
+import { isGoodResponse, redirect } from "../../common/utils";
 
 export default async function register(req, res) {
   const { userName } = req.body;
@@ -10,16 +10,21 @@ export default async function register(req, res) {
     const session = await auth0.getSession(req);
     if (session && session.user) {
       const { user } = session;
-      const response = await registerUser({
+      const response = await registerDBUser({
         userId: user.sub,
         userName,
         emailAddress: user.name,
       });
-      return redirect(res, APP_ROUTES.APP.replace("[userName]", user.nickname));
+      if (isGoodResponse(response)) {
+        res.send(response);
+      } else {
+        throw response;
+      }
     } else {
-      return redirect(res, APP_ROUTES.ERROR);
+      throw { msg: "Not authorized!", code: 500 };
     }
   } catch (error) {
-    return redirect(res, APP_ROUTES.ERROR);
+    console.log(JSON.stringify(error));
+    res.status(409).send(error);
   }
 }

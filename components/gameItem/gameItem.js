@@ -2,17 +2,17 @@ import Link from "next/link";
 import react from "react";
 
 import MissingCover from "../../assets/missingCover.svg";
-import useAuth from "../../common/hooks/useAuth";
+import { useParams } from "../../common/hooks";
 import { APP_ROUTES } from "../../common/routes";
 import { ImageLoader } from "../formSelections/formSelections";
 
 const GameItem = ({ item }) => {
-  const user = useAuth();
+  const { userName } = useParams();
   return (
     <li key={item.id} className="game-item">
       <Link
         href={APP_ROUTES.GAME}
-        as={APP_ROUTES.GAME.replace("[userName]", user.nickname).replace(
+        as={APP_ROUTES.GAME.replace("[userName]", userName).replace(
           "[gameSlug]",
           item.slug
         )}

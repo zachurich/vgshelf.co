@@ -132,5 +132,24 @@ export const handleServerError = (e, res) => {
 };
 
 export const userCanEdit = (authedUser, accessedUserName) => {
-  return !!authedUser && authedUser.nickname === accessedUserName;
+  return !!authedUser && authedUser.userName.toLowerCase() === accessedUserName;
+};
+
+export const isGoodResponse = (response) => {
+  return response.code === HTTP_STATUS.OK;
+};
+
+export const isMissingResponse = (response) => {
+  return response.code === HTTP_STATUS.MISSING;
+};
+
+export const desluggify = (str) => {
+  return str
+    .split("-")
+    .map((word) => {
+      let letters = word.split("");
+      letters[0] = word.charAt(0).toUpperCase();
+      return letters.join("");
+    })
+    .join(" ");
 };

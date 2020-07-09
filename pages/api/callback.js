@@ -6,8 +6,7 @@ export default async function authCallback(req, res) {
   try {
     await auth0.handleCallback(req, res, { redirectTo: API_ROUTES.USER });
   } catch (error) {
-    // res.status(error.status || 400).end(error.message);
-    console.log(error.message);
+    console.log(error);
     return redirect(res, APP_ROUTES.ERROR);
   }
 }

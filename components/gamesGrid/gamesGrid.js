@@ -28,8 +28,12 @@ function GamesGrid({
   return (
     <div className="games-panel">
       <Title
-        header={decideHeader(title, user, userName)}
-        breadCrumb={decideBreadCrumb(collectionId, user, userName)}
+        header={decideHeader(
+          title,
+          !!user && user.userName.toLowerCase() === userName,
+          userName
+        )}
+        breadCrumb={decideBreadCrumb(collectionId, userCanEdit(user, userName), userName)}
         color={collectionId ? "pink" : "blue"}
       >
         {userCanEdit(user, userName) && (
