@@ -1,16 +1,11 @@
 import _ from "lodash";
 import React from "react";
 
-import { createGame, deleteGame } from "../../api/gamesApi";
-import { fetchCover } from "../../api/search";
-import useCheckAuth from "../../common/hooks/useCheckAuth";
-import { MODAL_DEFAULT } from "../../common/hooks/useModal";
-import { handleServerResponse, scrollTop, userCanEdit } from "../../common/utils";
+import { userCanEdit } from "../../common/utils";
 import { ButtonToggle } from "../buttons/buttons";
 import GameItem from "../gameItem/gameItem";
 import Grid from "../grid/grid";
 import Loader from "../loader/loader";
-import { SearchForm } from "../searchForm/searchForm";
 import Title from "../title/title";
 import { decideBreadCrumb, decideHeader } from "./util";
 

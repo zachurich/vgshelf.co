@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { API_ROUTES } from "../common/routes";
+import { API_ROUTES } from "../../common/routes";
 
 export const fetchCheckSession = async () => {
   try {

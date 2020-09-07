@@ -1,11 +1,16 @@
 import axios from "axios";
 
-import auth0 from "../../common/auth";
-import { ERROR_CODES } from "../../common/constants";
+import getGames from "../../api/handlers/games/getGames";
+import { handleResponse } from "../../api/handlers/utils";
+import auth0 from "../../auth.config";
 import { API_ENDPOINTS } from "../../common/routes";
+import { withDb, withErrors, withHttpMethods } from "../../middleware/index";
 
-export default async function games(req, res) {
-  try {
+const games = async (req, res) => {
+  if (req.method === "GET") {
+    const data = await getGames(req.query);
+    handleResponse(res, data);
+  } else {
     const tokenCache = await auth0.tokenCache(req, res);
     const { accessToken } = await tokenCache.getAccessToken({});
     const args = [
@@ -15,28 +20,19 @@ export default async function games(req, res) {
         headers: { Authorization: `Bearer ${accessToken}` },
       },
     ];
-    try {
-      if (req.method === "POST") {
-        const result = await axios.post(...args);
-        return res.send(result.data);
-      }
-      if (req.method === "DELETE") {
-        const result = await axios.delete(...args);
-        return res.send(result.data);
-      }
-      if (req.method === "PUT") {
-        const result = await axios.put(...args);
-        return res.send(result.data);
-      }
-      throw "That method isn't supported!";
-    } catch (error) {
-      throw error;
+    if (req.method === "POST") {
+      const result = await axios.post(...args);
+      return res.send(result.data);
     }
-  } catch (error) {
-    if (error.code === ERROR_CODES.NOT_AUTHED) {
-      res.status(401).end(error.message);
-    } else {
-      res.status(error.status || 500).end(error.message);
+    if (req.method === "DELETE") {
+      const result = await axios.delete(...args);
+      return res.send(result.data);
+    }
+    if (req.method === "PUT") {
+      const result = await axios.put(...args);
+      return res.send(result.data);
     }
   }
-}
+};
+
+export default withErrors(withDb(games));

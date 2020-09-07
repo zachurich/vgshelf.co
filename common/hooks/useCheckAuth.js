@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 
-import { fetchCheckSession } from "../../api/checkAuth";
+import { fetchCheckSession } from "../../api/fetchers/checkAuth";
 import GlobalMessageContext from "../../contexts/globalMessage";
 import { API_ROUTES } from "../routes";
 import useParams from "./useParams";

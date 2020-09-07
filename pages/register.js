@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 
-import { registerUser } from "../api/usersApi";
+import { registerUser } from "../api/fetchers/usersApi";
 import { APP_ROUTES } from "../common/routes";
 import { Meta } from "../components/index";
 import GlobalMessageContext from "../contexts/globalMessage";

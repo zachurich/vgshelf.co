@@ -8,9 +8,9 @@ import App from "next/app";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-import { fetchCollectionsByUserName } from "../api/collectionsApi";
-import { checkDBUser } from "../api/usersApi";
-import auth0 from "../common/auth";
+import { fetchCollectionsByUserName } from "../api/fetchers/collectionsApi";
+import { checkDBUser } from "../api/fetchers/usersApi";
+import auth0 from "../auth.config";
 import { HTTP_STATUS } from "../common/constants";
 import { useCollectionsFetch } from "../common/hooks";
 import usePage from "../common/hooks/usePage";

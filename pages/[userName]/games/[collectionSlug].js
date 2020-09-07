@@ -2,8 +2,11 @@ import { mutate } from "@zeit/swr";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 
-import { fetchSingleCollection, updateCollection } from "../../../api/collectionsApi";
-import { fetchGamesByUserName } from "../../../api/gamesApi";
+import {
+  fetchSingleCollection,
+  updateCollection,
+} from "../../../api/fetchers/collectionsApi";
+import { fetchGamesByUserName } from "../../../api/fetchers/gamesApi";
 import {
   useCollectionsFetch,
   useFetchCollection,

@@ -1,7 +1,7 @@
 import axios from "axios";
 import _ from "lodash";
 
-import { API_ENDPOINTS, API_ROUTES } from "../common/routes";
+import { API_ENDPOINTS, API_ROUTES } from "../../common/routes";
 
 export const registerUser = async ({ userName }) => {
   try {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import auth0 from "../../common/auth";
+import auth0 from "../../auth.config";
 import { ERROR_CODES } from "../../common/constants";
 import { API_ENDPOINTS } from "../../common/routes";
 

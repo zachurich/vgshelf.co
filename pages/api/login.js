@@ -1,9 +1,8 @@
-import auth0 from "../../common/auth";
+import auth0 from "../../auth.config";
 import { APP_ROUTES } from "../../common/routes";
-import { createBufferFromQuery, redirect } from "../../common/utils";
+import { redirect } from "../../common/utils";
 
 export default async function login(req, res) {
-  // const params = createBufferFromQuery(req.query);
   try {
     await auth0.handleLogin(req, res);
   } catch (error) {

@@ -2,9 +2,9 @@ import _ from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
-import { fetchCollectionsByUserName } from "../../api/collectionsApi";
-import { fetchGamesByUserName } from "../../api/gamesApi";
-import { checkDBUser } from "../../api/usersApi";
+import { fetchCollectionsByUserName } from "../../api/fetchers/collectionsApi";
+import { fetchGamesByUserName } from "../../api/fetchers/gamesApi";
+import { checkDBUser } from "../../api/fetchers/usersApi";
 import { HTTP_STATUS } from "../../common/constants";
 import { useCollectionsFetch, useParams } from "../../common/hooks";
 import useAuth from "../../common/hooks/useAuth";

@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React from "react";
 
-import { fetchGameBySlug } from "../../api/gamesApi";
+import { fetchGameBySlug } from "../../api/fetchers/gamesApi";
 import { useCollectionsFetch, useGameFetch, useParams } from "../../common/hooks";
 import useAuth from "../../common/hooks/useAuth";
 import { desluggify, handleServerError, userCanEdit } from "../../common/utils";

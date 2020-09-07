@@ -1,5 +1,5 @@
-import { checkDBUser } from "../../api/usersApi";
-import auth0 from "../../common/auth";
+import { checkDBUser } from "../../api/fetchers/usersApi";
+import auth0 from "../../auth.config";
 import { ERROR_CODES } from "../../common/constants";
 
 export default async function checkAuth(req, res) {

@@ -9,5 +9,9 @@ module.exports = {
     AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
     AUTH0_CALLBACK_URL: process.env.AUTH0_CALLBACK_URL,
     AUTH0_AUDIENCE: process.env.AUTH0_AUDIENCE,
+    MONGODB_CONNECTION: process.env.MONGODB_CONNECTION,
+    IGDB_KEY: process.env.IGDB_KEY,
+    AUTH0_TEST_USER: process.env.AUTH0_TEST_USER,
+    AUTH0_TEST_USER_EMAIL: process.env.AUTH0_TEST_USER_EMAIL,
   },
 };

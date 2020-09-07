@@ -75,6 +75,7 @@ export const getColor = (color) => {
 };
 
 export const handleServerResponse = (response = {}) => {
+  console.log(response);
   const errorCodes = new Set([400, 500]);
   if (errorCodes.has(+_.get(response, "code"))) {
     return response.msg;
@@ -122,6 +123,7 @@ export const redirect = (res, location) => {
 
 export const handleServerError = (e, res) => {
   const response = _.get(e, "response.data", {});
+  console.log("ERROR", response);
   if (
     (response.data && response.data.includes(ERROR_CODES.NO_USER)) ||
     response.code === HTTP_STATUS.MISSING

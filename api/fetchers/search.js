@@ -1,10 +1,11 @@
-import { API_ENDPOINTS } from "../common/routes";
 import axios from "axios";
 
-export const fetchResults = async input => {
+import { API_ENDPOINTS } from "../../common/routes";
+
+export const fetchResults = async (input) => {
   try {
     const { data: response } = await axios.post(API_ENDPOINTS.SEARCH, {
-      title: input
+      title: input,
     });
     return response.data;
   } catch (error) {
@@ -12,10 +13,10 @@ export const fetchResults = async input => {
   }
 };
 
-export const fetchCover = async gameId => {
+export const fetchCover = async (gameId) => {
   try {
     const { data: response } = await axios.post(API_ENDPOINTS.COVER, {
-      gameId
+      gameId,
     });
     return response.data;
   } catch (error) {

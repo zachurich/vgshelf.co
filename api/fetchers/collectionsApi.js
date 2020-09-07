@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { API_ENDPOINTS, API_ROUTES } from "../common/routes";
+import { API_ENDPOINTS, API_ROUTES } from "../../common/routes";
 
 export const fetchCollectionsByUserName = async (userName) => {
   try {

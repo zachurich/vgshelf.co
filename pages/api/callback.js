@@ -1,4 +1,4 @@
-import auth0 from "../../common/auth";
+import auth0 from "../../auth.config";
 import { API_ROUTES } from "../../common/routes";
 import { redirect } from "../../common/utils";
 

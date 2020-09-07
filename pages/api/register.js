@@ -1,5 +1,5 @@
-import { registerDBUser } from "../../api/usersApi";
-import auth0 from "../../common/auth";
+import { registerDBUser } from "../../api/fetchers/usersApi";
+import auth0 from "../../auth.config";
 import { HTTP_STATUS } from "../../common/constants";
 import { APP_ROUTES } from "../../common/routes";
 import { isGoodResponse, redirect } from "../../common/utils";

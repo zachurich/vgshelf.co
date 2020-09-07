@@ -1,6 +1,6 @@
 import React from "react";
 
-import { createCollection } from "../../api/collectionsApi";
+import { createCollection } from "../../api/fetchers/collectionsApi";
 import { useSetFocus } from "../../common/hooks/useSetFocus";
 import FormControls from "../formControls/formControls";
 import Modal from "../modal/modal";

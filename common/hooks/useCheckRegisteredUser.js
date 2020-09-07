@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { checkDBUser } from "../../api/usersApi";
+import { checkDBUser } from "../../api/fetchers/usersApi";
 import { HTTP_STATUS } from "../constants";
 import { APP_ROUTES } from "../routes";
 import useAuth from "./useAuth";

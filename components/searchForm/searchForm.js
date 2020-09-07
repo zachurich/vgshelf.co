@@ -8,8 +8,8 @@ import {
 import _ from "lodash";
 import React, { useEffect, useRef, useState } from "react";
 
-import { createGame } from "../../api/gamesApi";
-import { fetchCover, fetchResults } from "../../api/search";
+import { createGame } from "../../api/fetchers/gamesApi";
+import { fetchCover, fetchResults } from "../../api/fetchers/search";
 import { useDebounce } from "../../common/hooks";
 import { useSetFocus } from "../../common/hooks/useSetFocus";
 import {
@@ -56,8 +56,11 @@ export const SearchForm = ({
         });
         message = handleServerResponse(response.data);
       } catch (error) {
-        handleServerError(error.respose ? error.response.data : error);
+        console.log(error);
+        message = handleServerResponse(error.response ? error.response.data : error);
       }
+
+      console.log(message);
     }
 
     if (!message) {

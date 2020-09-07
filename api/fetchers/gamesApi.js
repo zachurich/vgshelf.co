@@ -1,8 +1,8 @@
 import axios from "axios";
 import get from "lodash/get";
 
-import { API_ENDPOINTS, API_ROUTES } from "../common/routes";
-import { escapeNull } from "../common/utils";
+import { API_ENDPOINTS, API_ROUTES } from "../../common/routes";
+import { escapeNull } from "../../common/utils";
 
 // fetcher to use for any client-side GETs using useSWR
 export const fetcher = async (url, headers = {}) => {

@@ -29,3 +29,7 @@ export const HTTP_STATUS = {
   MISSING: 404,
   ERROR: 500,
 };
+
+export const ERRORS = {
+  NO_USER: "User does not exist!",
+};
