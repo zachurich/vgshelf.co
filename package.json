@@ -14,7 +14,7 @@
     "axios": "^0.19.2",
     "next": "^11.1.0",
     "next-absolute-url": "^1.2.2",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "node-sass": "^4.13.1",
     "normalize.css": "^8.0.1",
     "react": "16.8.6",
