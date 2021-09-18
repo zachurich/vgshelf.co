@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const Collection = new mongoose.Schema({
+const CollectionShema = new mongoose.Schema({
   user: {
     type: mongoose.Types.ObjectId,
     ref: "User",
@@ -20,4 +20,5 @@ const Collection = new mongoose.Schema({
   ],
 });
 
-export default mongoose.model("Collection", Collection);
+export default mongoose.models.Collection ||
+  mongoose.model("Collection", CollectionShema);

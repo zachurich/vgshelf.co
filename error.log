@@ -1,0 +1,6 @@
+{"message":{"msg":"There was an error saving the game!","data":"ReferenceError: UserGame is not defined","code":500},"level":"error","service":""}
+{"message":{"msg":"There was an error saving the game!","data":"ReferenceError: UserGame is not defined","code":500},"level":"error","service":""}
+{"message":{"msg":"There was an error saving the game!","data":"ReferenceError: UserGame is not defined","code":500},"level":"error","service":""}
+{"message":{"msg":"There was an error saving the game!","data":"TypeError: UserGameSchema.find is not a function","code":500},"level":"error","service":""}
+{"message":{"msg":"There was an error retrieving the game(s)!","data":"TypeError: Cannot read property 'refId' of null","code":500},"level":"error","service":""}
+{"message":{"msg":"There was an error retrieving the game(s)!","data":"TypeError: Cannot read property 'refId' of null","code":500},"level":"error","service":""}

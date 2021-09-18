@@ -1,5 +1,5 @@
-import { createLogger } from "../logger/index.js";
-import User from "../models/User.js";
+import { createLogger } from "../logger/index";
+import User from "../models/User";
 
 const logger = createLogger();
 

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import Game from "./Game.js";
+import Game from "./Game";
 
 // Users need to be able to add custom properties to a game, but we don't want
 // to modify the game for everyone, so users have their own game instance that wraps
@@ -52,6 +52,8 @@ const UserGameSchema = new mongoose.Schema({
   },
 });
 
+const UserGame = mongoose.models.UserGame || UserGame;
+
 UserGameSchema.pre("save", async function (next) {
   if (this.isNew) {
     const gameRef = await Game.findOne({ _id: this.refId });
@@ -69,4 +71,4 @@ UserGameSchema.pre("save", async function (next) {
   }
 });
 
-export default mongoose.models.UserGame || mongoose.model("UserGame", UserGameSchema);
+export default UserGame;

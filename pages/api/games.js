@@ -1,15 +1,13 @@
 import axios from "axios";
 
-import getGames from "../../api/handlers/games/getGames";
-import { handleResponse } from "../../api/handlers/utils";
 import auth0 from "../../auth.config";
 import { API_ENDPOINTS } from "../../common/routes";
-import { withDb, withErrors, withHttpMethods } from "../../middleware/index";
+import { withDb, withErrors } from "../../middleware/index";
 
 const games = async (req, res) => {
   if (req.method === "GET") {
-    const data = await getGames(req.query);
-    handleResponse(res, data);
+    const result = await axios.get(...args);
+    return res.send(result.data);
   } else {
     const tokenCache = await auth0.tokenCache(req, res);
     const { accessToken } = await tokenCache.getAccessToken({});

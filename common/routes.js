@@ -3,7 +3,7 @@ import { createUrl } from "./utils";
 // External API routes
 export const API_ENDPOINTS = {
   COLLECTION: createUrl(process.env.API_BASE, "/api/collection"),
-  GAME: createUrl(process.env.HOST, "/api/games"),
+  GAME: createUrl(process.env.API_BASE, "/api/game"),
   REGISTER: createUrl(process.env.API_BASE, "/api/user/register"),
   SEARCH: createUrl(process.env.API_BASE, "/api/external/search/"),
   COVER: createUrl(process.env.API_BASE, "/api/external/cover/"),

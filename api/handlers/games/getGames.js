@@ -1,10 +1,10 @@
 import _ from "lodash";
 
-import { ERRORS } from "../../../common/constants.js";
-import Game from "../../models/Game.js";
-import User from "../../models/User.js";
-import UserGame from "../../models/UserGame.js";
-import { createResponse, handleErrors, handleResponse } from "../utils.js";
+import { ERRORS } from "../../../common/constants";
+import Game from "../../models/Game";
+import User from "../../models/User";
+import UserGame from "../../models/UserGame";
+import { createResponse, handleErrors, handleResponse } from "../utils";
 
 async function buildQueryGamesInCollection(mongoUser, collectionSlug) {
   const type = "collection";
