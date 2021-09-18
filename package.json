@@ -8,7 +8,7 @@
     "start": "npm run build && next start"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^0.10.0",
+    "@auth0/nextjs-auth0": "^1.4.2",
     "@reach/combobox": "^0.7.4",
     "@zeit/swr": "^0.1.2",
     "axios": "^0.19.2",
