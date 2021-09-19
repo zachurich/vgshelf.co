@@ -18,7 +18,11 @@ const Register = ({ user }) => {
     } catch (error) {
       promptMessage({
         header: "Error",
-        message: `Nickname ${_.get(error, "response.data.msg", "already exists!")}`,
+        message: `Nickname ${_.get(
+          error,
+          "response.data.msg",
+          "already exists!"
+        )}`,
       });
     }
   };
@@ -45,12 +49,8 @@ const Register = ({ user }) => {
   );
 };
 
-/**
- * THIS RUNS ONCE ON THE SERVER, ON REFRESH
- * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
- */
-Register.getInitialProps = async ({ req, res, query }) => {
-  return { data: {} };
+Register.getServerSideProps = async ({ req, res, query }) => {
+  return { props: {} };
 };
 
 export default Register;

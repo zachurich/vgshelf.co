@@ -56,11 +56,7 @@ const Dashboard = ({ initialGames = [], initialCollections = [] }) => {
   );
 };
 
-/**
- * THIS RUNS ONCE ON THE SERVER, ON REFRESH
- * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
- */
-Dashboard.getInitialProps = async ({ req, res, query }) => {
+Dashboard.getServerSideProps = async ({ req, res, query }) => {
   if (req) {
     const { userName } = query;
     try {

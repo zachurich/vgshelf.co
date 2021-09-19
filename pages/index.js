@@ -12,12 +12,8 @@ const Home = ({ user }) => {
   );
 };
 
-/**
- * THIS RUNS ONCE ON THE SERVER, ON REFRESH
- * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
- */
-Home.getInitialProps = async ({ req, res, query }) => {
-  return { data: {} };
+Home.getServerSideProps = async ({ req, res, query }) => {
+  return { props: {} };
 };
 
 export default Home;

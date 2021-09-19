@@ -22,7 +22,12 @@ import Footer from "../components/footer/footer";
 import GlobalMessenger from "../components/globalMessenger/globalMessenger";
 import AuthContext from "../contexts/authContext";
 
-function VGShelf({ Component, pageProps, auth = null, initialCollections = [] }) {
+function RootApp({
+  Component,
+  pageProps,
+  auth = null,
+  initialCollections = [],
+}) {
   const [user] = useState(auth);
   return (
     <AuthContext.Provider value={{ user }}>
@@ -37,7 +42,7 @@ function VGShelf({ Component, pageProps, auth = null, initialCollections = [] })
   );
 }
 
-VGShelf.getInitialProps = async (context) => {
+RootApp.getServerSideProps = async (context) => {
   const { ctx } = context;
   const { userName } = ctx.query;
   let initialCollections;
@@ -68,4 +73,4 @@ VGShelf.getInitialProps = async (context) => {
   return { pageProps: componentInitialProps.pageProps };
 };
 
-export default VGShelf;
+export default RootApp;

@@ -2,7 +2,11 @@ import _ from "lodash";
 import React from "react";
 
 import { fetchGameBySlug } from "../../api/gamesApi";
-import { useCollectionsFetch, useGameFetch, useParams } from "../../common/hooks";
+import {
+  useCollectionsFetch,
+  useGameFetch,
+  useParams,
+} from "../../common/hooks";
 import useAuth from "../../common/hooks/useAuth";
 import { desluggify, handleServerError, userCanEdit } from "../../common/utils";
 import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
@@ -14,7 +18,11 @@ import Title from "../../components/title/title";
 const Game = ({ initialGame = {}, initialCollections = [] }) => {
   const { userName, gameSlug } = useParams();
   const user = useAuth();
-  const { data: game, finalUrl: gameCacheKey, isLoading } = useGameFetch(initialGame, {
+  const {
+    data: game,
+    finalUrl: gameCacheKey,
+    isLoading,
+  } = useGameFetch(initialGame, {
     gameSlug,
   });
   const {
@@ -28,7 +36,11 @@ const Game = ({ initialGame = {}, initialCollections = [] }) => {
         <Meta title={desluggify(gameSlug)} />
         <Title
           header={game.title}
-          breadCrumb={decideBreadCrumb(game.title, userCanEdit(user, userName), userName)}
+          breadCrumb={decideBreadCrumb(
+            game.title,
+            userCanEdit(user, userName),
+            userName
+          )}
         />
         <GameDetails game={game} />
       </main>
@@ -42,11 +54,7 @@ const Game = ({ initialGame = {}, initialCollections = [] }) => {
   );
 };
 
-/**
- * THIS RUNS ONCE ON THE SERVER, ON REFRESH
- * ON CLIENT SIDE ROUTING, FETCH ON THE CLIENT DUH
- */
-Game.getInitialProps = async ({ req, res, query }) => {
+Game.getServerSideProps = async ({ req, res, query }) => {
   if (req) {
     const { gameSlug } = query;
     try {

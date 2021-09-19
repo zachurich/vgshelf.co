@@ -1,4 +1,4 @@
-import { mutate } from "@zeit/swr";
+import { mutate } from "swr";
 import _ from "lodash";
 import React from "react";
 
