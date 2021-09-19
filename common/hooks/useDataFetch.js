@@ -1,13 +1,13 @@
 import _ from "lodash";
 import { useContext } from "react";
 import { appendParam, appendMultipleParams } from "../utils";
-import useSWR from "@zeit/swr";
+import useSWR from "swr";
 import GlobalMessageContext from "../../contexts/globalMessage";
 import { fetcher } from "../../api/gamesApi";
 
 export const swrOptions = {
   refreshInterval: 0,
-  revalidateOnFocus: false
+  revalidateOnFocus: false,
 };
 
 /**
@@ -26,19 +26,19 @@ const useDataFetch = (params, endpoint, dataKey, initialData) => {
   let fetchUrl = appendMultipleParams(endpoint, params);
   const { data, error, isValidating } = useSWR(fetchUrl, fetcher, {
     ...swrOptions,
-    onError: error => {
+    onError: (error) => {
       if (error.message) {
         promptMessage({
           header: "Error",
-          message: error.message
+          message: error.message,
         });
       } else {
         promptMessage({
           header: "Error",
-          message: JSON.stringify(error)
+          message: JSON.stringify(error),
         });
       }
-    }
+    },
   });
   let returnData;
   if (dataKey) {
@@ -52,7 +52,7 @@ const useDataFetch = (params, endpoint, dataKey, initialData) => {
     data: returnData,
     error,
     finalUrl: fetchUrl,
-    isLoading: isValidating
+    isLoading: isValidating,
   };
 };
 

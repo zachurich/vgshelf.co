@@ -1,8 +1,11 @@
-import { mutate } from "@zeit/swr";
+import { mutate } from "swr";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 
-import { fetchSingleCollection, updateCollection } from "../../../api/collectionsApi";
+import {
+  fetchSingleCollection,
+  updateCollection,
+} from "../../../api/collectionsApi";
 import { fetchGamesByUserName } from "../../../api/gamesApi";
 import {
   useCollectionsFetch,
@@ -11,7 +14,11 @@ import {
 } from "../../../common/hooks";
 import useAuth from "../../../common/hooks/useAuth";
 import useCheckAuth from "../../../common/hooks/useCheckAuth";
-import { formatUserName, handleServerError, scrollTop } from "../../../common/utils";
+import {
+  formatUserName,
+  handleServerError,
+  scrollTop,
+} from "../../../common/utils";
 import CollectionsPanel from "../../../components/collectionsPanel/collectionsPanel";
 import EditCollectionPanel from "../../../components/editCollectionPanel/editCollectionPanel";
 import FormControls from "../../../components/formControls/formControls";
@@ -31,9 +38,8 @@ const Games = ({
     finalUrl: collectionsCacheKey,
     isLoading: isCollectionsLoading,
   } = useCollectionsFetch(initialCollections);
-  const { data: collection, finalUrl: collectionContextCacheKey } = useFetchCollection(
-    initialCollection
-  );
+  const { data: collection, finalUrl: collectionContextCacheKey } =
+    useFetchCollection(initialCollection);
   const [showModal, setShowModal] = useState(false);
   const { performAuthCheck } = useCheckAuth();
   const [collectionTitle, setCollectionTitle] = useState(collection.title);
@@ -84,7 +90,9 @@ const Games = ({
         <Meta title={"Games"} />
         {/* This component should contain all games IN THE CURRENT COLLECTION */}
         <GamesGrid
-          title={`${collection.title} Shelf` || `${formatUserName(user)}'s Games`}
+          title={
+            `${collection.title} Shelf` || `${formatUserName(user)}'s Games`
+          }
           user={user}
           userName={userName}
           collectionId={collectionSlug}
@@ -111,10 +119,13 @@ const Games = ({
               handleDismiss={() => handleToggleModal(false)}
               closeText={"Cancel"}
               disabled={
-                collection.games === gamesToggled && collection.title === collectionTitle
+                collection.games === gamesToggled &&
+                collection.title === collectionTitle
               }
               submitText={"Submit"}
-              handleSubmit={(e) => handleSubmitChanges(e, collectionTitle, gamesToggled)}
+              handleSubmit={(e) =>
+                handleSubmitChanges(e, collectionTitle, gamesToggled)
+              }
             />
           )}
         />

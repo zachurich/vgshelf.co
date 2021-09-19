@@ -28,6 +28,6 @@ $footer-height: 167px;
 $weight-black: 800;
 $weight-bold: 600;
 $base-spacing: 20px;
-$compact-spacing: $base-spacing / 2;
+$compact-spacing: $base-spacing * 0.5;
 $comfortable-spacing: $base-spacing * 2;
 $main-font: "Nunito", sans-serif;
