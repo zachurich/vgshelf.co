@@ -54,7 +54,7 @@ const Game = ({ initialGame = {}, initialCollections = [] }) => {
   );
 };
 
-Game.getServerSideProps = async ({ req, res, query }) => {
+export const getServerSideProps = async ({ req, res, query }) => {
   if (req) {
     const { gameSlug } = query;
     try {

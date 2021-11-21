@@ -12,7 +12,7 @@ const Home = ({ user }) => {
   );
 };
 
-Home.getServerSideProps = async ({ req, res, query }) => {
+export const getServerSideProps = async ({ req, res, query }) => {
   return { props: {} };
 };
 

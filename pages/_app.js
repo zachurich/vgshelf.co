@@ -7,10 +7,10 @@ import _ from "lodash";
 import App from "next/app";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { UserProvider } from "@auth0/nextjs-auth0";
 
 import { fetchCollectionsByUserName } from "../api/collectionsApi";
 import { checkDBUser } from "../api/usersApi";
-import auth0 from "../common/auth";
 import { HTTP_STATUS } from "../common/constants";
 import { useCollectionsFetch } from "../common/hooks";
 import usePage from "../common/hooks/usePage";
@@ -20,7 +20,6 @@ import { Nav } from "../components";
 import CollectionsPanel from "../components/collectionsPanel/collectionsPanel";
 import Footer from "../components/footer/footer";
 import GlobalMessenger from "../components/globalMessenger/globalMessenger";
-import AuthContext from "../contexts/authContext";
 
 function RootApp({
   Component,
@@ -28,9 +27,8 @@ function RootApp({
   auth = null,
   initialCollections = [],
 }) {
-  const [user] = useState(auth);
   return (
-    <AuthContext.Provider value={{ user }}>
+    <UserProvider>
       <GlobalMessenger>
         <Nav />
         <div className="page-wrapper">
@@ -38,11 +36,11 @@ function RootApp({
         </div>
         <Footer />
       </GlobalMessenger>
-    </AuthContext.Provider>
+    </UserProvider>
   );
 }
 
-RootApp.getServerSideProps = async (context) => {
+export const getServerSideProps = async (context) => {
   const { ctx } = context;
   const { userName } = ctx.query;
   let initialCollections;
@@ -59,17 +57,17 @@ RootApp.getServerSideProps = async (context) => {
     }
   }
 
-  if (ctx.req) {
-    const auth = await auth0.getSession(ctx.req);
-    if (auth) {
-      const dbUser = await checkDBUser({ userId: auth.user.sub });
-      return {
-        pageProps: componentInitialProps.pageProps,
-        auth: { ...auth.user, userName: dbUser.data.userName },
-        initialCollections,
-      };
-    }
-  }
+  // if (ctx.req) {
+  //   const auth = await auth0.getSession(ctx.req);
+  //   if (auth) {
+  //     const dbUser = await checkDBUser({ userId: auth.user.sub });
+  //     return {
+  //       pageProps: componentInitialProps.pageProps,
+  //       auth: { ...auth.user, userName: dbUser.data.userName },
+  //       initialCollections,
+  //     };
+  //   }
+  // }
   return { pageProps: componentInitialProps.pageProps };
 };
 

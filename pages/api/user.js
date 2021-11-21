@@ -1,8 +1,11 @@
 import { checkDBUser, registerDBUser } from "../../api/usersApi";
-import auth0 from "../../common/auth";
 import { HTTP_STATUS } from "../../common/constants";
 import { APP_ROUTES } from "../../common/routes";
-import { isGoodResponse, isMissingResponse, redirect } from "../../common/utils";
+import {
+  isGoodResponse,
+  isMissingResponse,
+  redirect,
+} from "../../common/utils";
 
 export default async function user(req, res) {
   try {
@@ -14,7 +17,10 @@ export default async function user(req, res) {
       });
 
       if (isGoodResponse({ code })) {
-        return redirect(res, APP_ROUTES.APP.replace("[userName]", data.userName));
+        return redirect(
+          res,
+          APP_ROUTES.APP.replace("[userName]", data.userName)
+        );
       } else if (isMissingResponse({ code })) {
         return redirect(res, APP_ROUTES.REGISTER);
       }

@@ -56,17 +56,18 @@ const Dashboard = ({ initialGames = [], initialCollections = [] }) => {
   );
 };
 
-Dashboard.getServerSideProps = async ({ req, res, query }) => {
+export const getServerSideProps = async ({ req, res, query }) => {
   if (req) {
     const { userName } = query;
     try {
       const { games: initialGames } = await fetchGamesByUserName(userName);
+      console.log("ZACH", initialGames);
       return { initialGames };
     } catch (e) {
       return handleServerError(e, res);
     }
   }
-  return {};
+  return { props: {} };
 };
 
 export default Dashboard;

@@ -49,7 +49,7 @@ const Register = ({ user }) => {
   );
 };
 
-Register.getServerSideProps = async ({ req, res, query }) => {
+export const getServerSideProps = async ({ req, res, query }) => {
   return { props: {} };
 };
 

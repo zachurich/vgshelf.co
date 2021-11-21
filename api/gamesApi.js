@@ -19,6 +19,7 @@ export const fetchGames = async (params) => {
     const { data: response } = await axios.get(API_ENDPOINTS.GAME, {
       params,
     });
+    console.log("RESPONSE", response);
     return escapeNull(get(response, "data"), []);
   } catch (error) {
     throw error;
@@ -35,7 +36,10 @@ export const fetchGamesByUserId = async (userId) => {
   }
 };
 
-export const fetchGamesUserNameCollectionSlug = async (collectionSlug, userName) => {
+export const fetchGamesUserNameCollectionSlug = async (
+  collectionSlug,
+  userName
+) => {
   try {
     const data = await fetchGames({
       collectionSlug,

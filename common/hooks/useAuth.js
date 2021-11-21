@@ -1,9 +1,8 @@
-import { useContext } from "react";
+import { useUser } from "@auth0/nextjs-auth0";
 
-import AuthContext from "../../contexts/authContext";
-
+// Wrapper just in case
 const useAuth = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useUser();
   return user;
 };
 

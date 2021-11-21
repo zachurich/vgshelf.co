@@ -1,11 +1,11 @@
 import axios from "axios";
 
-import auth0 from "../../common/auth";
 import { ERROR_CODES } from "../../common/constants";
 import { API_ENDPOINTS } from "../../common/routes";
 
 export default async function games(req, res) {
   try {
+    console.log("ZACHHHHH");
     const tokenCache = await auth0.tokenCache(req, res);
     const { accessToken } = await tokenCache.getAccessToken({});
     const args = [

@@ -20,7 +20,7 @@ const Nav = () => {
       </div>
       <ul className="nav-links">
         <li className="nav-link-item flex">
-          {user && user.userName ? (
+          {user && user.nickname ? (
             <Menu user={user} />
           ) : (
             <LoginButton user={user} classes={"button-nav"} />

@@ -13,7 +13,11 @@ export function LoginButton({ classes = "button-secondary" }) {
   return (
     <Link
       href={user ? `${APP_ROUTES.APP}` : loginPath}
-      as={user ? `${APP_ROUTES.APP.replace("[userName]", user.userName)}` : loginPath}
+      as={
+        user
+          ? `${APP_ROUTES.APP.replace("[userName]", user.nickname)}`
+          : loginPath
+      }
     >
       <a className={`button ${classes}`}>{user ? "Continue" : "Log In"}</a>
     </Link>
@@ -32,7 +36,11 @@ export function SignUpButton({ text, classes = "button-primary" }) {
   return null;
 }
 
-export function ButtonToggle({ handleToggle, additionalClasses = "", ...props }) {
+export function ButtonToggle({
+  handleToggle,
+  additionalClasses = "",
+  ...props
+}) {
   return (
     <div
       onClick={handleToggle}

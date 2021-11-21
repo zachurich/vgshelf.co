@@ -2,8 +2,8 @@ import { createUrl } from "./utils";
 
 // External API routes
 export const API_ENDPOINTS = {
-  COLLECTION: createUrl(process.env.API_BASE, "/api/collection"),
-  GAME: createUrl(process.env.API_BASE, "/api/game"),
+  COLLECTION: createUrl(process.env.API_BASE, "/api/v1/collections"),
+  GAME: createUrl(process.env.API_BASE, "/api/v1/games"),
   REGISTER: createUrl(process.env.API_BASE, "/api/user/register"),
   SEARCH: createUrl(process.env.API_BASE, "/api/external/search/"),
   COVER: createUrl(process.env.API_BASE, "/api/external/cover/"),
@@ -15,10 +15,14 @@ export const API_ROUTES = {
   COLLECTION: createUrl(process.env.HOST, "/api/collections"),
   GAME: createUrl(process.env.HOST, "/api/games"),
   AUTH: createUrl(process.env.HOST, "/api/check-auth"),
-  REGISTER: "/api/register",
-  LOGIN: "/api/login",
-  LOGOUT: "/api/logout",
   USER: createUrl(process.env.HOST, "/api/user"),
+  REGISTER: "/api/register",
+
+  // Dynamic API Routes created by @auth0/nextjs-auth0
+  LOGIN: "/api/auth/login",
+  LOGOUT: "/api/auth/logout",
+  ME: "/api/auth/me",
+  CALLBACK: "/api/auth/callback",
 };
 
 // Application routes
