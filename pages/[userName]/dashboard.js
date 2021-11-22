@@ -33,7 +33,7 @@ const Dashboard = ({ initialGames = [], initialCollections = [] }) => {
     isLoading: isCollectionsLoading,
   } = useCollectionsFetch(initialCollections);
 
-  useCheckRegisteredUser();
+  // useCheckRegisteredUser();
 
   return (
     <>
@@ -60,9 +60,12 @@ export const getServerSideProps = async ({ req, res, query }) => {
   if (req) {
     const { userName } = query;
     try {
-      const { games: initialGames } = await fetchGamesByUserName(userName);
-      console.log("ZACH", initialGames);
-      return { initialGames };
+      const initialGames = await fetchGamesByUserName(userName);
+      return {
+        props: {
+          initialGames,
+        },
+      };
     } catch (e) {
       return handleServerError(e, res);
     }

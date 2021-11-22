@@ -14,6 +14,9 @@ export const swrOptions = {
  * @description Wraps Zeit's useSWR hook used for cache invalidation/revalidation and polling
  * @param {Object} params - Key/value pairs for appending query params to the request url
  * @param {String} endpoint - the base endpoint
+ * @param {String} dataKey - Key for validating
+ * @param {any} initialData - Initial data, usually pre-fetched in server code
+ * @param {Function} fetcher - Function used for data fetching, generic default
  * @returns {Object} {
  *   data?: Data;
  *   error?: Error;
@@ -21,7 +24,13 @@ export const swrOptions = {
  *   isValidating: boolean;
  * }
  */
-const useDataFetch = (params, endpoint, dataKey, initialData) => {
+const useDataFetch = (
+  params,
+  endpoint,
+  dataKey,
+  initialData,
+  fetcher = fetcher
+) => {
   const { promptMessage } = useContext(GlobalMessageContext);
   let fetchUrl = appendMultipleParams(endpoint, params);
   const { data, error, isValidating } = useSWR(fetchUrl, fetcher, {

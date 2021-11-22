@@ -4,7 +4,9 @@ import { ERROR_CODES, HTTP_STATUS } from "./constants";
 import { APP_ROUTES } from "./routes";
 
 export const sortByDate = (arr, sortKey) => {
-  return arr.sort((prior, next) => new Date(next[sortKey]) - new Date(prior[sortKey]));
+  return arr.sort(
+    (prior, next) => new Date(next[sortKey]) - new Date(prior[sortKey])
+  );
 };
 
 export const lastItem = (arr, index, cols = 3) => {
@@ -16,7 +18,8 @@ export const lastItem = (arr, index, cols = 3) => {
   return false;
 };
 
-export const genTestObj = (length, obj = { name: "test" }) => Array(length).fill(obj);
+export const genTestObj = (length, obj = { name: "test" }) =>
+  Array(length).fill(obj);
 
 export const createUrl = (base, endpoint) => `${base}${endpoint}`;
 
@@ -96,7 +99,9 @@ export const toggleItemInArray = (array, item, property = null) => {
   const itemOrObj = property ? item[property] : item;
   let newItems = [];
   if (_.some(currentItems, property ? [property, itemOrObj] : itemOrObj)) {
-    newItems = currentItems.filter((currentItem) => currentItem[property] !== itemOrObj);
+    newItems = currentItems.filter(
+      (currentItem) => currentItem[property] !== itemOrObj
+    );
   } else {
     newItems = currentItems.concat(item);
   }
@@ -132,7 +137,7 @@ export const handleServerError = (e, res) => {
 };
 
 export const userCanEdit = (authedUser, accessedUserName) => {
-  return !!authedUser && authedUser.userName.toLowerCase() === accessedUserName;
+  return !!authedUser && authedUser.nickname.toLowerCase() === accessedUserName;
 };
 
 export const isGoodResponse = (response) => {

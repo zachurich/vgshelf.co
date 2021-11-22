@@ -4,7 +4,12 @@ import { API_ENDPOINTS } from "../routes";
 
 const useGamesFetchByUserName = (initialData = []) => {
   const { userName } = useParams();
-  return useDataFetch({ userName }, API_ENDPOINTS.GAME, "games", initialData);
+  return useDataFetch(
+    {},
+    `${API_ENDPOINTS.GAME}/${userName}`,
+    "games",
+    initialData
+  );
 };
 
 export default useGamesFetchByUserName;

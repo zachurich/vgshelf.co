@@ -15,13 +15,17 @@ export const fetcher = async (url, headers = {}) => {
 };
 
 export const fetchGames = async (params) => {
+  const { userName, ...restParams } = params;
   try {
-    const { data: response } = await axios.get(API_ENDPOINTS.GAME, {
-      params,
-    });
-    console.log("RESPONSE", response);
+    const { data: response } = await axios.get(
+      `${API_ENDPOINTS.GAME}/${userName}`,
+      {
+        params: restParams,
+      }
+    );
     return escapeNull(get(response, "data"), []);
   } catch (error) {
+    console.log("ERROR IN fetchGames", e);
     throw error;
   }
 };
