@@ -25,8 +25,8 @@ export const swrOptions = {
  * }
  */
 const useDataFetch = (
-  params,
   endpoint,
+  params,
   dataKey,
   initialData,
   fetcher = fetcher

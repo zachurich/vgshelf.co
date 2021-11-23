@@ -12,7 +12,7 @@ import { API_ENDPOINTS } from "../routes";
 
 const useCollectionsFetch = (initialData = []) => {
   const { userName } = useParams();
-  return useDataFetch({ userName }, API_ENDPOINTS.COLLECTION, "", initialData);
+  return useDataFetch(API_ENDPOINTS.COLLECTION, { userName }, "", initialData);
 };
 
 export default useCollectionsFetch;
