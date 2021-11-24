@@ -59,7 +59,11 @@ export const getServerSideProps = async ({ req, res, query }) => {
     const { gameSlug } = query;
     try {
       const initialGame = await fetchGameBySlug(gameSlug);
-      return { initialGame };
+      return {
+        props: {
+          initialGame,
+        },
+      };
     } catch (e) {
       return handleServerError(e, res);
     }

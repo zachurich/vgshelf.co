@@ -31,7 +31,7 @@ const Menu = ({ user }) => {
           route={APP_ROUTES.APP.replace("[userName]", user.nickname)}
           text="Dashboard"
         />
-        <MenuItem route={"/api/logout"} text="Logout" />
+        <MenuItem route={API_ROUTES.LOGOUT} text="Logout" />
       </ul>
     );
   }

@@ -23,6 +23,12 @@ export const genTestObj = (length, obj = { name: "test" }) =>
 
 export const createUrl = (base, endpoint) => `${base}${endpoint}`;
 
+export const applyBaseUrl = (base, routes) =>
+  Object.entries(routes).reduce((acc, [key, value]) => {
+    acc[key] = createUrl(base, value);
+    return acc;
+  });
+
 export const formatUserName = (user) => {
   if (user && user.displayName) {
     return user.displayName.split("@")[0];

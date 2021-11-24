@@ -26,7 +26,6 @@ function RootApp({
   auth = null,
   initialCollections = [],
 }) {
-  console.log(pageProps);
   return (
     <UserProvider>
       <GlobalMessenger>

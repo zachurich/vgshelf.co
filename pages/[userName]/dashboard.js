@@ -1,23 +1,16 @@
-import _ from "lodash";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import _ from 'lodash';
+import React, { Fragment } from 'react';
 
-import { fetchCollectionsByUserName } from "../../api/collectionsApi";
-import { fetchGamesByUserName } from "../../api/gamesApi";
-import { checkDBUser } from "../../api/usersApi";
-import { HTTP_STATUS } from "../../common/constants";
-import { useCollectionsFetch, useParams } from "../../common/hooks";
-import useAuth from "../../common/hooks/useAuth";
-import useCheckAuth from "../../common/hooks/useCheckAuth";
-import { useCheckRegisteredUser } from "../../common/hooks/useCheckRegisteredUser";
-import useGamesFetchByUserName from "../../common/hooks/useGameFetchByUserName";
-import useModal from "../../common/hooks/useModal";
-import { APP_ROUTES } from "../../common/routes";
-import { handleServerError, scrollTop } from "../../common/utils";
-import CollectionsPanel from "../../components/collectionsPanel/collectionsPanel";
-import GamesPanel from "../../components/gamesPanel/gamesPanel";
-import { Meta } from "../../components/index";
-import checkAuth from "../api/check-auth";
+import { fetchGamesByUserName } from '../../api/gamesApi';
+import { useCollectionsFetch } from '../../common/hooks';
+import useAuth from '../../common/hooks/useAuth';
+
+import useGamesFetchByUserName from '../../common/hooks/useGameFetchByUserName';
+
+import { handleServerError } from '../../common/utils';
+import CollectionsPanel from '../../components/collectionsPanel/collectionsPanel';
+import GamesPanel from '../../components/gamesPanel/gamesPanel';
+import { Meta } from '../../components/index';
 
 const Dashboard = ({ initialGames = [], initialCollections = [] }) => {
   const user = useAuth();
@@ -36,9 +29,9 @@ const Dashboard = ({ initialGames = [], initialCollections = [] }) => {
   // useCheckRegisteredUser();
 
   return (
-    <>
+    <Fragment>
       <main className="main dashboard with-sidebar">
-        <Meta title={"Dashboard"} />
+        <Meta title={'Dashboard'} />
         <GamesPanel
           user={user}
           games={games}
@@ -52,7 +45,7 @@ const Dashboard = ({ initialGames = [], initialCollections = [] }) => {
         collectionsCacheKey={collectionsCacheKey}
         isCollectionsLoading={isCollectionsLoading}
       />
-    </>
+    </Fragment>
   );
 };
 
