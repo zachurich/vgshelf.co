@@ -1,16 +1,15 @@
-import { handleAuth, handleCallback } from "@auth0/nextjs-auth0";
-import { checkDBUser } from "../../../api/usersApi";
-import { APP_ROUTES } from "../../../common/routes";
+import { handleAuth, handleCallback } from '@auth0/nextjs-auth0';
+import { checkDBUser } from '../../../api/usersApi';
+import { APP_ROUTES } from '../../../common/routes';
 import {
   isGoodResponse,
   isMissingResponse,
   redirect,
-} from "../../../common/utils";
+} from '../../../common/utils';
 
 const afterCallback = async (req, res, session, state) => {
   // We need to call the vgshelf api here
   // and insert user if not exists
-
   try {
     if (session && session.user) {
       const { user } = session;
@@ -21,7 +20,7 @@ const afterCallback = async (req, res, session, state) => {
       if (isGoodResponse({ code })) {
         return redirect(
           res,
-          APP_ROUTES.APP.replace("[userName]", data.userName)
+          APP_ROUTES.APP.replace('[userName]', data.userName),
         );
       } else if (isMissingResponse({ code })) {
         return redirect(res, APP_ROUTES.REGISTER);
