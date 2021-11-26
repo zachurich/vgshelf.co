@@ -1,11 +1,12 @@
-import _ from "lodash";
+import _ from 'lodash';
 
-import { ERROR_CODES, HTTP_STATUS } from "./constants";
-import { APP_ROUTES } from "./routes";
+import { ERROR_CODES, HTTP_STATUS } from './constants';
+import { APP_ROUTES } from './routes';
+import { Obj } from './types';
 
 export const sortByDate = (arr, sortKey) => {
   return arr.sort(
-    (prior, next) => new Date(next[sortKey]) - new Date(prior[sortKey])
+    (prior, next) => new Date(next[sortKey]) - new Date(prior[sortKey]),
   );
 };
 
@@ -18,22 +19,22 @@ export const lastItem = (arr, index, cols = 3) => {
   return false;
 };
 
-export const genTestObj = (length, obj = { name: "test" }) =>
+export const genTestObj = (length, obj = { name: 'test' }) =>
   Array(length).fill(obj);
 
 export const createUrl = (base, endpoint) => `${base}${endpoint}`;
 
-export const applyBaseUrl = (base, routes) =>
+export const applyBaseUrl = (base: string, routes: Obj): Obj =>
   Object.entries(routes).reduce((acc, [key, value]) => {
     acc[key] = createUrl(base, value);
     return acc;
-  });
+  }, {});
 
 export const formatUserName = (user) => {
   if (user && user.displayName) {
-    return user.displayName.split("@")[0];
+    return user.displayName.split('@')[0];
   }
-  return "Hello!";
+  return 'Hello!';
 };
 
 export const debounce = (timer, callback, ...args) => {
@@ -44,10 +45,10 @@ export const debounce = (timer, callback, ...args) => {
 };
 
 export const appendParam = (url, { key, value }) => {
-  if (!url.includes("?")) {
-    url += "?";
+  if (!url.includes('?')) {
+    url += '?';
   } else {
-    url += "&";
+    url += '&';
   }
   return (url += `${key}=${value}`);
 };
@@ -74,7 +75,7 @@ export const escapeNull = (value, fallback) => {
   return fallback;
 };
 
-export const isClientSide = () => typeof window !== "undefined";
+export const isClientSide = () => typeof window !== 'undefined';
 
 export const getColor = (color) => {
   if (isClientSide()) {
@@ -85,7 +86,7 @@ export const getColor = (color) => {
 
 export const handleServerResponse = (response = {}) => {
   const errorCodes = new Set([400, 500]);
-  if (errorCodes.has(+_.get(response, "code"))) {
+  if (errorCodes.has(+_.get(response, 'code'))) {
     return response.msg;
   }
   return null;
@@ -106,7 +107,7 @@ export const toggleItemInArray = (array, item, property = null) => {
   let newItems = [];
   if (_.some(currentItems, property ? [property, itemOrObj] : itemOrObj)) {
     newItems = currentItems.filter(
-      (currentItem) => currentItem[property] !== itemOrObj
+      (currentItem) => currentItem[property] !== itemOrObj,
     );
   } else {
     newItems = currentItems.concat(item);
@@ -120,7 +121,7 @@ export const toggleItemInArray = (array, item, property = null) => {
 export const createBufferFromQuery = (params = {}) => {
   const keys = Object.keys(params);
   return Buffer.from(
-    keys.map((param) => params[param]).join("|") || [APP_ROUTES.APP].join("")
+    keys.map((param) => params[param]).join('|') || [APP_ROUTES.APP].join(''),
   );
 };
 
@@ -132,7 +133,7 @@ export const redirect = (res, location) => {
 };
 
 export const handleServerError = (e, res) => {
-  const response = _.get(e, "response.data", {});
+  const response = _.get(e, 'response.data', {});
   if (
     (response.data && response.data.includes(ERROR_CODES.NO_USER)) ||
     response.code === HTTP_STATUS.MISSING
@@ -156,11 +157,11 @@ export const isMissingResponse = (response) => {
 
 export const desluggify = (str) => {
   return str
-    .split("-")
+    .split('-')
     .map((word) => {
-      let letters = word.split("");
+      let letters = word.split('');
       letters[0] = word.charAt(0).toUpperCase();
-      return letters.join("");
+      return letters.join('');
     })
-    .join(" ");
+    .join(' ');
 };

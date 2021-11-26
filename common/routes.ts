@@ -1,14 +1,19 @@
 import { applyBaseUrl } from './utils';
 
-// External API routes
-export const API_ENDPOINTS = applyBaseUrl(process.env.API_BASE, {
+const API_ENDPOINTS_DEF = {
   COLLECTION: '/api/v1/collections',
   GAME: '/api/v1/games',
   REGISTER: '/api/v1/user/register',
   SEARCH: '/api/v1/external/search/',
   COVER: '/api/v1/external/cover/',
   USER: '/api/v1/user/check',
-});
+};
+
+// External API routes
+export const API_ENDPOINTS: typeof API_ENDPOINTS_DEF = applyBaseUrl(
+  process.env.API_BASE,
+  API_ENDPOINTS_DEF,
+);
 
 // Nextjs API routes
 export const API_ROUTES = applyBaseUrl(process.env.HOST, {
